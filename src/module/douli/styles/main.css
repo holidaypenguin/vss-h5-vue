@@ -1,0 +1,19 @@
+
+@import './var.css';
+
+@n ry{
+  @b tag{
+    @e only{
+      width: 91px;
+      margin-left: 20px;
+      background: #EE3F44;
+      border-radius: 13px;
+      text-align: center;
+      font-family: PingFangSC-Regular;
+      font-size: 18px;
+      color: #FFFFFF;
+      padding-top: 6px;
+      padding-bottom: 2px;
+    }
+  }
+}

@@ -1,0 +1,119 @@
+@import '../styles/var.css';
+
+@n ry{
+
+  @b list{
+    user-select: none;
+    min-height: 100%;
+    overflow: hidden;
+    position: relative;
+    font-size: 0;
+
+    @e empty{
+      width: 590px;
+      line-height: 67px;
+      text-align: center;
+      opacity: 0.12;
+      background: #858B9C;
+      border-radius: 63.5px;
+      transform: translate(-50%, -50%);
+      top: 50%;
+      left: 50%;
+      position: fixed;
+      font-family: PingFangSC-Regular;
+      font-size: 48px;
+      color: #111A34;
+      letter-spacing: 0;
+      padding: 30px;
+      word-break: break-all;
+      white-space: normal;
+    }
+
+    @e wrap{
+      padding: 32px 30px 30px 30px;
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+
+      &::-webkit-scrollbar{
+        width: 0;
+        height: 0;
+      }
+    }
+  }
+
+  @b item {
+    @e wrap{
+      width: 100%;
+      overflow: hidden;
+      padding: 20px;
+      background: var(--color-write);
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: flex;
+      position: relative;
+    }
+
+    @e empty{
+      width: 165px;
+      height: 165px;
+      position: relative;
+      display: inline-block;
+      margin-right: 20px;
+    }
+
+    @e image{
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    @e inner{
+      width: 465px;
+      overflow: hidden;
+    }
+
+    @e title{
+      ont-family: PingFang-SC-Regular;
+      font-size: 32px;
+      color: #111A35;
+      letter-spacing: -0.86px;
+      word-break: break-all;
+      width: 410px;
+      line-height: 45px;
+      height: 90px;
+      margin-top: -3px;
+    }
+
+    @e money{
+      margin-top: 18px;
+      word-break: break-all;
+
+      @e buy{
+        font-family: PingFang-SC-Semibold;
+        font-size: 30px;
+        color: #E42F46;
+        letter-spacing: -0.51px;
+        line-height: 40px;
+      }
+      @e old{
+        margin-top: -2px;
+        text-decoration: line-through;
+        font-family: PingFang-SC-Regular;
+        font-size: 22px;
+        color: #858B9C;
+        letter-spacing: 0;
+        line-height: 22px;
+      }
+    }
+
+    @e button{
+      line-height: 62px;
+      font-size: 28px;
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+    }
+  }
+}

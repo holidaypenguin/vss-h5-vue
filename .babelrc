@@ -1,0 +1,12 @@
+{
+  "presets": [
+    ["@babel/preset-env", {
+      "useBuiltIns": "usage",
+      "debug": false
+    }],
+  ],
+  "plugins": [
+    "@vue/babel-plugin-transform-vue-jsx",
+    "@babel/plugin-transform-runtime",
+  ]
+}
