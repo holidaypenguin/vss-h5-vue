@@ -7,7 +7,7 @@ import App from './app.vue'
 import '../../public/styles/reset.css'
 import '../../public/styles/screen.less'
 import './styles/main.postcss'
-import 'vue2-toast/lib/toast.css'
+import '../../componments/driversRing/style/app.postcss'
 
 Vue.config.productionTip = false
 

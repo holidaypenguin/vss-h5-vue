@@ -1,9 +1,48 @@
 <template>
-  <div class="vss-app">
-    esefse
+  <div class="vss-app wrap" ref="wrap" @click="wrapHandler">
+    <div class="item item-1">
+      <div class="bg"></div>
+      <div class="logo"></div>
+      <div class="name">司机圈</div>
+      <div class="title"></div>
+      <div class="msg">全网5000万司机的选择</div>
+      <div class="button scale15">免费下载 司机圈儿app</div>
+      <div class="next scale25"></div>
+    </div>
+    <div class="item item-2">
+      <div class="title">吐露心声相互交流</div>
+      <div class="msg">拒绝沉默，讨论网约车运行中发现的问题</div>
+      <div class="msg">相互交流，学习更多的技巧</div>
+      <div class="phone"></div>
+      <div class="next scale25"></div>
+      <div class="bottom">
+        <div class="logo"></div>
+        <div class="center">
+          <div class="t1">司机圈儿</div>
+          <div class="t2">全网5000万司机的选择</div>
+        </div>
+        <div class="button scale15">免费下载</div>
+      </div>
+    </div>
+    <div class="item item-3">
+      <div class="title">工作、娱乐一个都不能少</div>
+      <div class="msg">拒绝平庸乏味，生活并不只有工作</div>
+      <div class="msg">不再为每次的堵车心烦</div>
+      <div class="phone"></div>
+      <div class="bottom">
+        <div class="logo"></div>
+        <div class="center">
+          <div class="t1">司机圈儿</div>
+          <div class="t2">全网5000万司机的选择</div>
+        </div>
+        <div class="button scale15">免费下载</div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
+
+import iSlider from '../../public/utils/iSlider'
 
 export default {
   name: 'VssApp',
@@ -13,8 +52,7 @@ export default {
 
   data () {
     return {
-      msgError: false,
-      loginError: false,
+      myslider: undefined,
     }
   },
 
@@ -22,10 +60,37 @@ export default {
   },
 
   mounted () {
+    this.$nextTick(() => {
+      this.init()
+    })
   },
 
   methods: {
-
+    init () {
+      // eslint-disable-next-line new-cap
+      this.myslider = new iSlider({
+        wrap: this.$refs.wrap,
+        item: '.item',
+        onslide (index) {
+          // eslint-disable-next-line no-console
+          console.log(index)
+        },
+      })
+      // eslint-disable-next-line no-console
+      console.info(this.myslider)
+    },
+    wrapHandler (e) {
+      switch (e.target.classList[0]) {
+        case 'button':
+          location.href = 'https://www.baidu.com'
+          break
+        case 'next':
+          this.myslider.next()
+          break
+        default:
+          break
+      }
+    },
   },
 
   /**
@@ -53,10 +118,3 @@ export default {
   },
 }
 </script>
-
-<style lang="postcss">
-@n vss{
-  @b app{
-  }
-}
-</style>
