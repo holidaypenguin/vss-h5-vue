@@ -12,7 +12,7 @@
     "qa": "cnpm i && cross-env RUN_ENV=qa npm run build",
     "pre_online": "cnpm i && cross-env RUN_ENV=preview npm run build",
     "online": "cnpm i && cross-env RUN_ENV=online npm run build",
-    "test:build": "cross-env RUN_ENV=qa npm run build"
+    "test:build": "cross-env RUN_ENV=online npm run build"
   },
   "dependencies": {
     "axios": "^0.18.0",
