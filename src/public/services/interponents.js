@@ -5,12 +5,12 @@
  * @Date: 2019-03-18 15:14:28
  * @Email: songshipeng@rongyi.com
  * @Last Modified by: songshipeng
- * @Last Modified time: 2019-04-08 10:58:47
+ * @Last Modified time: 2019-10-29 19:52:05
  */
 
 import axios from 'axios'
 
-export default (router) => {
+export default () => {
   const install = Vue => {
     if (install.installed) return
 
@@ -46,53 +46,21 @@ export default (router) => {
           // eslint-disable-next-line no-case-declarations
           const json = response.data
 
-          if (json.meta) {
-            const errno = json.meta.status || json.meta.errno
+          // eslint-disable-next-line no-case-declarations
+          const {code, msg} = json
 
-            const msg = json.meta.msg
-
-            response.data.errno = errno
-            response.data.msg = msg
-            if (response.data.result) {
-              if (response.data.result.current_page) {
-                response.data.currentPage = response.data.result.current_page
-              }
-
-              if (response.data.result.page_size) {
-                response.data.pageSize = response.data.result.page_size
-              }
-
-              if (response.data.result.page) {
-                if (response.data.result.page.totalRecord) {
-                  response.data.result.page.total = response.data.result.page.totalRecord
-                }
-              }
-            }
-
-            // eslint-disable-next-line no-empty
-            if (Number(errno) === 0) {
-
-            } else if (/^\d{4}401$/.test(errno)) { // TODO登录失效
-              const closehandler = (function () {
-                return function () {
-                  // router.push({name: 'login'})
-                }
-              })()
-
-              return showError(response, msg, closehandler)
-            } else if (errno === 401) { // TODO 未知东西
-              // response.ok = false;
-            } else {
-              return showError(response, msg)
-            }
+          // eslint-disable-next-line no-empty
+          if (Number(code) === 0) {
+            return Promise.resolve(json)
+          } else if (/^\d{4}401$/.test(code)) { // TODO登录失效
+            return showError(response, msg)
           }
 
-          break
+          return showError(response, msg)
+
         default:
           return showError(response, `当前网络存在问题【${response.statusText}】`)
       }
-
-      return response
     }, function (error) {
       // 对返回的错误进行一些处理
       // console.info("[response] [ error ]", error);

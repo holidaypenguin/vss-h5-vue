@@ -7,7 +7,7 @@ const produceName = 'vss_h5'
 const produceNameSuffix = '_static'
 
 // const target = 'http://fe2.rongyi.com:8088';
-const target = 'http://192.168.1.216'
+const targetShare = 'https://api.driversite.cn'
 // const target = 'http://manage.preview.rongyi.com';
 
 module.exports = {
@@ -15,27 +15,15 @@ module.exports = {
   produceNameSuffix,
   moduleRootPath: './src/module', // 模块根目录(这个可以根据自己的需求命名)
   moduleRootName: 'module',
-  currentModule: 'driversRing', // 指定默认编译模块（仅本地开发环境使用，其他环境发布时需要指定模块，否则会编译全部模块，影响效率）
+  currentModule: 'driversShare', // 指定默认编译模块（仅本地开发环境使用，其他环境发布时需要指定模块，否则会编译全部模块，影响效率）
   dev: {
 
     // Paths
     assetsSubDirectory: `${produceName}${produceNameSuffix}`,
     assetsPublicPath: '/',
     proxyTable: {
-      '/pay-api': {
-        target,
-        changeOrigin: 'true',
-      },
-      '/lightning-integral-service': {
-        target,
-        changeOrigin: 'true',
-      },
-      '/lightning-settle': {
-        target,
-        changeOrigin: 'true',
-      },
-      '/lightning-coupon-service': {
-        target,
+      '^/share': {
+        targetShare,
         changeOrigin: 'true',
       },
     },
