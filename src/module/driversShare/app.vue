@@ -19,10 +19,13 @@
     </template>
 
     <div class="imgList">
-      <img alt=""
+      <div class="imgItem-wrap"
         v-for="(item, index) in imagesExtand"
-        :src="item"
-        :key="index">
+        :key="index + 9">
+        <div class="imgItem">
+          <img alt="" :src="item">
+        </div>
+      </div>
     </div>
     <div class="feed" v-if="detail && detail.commentFeedViewList">
       <div class="feed-head">全部评论</div>
@@ -176,7 +179,7 @@ export default {
       this.logggg.push('> wx.config')
 
       wx.config({
-        debug: true,
+        debug: this.debug,
         appId: 'wx00359698d58c35cc', // 必填，公众号的唯一标识
         timestamp: data.timestamp, // 必填，生成签名的时间戳
         nonceStr: data.noncestr, // 必填，生成签名的随机串
