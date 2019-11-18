@@ -18,7 +18,6 @@
   </div>
 </template>
 <script>
-/* eslint-disable no-undef */
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
 
@@ -51,6 +50,7 @@ export default {
   computed: {
     ...mapState({
       isLoading: state => state.loading,
+      title: state => state.title,
     }),
   },
 

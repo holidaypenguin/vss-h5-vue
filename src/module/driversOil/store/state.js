@@ -6,5 +6,5 @@ export default {
   loading: false,
   loadingNext: false,
   tokenId: '',
-  title: '司机之家',
+  title: '加油优惠',
 }
