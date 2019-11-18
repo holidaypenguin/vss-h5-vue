@@ -15,7 +15,7 @@ module.exports = {
   produceNameSuffix,
   moduleRootPath: './src/module', // 模块根目录(这个可以根据自己的需求命名)
   moduleRootName: 'module',
-  currentModule: 'driversShare', // 指定默认编译模块（仅本地开发环境使用，其他环境发布时需要指定模块，否则会编译全部模块，影响效率）
+  currentModule: 'driversOil', // 指定默认编译模块（仅本地开发环境使用，其他环境发布时需要指定模块，否则会编译全部模块，影响效率）
   dev: {
 
     // Paths
