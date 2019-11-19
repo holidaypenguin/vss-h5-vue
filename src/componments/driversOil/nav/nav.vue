@@ -1,13 +1,20 @@
 <template>
   <div class="p-nav">
+
     <div class="p-nav-left">
-      <div class="p-nav-order" v-if="type==='index'"></div>
-      <div class="p-nav-back" v-else></div>
+      <div class="p-nav-order scale25" v-if="type==='index'"
+        @click="orderHandler"></div>
+      <div class="p-nav-back scale25" v-else
+        @click="backHandler"></div>
     </div>
+
     <div class="p-nav-title">{{title}}</div>
+
     <div class="p-nav-right">
-      <div class="p-nav-help" v-if="type==='index'"></div>
+      <div class="p-nav-help scale25" v-if="type==='index'"
+        @click="helpHandler"></div>
     </div>
+
   </div>
 </template>
 
@@ -25,6 +32,25 @@ export default {
       default: '',
     },
   },
+
+  mounted () {
+    this.$nextTick(() => {
+      // console.log(this.$el.clientHeight)
+      this.$emit('height', this.$el.clientHeight)
+    })
+  },
+
+  methods: {
+    orderHandler () {
+      this.$emit('order')
+    },
+    backHandler () {
+      this.$emit('back')
+    },
+    helpHandler () {
+      this.$emit('help')
+    },
+  },
 }
 </script>
 <style lang="postcss">
@@ -35,6 +61,11 @@ export default {
     display: flex;
     overflow: hidden;
     background: #FFFFFF;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+
     @e left{
       width: 100px;
     }
@@ -42,6 +73,8 @@ export default {
       width: 35px;
       height: 36px;
       margin: 26px 0 0 32px;
+      background: url(../images/order@2x.png) no-repeat;
+      background-size: 100% 100%;
     }
     @e back{
       width: 22px;
@@ -61,9 +94,11 @@ export default {
       width: 100px;
     }
     @e help{
-      width: 22px;
+      width: 36px;
       height: 36px;
       margin: 26px 32px 0 auto;
+      background: url(../images/help@2x.png) no-repeat;
+      background-size: 100% 100%;
     }
   }
 }
