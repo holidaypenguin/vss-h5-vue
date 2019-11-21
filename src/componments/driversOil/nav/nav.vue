@@ -66,6 +66,7 @@ export default {
     left: 0;
     right: 0;
     z-index: 100;
+    border-bottom: 1px solid #D9D9D9; /* no */
 
     @e left{
       width: 100px;

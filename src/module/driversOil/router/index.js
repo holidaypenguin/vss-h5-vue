@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Index from 'componments/driversOil/index/index.vue'
 import Order from 'componments/driversOil/order/order.vue'
+import Help from 'componments/driversOil/help/help.vue'
+import Detail from 'componments/driversOil/detail/detail.vue'
 import config from '../../../../config'
 import setting from '../setting'
 
@@ -24,6 +26,18 @@ export default new Router({
       path: '/order',
       component: Order,
       meta: {title: '加油记录'},
+    },
+    {
+      name: 'help',
+      path: '/help',
+      component: Help,
+      meta: {title: '帮助'},
+    },
+    {
+      name: 'detail',
+      path: '/detail/:id',
+      component: Detail,
+      meta: {title: '加油优惠'},
     },
     {
       path: '*',

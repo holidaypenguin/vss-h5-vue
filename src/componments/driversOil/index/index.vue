@@ -2,7 +2,8 @@
   <div class="p-index">
 
     <Nav :title="title" type="index"
-      @order="orderHandler"></Nav>
+      @order="orderHandler"
+      @help="helpHandler"></Nav>
 
     <div class="p-index-top">
       <van-dropdown-menu class="p-index-distance"
@@ -240,6 +241,11 @@ export default {
         name: 'order',
       })
     },
+    helpHandler () {
+      this.$router.push({
+        name: 'help',
+      })
+    },
   },
 }
 </script>
@@ -249,7 +255,7 @@ export default {
   @b index{
     overflow: auto;
     @e top{
-      margin-top: 88px;
+      margin-top: 89px;
       padding: 14px 32px;
       display: flex;
       position: fixed;
@@ -282,7 +288,7 @@ export default {
       }
     }
     @e split{
-      margin-top: 188px;
+      margin-top: 189px;
       height: 16px;
       background: #F2F2F7;
     }

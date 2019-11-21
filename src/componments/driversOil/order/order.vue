@@ -1,7 +1,8 @@
 <template>
   <div class="p-order">
 
-    <Nav :title="title" type="index"></Nav>
+    <Nav :title="title" type="index"
+      @back="backHandler"></Nav>
 
     <div class="p-order-split"></div>
 
@@ -181,7 +182,7 @@ export default {
       this.getting = false
       this[pageNo === 1 ? SET_LOADING : SET_LOADING_NEXT](false)
     },
-    goBack () {
+    backHandler () {
       this.$router.go(-1)
     },
     itemClickHandler (gasId) {
@@ -201,7 +202,7 @@ export default {
   @b order{
     overflow: auto;
     @e split{
-      margin-top: 88px;
+      margin-top: 89px;
       height: 16px;
       background: #F2F2F7;
     }
