@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Index from 'componments/driversOil/index/index.vue'
+import Order from 'componments/driversOil/order/order.vue'
 import config from '../../../../config'
 import setting from '../setting'
 
@@ -17,6 +18,12 @@ export default new Router({
       path: '/index',
       component: Index,
       meta: {title: '加油优惠'},
+    },
+    {
+      name: 'order',
+      path: '/order',
+      component: Order,
+      meta: {title: '加油记录'},
     },
     {
       path: '*',

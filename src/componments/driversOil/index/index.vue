@@ -1,7 +1,8 @@
 <template>
   <div class="p-index">
 
-    <Nav :title="title" type="index"></Nav>
+    <Nav :title="title" type="index"
+      @order="orderHandler"></Nav>
 
     <div class="p-index-top">
       <van-dropdown-menu class="p-index-distance"
@@ -41,6 +42,17 @@
       </div>
     </div>
 
+    <div class="p-index-loading" v-show="loadingNext">
+      <loading
+        :active.sync="loadingNext"
+        :can-cancel="false"
+        :is-full-page="false"
+        color="#F6504D"
+        loader="bars"
+        :opacity="0.3"
+        :z-index="1"
+      ></loading>
+    </div>
   </div>
 </template>
 
@@ -49,6 +61,7 @@ import VanDropdownMenu from 'vant/lib/dropdown-menu'
 import 'vant/lib/dropdown-menu/style'
 import VanDropdownItem from 'vant/lib/dropdown-item'
 import 'vant/lib/dropdown-item/style'
+import Loading from 'vue-loading-overlay'
 
 import {
   mapState,
@@ -77,6 +90,7 @@ export default {
     Nav,
     VanDropdownMenu,
     VanDropdownItem,
+    Loading,
   },
 
   data () {
@@ -126,6 +140,7 @@ export default {
   computed: {
     ...mapState({
       isLoading: state => state.loading,
+      loadingNext: state => state.loadingNext,
     }),
   },
 
@@ -220,6 +235,11 @@ export default {
     },
     sortChangeHandler () {},
     oilNoChangeHandler () {},
+    orderHandler () {
+      this.$router.push({
+        name: 'order',
+      })
+    },
   },
 }
 </script>
@@ -371,6 +391,13 @@ export default {
         background: url(../images/go@2x.png);
         background-size: 100% 100%;
       }
+    }
+    @e loading{
+      position: relative;
+      height: 100px;
+      bottom: 0;
+      left: 0;
+      width: 100%;
     }
   }
 }
