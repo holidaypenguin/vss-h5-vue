@@ -38,6 +38,7 @@ export default new Router({
       path: '/detail/:id',
       component: Detail,
       meta: {title: '加油优惠'},
+      props: true,
     },
     {
       path: '*',

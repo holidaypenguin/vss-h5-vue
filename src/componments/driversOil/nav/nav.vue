@@ -1,10 +1,17 @@
 <template>
-  <div class="p-nav">
+  <div :class="[
+      'p-nav',
+      type === 'detail' ? 'p-nav--detail' : '',
+    ]">
 
     <div class="p-nav-left">
       <div class="p-nav-order scale25" v-if="type==='index'"
         @click="orderHandler"></div>
-      <div class="p-nav-back scale25" v-else
+      <div :class="[
+          'p-nav-back scale25',
+          type === 'detail' ? 'p-nav-back--white' : '',
+        ]"
+        v-else
         @click="backHandler"></div>
     </div>
 
@@ -67,6 +74,13 @@ export default {
     right: 0;
     z-index: 100;
     border-bottom: 1px solid #D9D9D9; /* no */
+    color: #1A1A1A;
+
+    @m detail{
+      background: none;
+      border-bottom: 0;
+      color: #FFFFFF;
+    }
 
     @e left{
       width: 100px;
@@ -84,12 +98,16 @@ export default {
       margin: 26px 0 0 32px;
       background: url(../images/back@2x.png) no-repeat;
       background-size: 100% 100%;
+
+      @m white{
+        background: url(../images/back-white@2x.png) no-repeat;
+        background-size: 100% 100%;
+      }
     }
     @e title{
       flex: 1;
       font-family: PingFangSC-Regular;
       font-size: 36px;
-      color: #1A1A1A;
       text-align: center;
     }
     @e right{

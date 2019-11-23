@@ -38,7 +38,8 @@
             <div class="p-index-status p-index-status--1"></div>
             <div class="p-index-diff">{{item.oil_92}}元</div>
           </div>
-          <div class="p-index-go">{{item.dis}}KM</div>
+          <div class="p-index-go"
+            @click="itemClickHandler(item.gasId)">{{item.dis}}KM</div>
         </div>
       </div>
     </div>
@@ -230,7 +231,7 @@ export default {
       this.$router.push({
         name: 'detail',
         params: {
-          gasId,
+          id: gasId,
         },
       })
     },

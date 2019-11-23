@@ -1,7 +1,7 @@
 <template>
   <div class="p-order">
 
-    <Nav :title="title" type="index"
+    <Nav :title="title" type="order"
       @back="backHandler"></Nav>
 
     <div class="p-order-split"></div>
@@ -26,7 +26,8 @@
           <div class="p-order-line3-left">2019.11.10 11.37</div>
           <div class="p-order-line3-right p-order-line3-right--2">已完成</div>
         </div>
-        <div class="p-order-go">去加油</div>
+        <div class="p-order-go"
+          @click="itemClickHandler(item.gasId)">去加油</div>
       </div>
     </div>
 
@@ -189,7 +190,7 @@ export default {
       this.$router.push({
         name: 'detail',
         params: {
-          gasId,
+          id: gasId,
         },
       })
     },
