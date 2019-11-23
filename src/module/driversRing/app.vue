@@ -1,41 +1,60 @@
 <template>
-  <div class="vss-app wrap" ref="wrap" @click="wrapHandler">
-    <div class="item item-1">
-      <div class="bg"></div>
-      <div class="logo"></div>
-      <div class="name">司机圈</div>
-      <div class="title"></div>
-      <div class="msg">全网5000万司机的选择</div>
-      <div class="button scale15">免费下载 司机圈儿app</div>
-      <div class="next scale25"></div>
-    </div>
-    <div class="item item-2">
-      <div class="title">吐露心声相互交流</div>
-      <div class="msg">拒绝沉默，讨论网约车运行中发现的问题</div>
-      <div class="msg">相互交流，学习更多的技巧</div>
-      <div class="phone"></div>
-      <div class="next scale25"></div>
-      <div class="bottom">
+  <div class="vss-app" @click="wrapHandler">
+    <div class="wrap" ref="wrap">
+      <div class="item item-1">
+        <div class="bg"></div>
         <div class="logo"></div>
-        <div class="center">
-          <div class="t1">司机圈儿</div>
-          <div class="t2">全网5000万司机的选择</div>
+        <div class="name">司机圈</div>
+        <div class="title"></div>
+        <div class="msg">全网5000万司机的选择</div>
+        <div class="button scale15">免费下载 司机圈儿app</div>
+        <div class="next scale25"></div>
+      </div>
+      <div class="item item-2">
+        <div class="title">吐露心声相互交流</div>
+        <div class="msg">拒绝沉默，讨论网约车运行中发现的问题</div>
+        <div class="msg">相互交流，学习更多的技巧</div>
+        <div class="phone"></div>
+        <div class="next scale25"></div>
+        <div class="bottom">
+          <div class="logo"></div>
+          <div class="center">
+            <div class="t1">司机圈儿</div>
+            <div class="t2">全网5000万司机的选择</div>
+          </div>
+          <div class="button scale15">免费下载</div>
         </div>
-        <div class="button scale15">免费下载</div>
+      </div>
+      <div class="item item-3">
+        <div class="title">工作、娱乐一个都不能少</div>
+        <div class="msg">拒绝平庸乏味，生活并不只有工作</div>
+        <div class="msg">不再为每次的堵车心烦</div>
+        <div class="phone"></div>
+        <div class="bottom">
+          <div class="logo"></div>
+          <div class="center">
+            <div class="t1">司机圈儿</div>
+            <div class="t2">全网5000万司机的选择</div>
+          </div>
+          <div class="button scale15">免费下载</div>
+        </div>
       </div>
     </div>
-    <div class="item item-3">
-      <div class="title">工作、娱乐一个都不能少</div>
-      <div class="msg">拒绝平庸乏味，生活并不只有工作</div>
-      <div class="msg">不再为每次的堵车心烦</div>
-      <div class="phone"></div>
-      <div class="bottom">
-        <div class="logo"></div>
-        <div class="center">
-          <div class="t1">司机圈儿</div>
-          <div class="t2">全网5000万司机的选择</div>
+
+    <div class="p-download" v-show="showTips">
+      <div class="p-download-wrap">
+        <div class="p-download-icon"></div>
+        <div class="p-download-msg">
+          <div class="p-download-msg-inner">
+            司机圈儿
+          </div>
         </div>
-        <div class="button scale15">免费下载</div>
+        <div class="p-download-tips">微信/QQ内无法下载应用</div>
+      </div>
+
+      <div class="p-download-top">
+        请点击右上角<br>
+        选择“浏览器中打开”
       </div>
     </div>
   </div>
@@ -43,6 +62,8 @@
 <script>
 
 import iSlider from '../../public/utils/iSlider'
+
+const isWx = navigator.userAgent.toLocaleLowerCase().indexOf('micromessenger') > 0
 
 export default {
   name: 'VssApp',
@@ -53,6 +74,7 @@ export default {
   data () {
     return {
       myslider: undefined,
+      showTips: false,
     }
   },
 
@@ -82,7 +104,12 @@ export default {
     wrapHandler (e) {
       switch (e.target.classList[0]) {
         case 'button':
-          location.href = 'https://www.baidu.com'
+          if (isWx) {
+            this.showTips = true
+
+            return
+          }
+          location.href = 'https://www.driversite.cn/index.html'
           break
         case 'next':
           this.myslider.next()

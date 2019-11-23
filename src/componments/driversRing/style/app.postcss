@@ -1,3 +1,7 @@
+.vss-app{
+  width: 100%;
+  height: 100%;
+}
 .wrap{
   border: 0;
 }
@@ -155,5 +159,83 @@
   .phone{
     background: url(../images/phone2.png)  no-repeat;
     background-size: 100%;
+  }
+}
+
+@n p{
+  @b download{
+    background: #FFFFFF;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    @e wrap{
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      transform: translateY(-50%);
+    }
+    @e icon{
+      width: 172px;
+      height: 172px;
+      margin: 0 auto;
+      background: url(../images/logo-b.png) no-repeat;
+      background-size: 100% 100%;
+    }
+    @e msg{
+      margin: 97px 0 40px 0;
+      text-align: center;
+      font-size: 38px;
+      line-height: 1;
+      color: #5c6061;
+      @e inner{
+        display: inline-block;
+        position: relative;
+
+        &::before{
+          content: ' ';
+          width: 48px;
+          height: 48px;
+          position: absolute;
+          left: -88px;
+          bottom: 0;
+          background: url(../images/android.png) no-repeat;
+          background-size: 100% 100%;
+        }
+      }
+    }
+    @e tips{
+      font-size: 24px;
+      line-height: 1;
+      text-align: center;
+      color: #41b2a7;
+    }
+    @e top{
+      /* width: 244px; */
+      height: 100px;
+      border-radius: 16px;
+      background: #41b2a7;
+      position: absolute;
+      top: 15px;
+      right: 18px;
+      font-size: 24px;
+      line-height: 36px;
+      padding: 20px 12px;
+      color: #ffffff;
+      text-align: center;
+
+      &::after{
+        content: ' ';
+        width: 16px;
+        height: 16px;
+        background: #41b2a7;
+        position: absolute;
+        top: -6px;
+        right: 16px;
+        transform: rotateZ(45deg);
+      }
+    }
   }
 }
