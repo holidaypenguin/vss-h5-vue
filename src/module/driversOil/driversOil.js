@@ -5,7 +5,7 @@ import Vue from 'vue'
 import App from './app.vue'
 import router from './router'
 import store from './store'
-import interponents from '../../public/services/interponents.js'
+import interponents from '../../public/services/interponentsForm.js'
 import filters from '../../public/filters'
 import Toast from 'vue2-toast'
 

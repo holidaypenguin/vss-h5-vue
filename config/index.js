@@ -8,6 +8,7 @@ const produceNameSuffix = '_static'
 
 // const target = 'http://fe2.rongyi.com:8088';
 const targetShare = 'https://api.driversite.cn'
+const targetOil = 'http://test-api.driversite.cn'
 // const target = 'http://manage.preview.rongyi.com';
 
 module.exports = {
@@ -23,7 +24,11 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '^/share': {
-        targetShare,
+        target: targetShare,
+        changeOrigin: 'true',
+      },
+      '/czb/': {
+        target: targetOil,
         changeOrigin: 'true',
       },
     },

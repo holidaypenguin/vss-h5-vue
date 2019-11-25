@@ -32,14 +32,17 @@
         <div class="p-index-right">
           <div class="p-index-name">{{item.gasName}}</div>
           <div class="p-index-addr">{{item.gasAddress}}</div>
-          <div class="p-index-money">{{item.oilNo}}/升</div>
+          <div class="p-index-money">{{item.oilPriceMap.priceYfq}}/升</div>
           <div class="p-index-other">
-            <div class="p-index-num">{{item.oilName}}#</div>
-            <div class="p-index-status p-index-status--1"></div>
-            <div class="p-index-diff">{{item.oil_92}}元</div>
+            <div class="p-index-num">{{item.oilPriceMap.oilName}}</div>
+            <div :class="[
+              'p-index-status',
+              `p-index-status--${item.oilPriceMap.diffPriceType}`,
+            ]"></div>
+            <div class="p-index-diff">{{item.oilPriceMap.difPrice}}元</div>
           </div>
           <div class="p-index-go"
-            @click="itemClickHandler(item.gasId)">{{item.dis}}KM</div>
+            @click="itemClickHandler(item.id)">{{item.dis}}</div>
         </div>
       </div>
     </div>
@@ -110,32 +113,20 @@ export default {
       params: {
         sort: 1,
         oilNo: 92,
-        lng: 0,
-        lat: 0,
+        lng: 126.55,
+        lat: 43.85,
       },
       page: {
         page: 1,
         count: this.$store.state.pageSize,
         gonext: false,
-        totalPage: 1,
+        // totalPage: 1,
       },
       getting: false,
       listWrapEl: undefined,
       listEl: undefined,
       scrollTop: 0,
-      list: [
-        {gasId: 1, gasName: '1', gasAddress: '2', oilNo: '1', oilName: '2', oil_92: '1', dis: '1'},
-        {gasId: 2, gasName: '1', gasAddress: '2', oilNo: '1', oilName: '2', oil_92: '1', dis: '1'},
-        {gasId: 3, gasName: '1', gasAddress: '2', oilNo: '1', oilName: '2', oil_92: '1', dis: '1'},
-        {gasId: 4, gasName: '1', gasAddress: '2', oilNo: '1', oilName: '2', oil_92: '1', dis: '1'},
-        {gasId: 5, gasName: '1', gasAddress: '2', oilNo: '1', oilName: '2', oil_92: '1', dis: '1'},
-        {gasId: 6, gasName: '1', gasAddress: '2', oilNo: '1', oilName: '2', oil_92: '1', dis: '1'},
-        {gasId: 7, gasName: '1', gasAddress: '2', oilNo: '1', oilName: '2', oil_92: '1', dis: '1'},
-        {gasId: 8, gasName: '1', gasAddress: '2', oilNo: '1', oilName: '2', oil_92: '1', dis: '1'},
-        {gasId: 9, gasName: '1', gasAddress: '2', oilNo: '1', oilName: '2', oil_92: '1', dis: '1'},
-        {gasId: 10, gasName: '1', gasAddress: '2', oilNo: '1', oilName: '2', oil_92: '1', dis: '1'},
-        {gasId: 11, gasName: '1', gasAddress: '2', oilNo: '1', oilName: '2', oil_92: '1', dis: '1'},
-      ],
+      list: [],
     }
   },
 
@@ -194,18 +185,30 @@ export default {
 
       this.getting = true
 
-      if (pageNo !== 1 && pageNo > this.page.totalPage) {
-        this.page.gonext = false
-        this.getting = false
+      // if (pageNo !== 1 && pageNo > this.page.totalPage) {
+      //   this.page.gonext = false
+      //   this.getting = false
 
-        return
-      }
+      //   return
+      // }
       this[pageNo === 1 ? SET_LOADING : SET_LOADING_NEXT](true)
-
-      const {page, count, data} = await this.$axios.post(GETLIST, Object.assign(this.params, {
-        count: this.page.count,
-        page: pageNo,
-      })).catch((e) => {
+      // this.axios.post(`${API_HOST}/api/auth/login`, obj, {
+      //         headers: {
+      //             'Content-Type': 'application/x-www-form-urlencoded'
+      //         }
+      //     })
+      const {data: {gasList}} = await this.$axiosForm.post(
+        GETLIST,
+        Object.assign(this.params, {
+          count: this.page.count,
+          page: pageNo,
+        }),
+        {
+          headers: {
+            token: '',
+          },
+        },
+      ).catch((e) => {
         this.getting = false
         this[pageNo === 1 ? SET_LOADING : SET_LOADING_NEXT](false)
 
@@ -215,28 +218,47 @@ export default {
       if (pageNo === 1) {
         this.list = []
       }
-      this.list = this.list.concat(data)
+      this.adjustList(gasList)
+      this.list = this.list.concat(gasList)
 
       this.page.page = pageNo
-      this.page.totalPage = parseInt((count + this.page.count - 1) / page.count, 10) || 0
-      this.page.gonext = data.length >= this.page.count
+      // this.page.totalPage = parseInt((count + this.page.count - 1) / page.count, 10) || 0
+      this.page.gonext = gasList.length >= this.page.count
 
       this.getting = false
       this[pageNo === 1 ? SET_LOADING : SET_LOADING_NEXT](false)
     },
+    adjustList (gasList) {
+      if (!gasList || gasList.length < 1) return
+
+      gasList.map(gas => {
+        const oilPriceList = JSON.parse(gas.oilPrice)
+        gas.oilPriceMap = oilPriceList.filter(oil => oil.oilNo === this.params.oilNo)[0]
+
+        if (!gas.oilPriceMap) return
+
+        const difPrice = gas.oilPriceMap.priceYfq - gas.oilPriceMap.priceOfficial
+        gas.oilPriceMap.diffPriceType = difPrice > 0 ? 2 : difPrice < 0 ? 1 : 0
+        gas.oilPriceMap.difPrice = Math.abs(parseFloat(difPrice.toFixed(2)))
+      })
+    },
     goBack () {
       this.$router.go(-1)
     },
-    itemClickHandler (gasId) {
+    itemClickHandler (id) {
       this.$router.push({
         name: 'detail',
         params: {
-          id: gasId,
+          id,
         },
       })
     },
-    sortChangeHandler () {},
-    oilNoChangeHandler () {},
+    async sortChangeHandler () {
+      await this.search()
+    },
+    async oilNoChangeHandler () {
+      await this.search()
+    },
     orderHandler () {
       this.$router.push({
         name: 'order',
@@ -324,7 +346,7 @@ export default {
       font-family: PingFangSC-Medium;
       font-size: 32px;
       color: #1A1A1A;
-      line-height: 32px;
+      line-height: 1.2;
       margin-right: 182px;
       margin-bottom: 16px;
     }
@@ -332,7 +354,7 @@ export default {
       font-family: PingFangSC-Regular;
       font-size: 28px;
       color: #999999;
-      line-height: 28px;
+      line-height: 1.2;
       margin-right: 182px;
       margin-bottom: 32px;
     }
@@ -341,7 +363,7 @@ export default {
       font-size: 32px;
       color: #00BE06;
       text-align: right;
-      line-height: 32px;
+      line-height: 1.2;
       position: absolute;
       top: 0;
       right: 0;
