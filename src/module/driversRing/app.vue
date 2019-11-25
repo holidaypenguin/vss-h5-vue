@@ -65,6 +65,8 @@ import iSlider from '../../public/utils/iSlider'
 
 const isWx = navigator.userAgent.toLocaleLowerCase().indexOf('micromessenger') > 0
 
+const isJump = location.hash === '#jump'
+
 export default {
   name: 'VssApp',
 
@@ -74,11 +76,14 @@ export default {
   data () {
     return {
       myslider: undefined,
-      showTips: false,
+      showTips: isJump && isWx,
     }
   },
 
   computed: {
+  },
+
+  created () {
   },
 
   mounted () {
@@ -95,11 +100,11 @@ export default {
         item: '.item',
         onslide (index) {
           // eslint-disable-next-line no-console
-          console.log(index)
+          // console.log(index)
         },
       })
       // eslint-disable-next-line no-console
-      console.info(this.myslider)
+      // console.info(this.myslider)
     },
     wrapHandler (e) {
       switch (e.target.classList[0]) {

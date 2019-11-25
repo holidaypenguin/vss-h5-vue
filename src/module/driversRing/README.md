@@ -6,6 +6,14 @@ location ~ \.(html|css|js|jpg|png|gif|swf|woff|woff2|eot|svg|ttf|otf|mp3|m4a|aac
     root   /www/data;
     expires 30d;
 }
+
+location ~ ^/vss_h5/module/ {
+    root /www/data;
+    expires -1;
+    add_header Cache-control no-cache;
+    rewrite ^/vss_h5/module/driversRing /vss_h5_static/module/driversRing.html break;
+    error_page 405 =200 $uri;
+}
     
 location ~ / {
     root /www/data;
