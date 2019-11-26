@@ -82,7 +82,7 @@ import Utils from '@/module/driversOil/utils'
 import Nav from '../nav/nav.vue'
 
 import {
-  // mapState,
+  mapState,
   mapMutations,
 } from 'vuex'
 
@@ -115,10 +115,15 @@ export default {
       gasInfo: {},
       oilMap: undefined,
       gunNo: undefined,
+      platformCode: '', // 用户唯一标识 是用户手机号
     }
   },
 
   computed: {
+    ...mapState({
+      tokenId: state => state.tokenId,
+      platformType: state => state.platformType,
+    }),
     diffPrice () {
       if (!this.oilMap) return 0
 
@@ -157,29 +162,27 @@ export default {
       this.getting = true
 
       this[SET_LOADING](true)
-      // this.axios.post(`${API_HOST}/api/auth/login`, obj, {
-      //         headers: {
-      //             'Content-Type': 'application/x-www-form-urlencoded'
-      //         }
-      //     })
       const {data: {gasInfo}} = await this.$axiosForm.post(
         GETDETAIL,
         {
-          id: this.id,
+          gasId: this.id,
         },
         {
           headers: {
-            token: 'f94414e338c8a4d13ee05bfa377f2eb0',
+            token: this.tokenId,
           },
         },
       ).catch((e) => {
         this.getting = false
         this[SET_LOADING](false)
 
+        // 返回code 1029的时候，提示登录页面
+
         return Promise.reject(e)
       })
 
       this.gasInfo = gasInfo
+      gasInfo.oilPriceList = gasInfo.oilPriceList.filter(item => item.oilNo >= 0)
       this.oilMap = gasInfo.oilPriceList[0]
 
       this.getting = false
@@ -195,8 +198,10 @@ export default {
     goPay () {
       if (!this.gunNo) return
 
-      // eslint-disable-next-line max-len
-      window.location.href = 'https://test-open.czb365.com/redirection/todo/?platformType=合作方代码（车主邦给出）&platformCode=用户唯一标识&gasId=油站 ID&gunNo=油枪号'
+      const url = `https://test-open.czb365.com/redirection/todo/?platformType=${
+        this.platformType}&platformCode=${this.platformCode}&gasId=${
+        this.gasInfo.gasId}&gunNo=${this.gunNo}`
+      window.location.href = url
     },
   },
 }

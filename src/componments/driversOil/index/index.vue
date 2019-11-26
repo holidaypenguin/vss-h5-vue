@@ -25,7 +25,7 @@
     <div class="p-index-list">
       <div class="p-index-item"
         v-for="(item) in list"
-        :key="item.gasId">
+        :key="item.id">
         <div class="p-index-left">
           <img class="p-index-icon" :src="item.gasLogoSmall"/>
         </div>
@@ -42,9 +42,17 @@
             <div class="p-index-diff">{{item.oilPriceMap.difPrice}}元</div>
           </div>
           <div class="p-index-go"
-            @click="itemClickHandler(item.id)">{{item.dis}}</div>
+            @click="itemClickHandler(item.gasId)">{{getDis(item.dis)}}KM</div>
         </div>
       </div>
+    </div>
+
+    <div class="p-index-empty"
+      v-if="!list || list.length < 1">
+      <div class="p-index-empty-icon"></div>
+      <div class="p-index-empty-msg">加油站列表加载失败了～</div>
+      <div class="p-index-empty-button"
+        @click="search">点击刷新</div>
     </div>
 
     <div class="p-index-loading" v-show="loadingNext">
@@ -192,11 +200,6 @@ export default {
       //   return
       // }
       this[pageNo === 1 ? SET_LOADING : SET_LOADING_NEXT](true)
-      // this.axios.post(`${API_HOST}/api/auth/login`, obj, {
-      //         headers: {
-      //             'Content-Type': 'application/x-www-form-urlencoded'
-      //         }
-      //     })
       const {data: {gasList}} = await this.$axiosForm.post(
         GETLIST,
         Object.assign(this.params, {
@@ -242,14 +245,17 @@ export default {
         gas.oilPriceMap.difPrice = Math.abs(parseFloat(difPrice.toFixed(2)))
       })
     },
+    getDis (dis) {
+      return parseFloat(((dis || 0) / 1000).toFixed(1))
+    },
     goBack () {
       this.$router.go(-1)
     },
-    itemClickHandler (id) {
+    itemClickHandler (gasId) {
       this.$router.push({
         name: 'detail',
         params: {
-          id,
+          id: gasId,
         },
       })
     },
@@ -427,6 +433,40 @@ export default {
       bottom: 0;
       left: 0;
       width: 100%;
+    }
+    @e empty{
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      margin-top: 188px;
+      @e icon{
+        width: 280px;
+        height: 214px;
+        margin: 0 auto;
+        background: url(../images/oil-empty.png);
+        background-size: 100% 100%;
+      }
+      @e msg{
+        margin-top: 48px;
+        font-family: PingFangSC-Regular;
+        font-size: 32px;
+        color: #999999;
+        text-align: center;
+        line-height: 1;
+        margin-bottom: 80px;
+      }
+      @e button{
+        width: 260px;
+        line-height: 88px;
+        border-radius: 88px;
+        border: 1px solid #00BE06; /* no */
+        text-align: center;
+        margin: 0 auto;
+        font-family: PingFangSC-Regular;
+        font-size: 36px;
+        color: #00BE06;
+      }
     }
   }
 }

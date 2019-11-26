@@ -13,5 +13,5 @@ export const GETDETAIL = '/czb/getGasDetail'
 /**
  * 获取用户订单列表
  */
-export const GETORDER = 'https://api.driversite.cn/czb/getGasOrders'
-// export const GETORDER = '/czb/getGasOrders'
+// export const GETORDER = 'https://api.driversite.cn/czb/getGasOrders'
+export const GETORDER = '/czb/getGasOrders'

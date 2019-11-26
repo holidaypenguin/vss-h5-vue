@@ -9,26 +9,34 @@
     <div class="p-order-list">
       <div class="p-order-item"
         v-for="(item) in list"
-        :key="item.gasId">
+        :key="item.id">
         <div class="p-order-line1">
-          <div class="p-order-line1-left">北京广开源加油站</div>
+          <div class="p-order-line1-left">{{item.gasName}}</div>
           <div class="p-order-line1-right">
             支付
-            <span class="p-order-line1-right-num">280.80</span>
-            元 优惠19.20元
+            <span class="p-order-line1-right-num">{{item.amountPay}}</span>
+            元 优惠{{item.amountDiscounts}}元
           </div>
         </div>
         <div class="p-order-line2">
-          <div class="p-order-line2-left">92#</div>
-          <div class="p-order-line2-right">7号枪 8.9升</div>
+          <div class="p-order-line2-left">{{item.oilNo}}#</div>
+          <div class="p-order-line2-right">{{item.gunNo}}号枪 {{item.litre}}升</div>
         </div>
         <div class="p-order-line3">
-          <div class="p-order-line3-left">2019.11.10 11.37</div>
-          <div class="p-order-line3-right p-order-line3-right--2">已完成</div>
+          <div class="p-order-line3-left">{{item.payTime}}</div>
+          <div class="p-order-line3-right p-order-line3-right--2">
+            {{orderStatusName}}
+          </div>
         </div>
         <div class="p-order-go"
-          @click="itemClickHandler(item.gasId)">去加油</div>
+          @click="itemClickHandler(item.id)">去加油</div>
       </div>
+    </div>
+
+    <div class="p-order-empty"
+      v-if="!list || list.length < 1">
+      <div class="p-order-empty-icon"></div>
+      <div class="p-index-empty-msg">暂时没有加油记录哦～</div>
     </div>
 
     <div class="p-order-loading" v-show="loadingNext">
@@ -79,22 +87,18 @@ export default {
   data () {
     return {
       params: {
-        sort: 1,
       },
       page: {
         page: 1,
         count: this.$store.state.pageSize,
         gonext: false,
-        totalPage: 1,
+        // totalPage: 1,
       },
       getting: false,
       listWrapEl: undefined,
       listEl: undefined,
       scrollTop: 0,
-      list: [
-        {gasId: 1, gasName: '1', gasAddress: '2', oilNo: '1', oilName: '2', oil_92: '1', dis: '1'},
-        {gasId: 1, gasName: '1', gasAddress: '2', oilNo: '1', oilName: '2', oil_92: '1', dis: '1'},
-      ],
+      list: [],
     }
   },
 
@@ -102,6 +106,7 @@ export default {
     ...mapState({
       isLoading: state => state.loading,
       loadingNext: state => state.loadingNext,
+      tokenId: state => state.tokenId,
     }),
   },
 
@@ -153,20 +158,30 @@ export default {
 
       this.getting = true
 
-      if (pageNo !== 1 && pageNo > this.page.totalPage) {
-        this.page.gonext = false
-        this.getting = false
+      // if (pageNo !== 1 && pageNo > this.page.totalPage) {
+      //   this.page.gonext = false
+      //   this.getting = false
 
-        return
-      }
+      //   return
+      // }
       this[pageNo === 1 ? SET_LOADING : SET_LOADING_NEXT](true)
 
-      const {page, count, data} = await this.$axios.post(GETORDER, Object.assign(this.params, {
-        count: this.page.count,
-        page: pageNo,
-      })).catch((e) => {
+      const {data: {gasPriceList = []}} = await this.$axiosForm.post(
+        GETORDER,
+        Object.assign(this.params, {
+          count: this.page.count,
+          page: pageNo,
+        }),
+        {
+          headers: {
+            token: this.tokenId,
+          },
+        },
+      ).catch((e) => {
         this.getting = false
         this[pageNo === 1 ? SET_LOADING : SET_LOADING_NEXT](false)
+
+        // 返回code 1029的时候，提示登录页面
 
         return Promise.reject(e)
       })
@@ -174,11 +189,11 @@ export default {
       if (pageNo === 1) {
         this.list = []
       }
-      this.list = this.list.concat(data)
+      this.list = this.list.concat(gasPriceList)
 
       this.page.page = pageNo
-      this.page.totalPage = parseInt((count + this.page.count - 1) / page.count, 10) || 0
-      this.page.gonext = data.length >= this.page.count
+      // this.page.totalPage = parseInt((count + this.page.count - 1) / page.count, 10) || 0
+      this.page.gonext = gasPriceList.length >= this.page.count
 
       this.getting = false
       this[pageNo === 1 ? SET_LOADING : SET_LOADING_NEXT](false)
@@ -186,11 +201,11 @@ export default {
     backHandler () {
       this.$router.go(-1)
     },
-    itemClickHandler (gasId) {
+    itemClickHandler (id) {
       this.$router.push({
         name: 'detail',
         params: {
-          id: gasId,
+          id,
         },
       })
     },
@@ -302,6 +317,29 @@ export default {
       bottom: 0;
       left: 0;
       width: 100%;
+    }
+    @e empty{
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      margin-top: 88px;
+      @e icon{
+        width: 280px;
+        height: 214px;
+        margin: 0 auto;
+        background: url(../images/order-empty.png);
+        background-size: 100% 100%;
+      }
+      @e msg{
+        margin-top: 48px;
+        font-family: PingFangSC-Regular;
+        font-size: 32px;
+        color: #999999;
+        text-align: center;
+        line-height: 1;
+        margin-bottom: 80px;
+      }
     }
   }
 }

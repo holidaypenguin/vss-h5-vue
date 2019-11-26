@@ -63,3 +63,7 @@ location ~ ^/vss_h5/module/ {
 ```
 npm run test:build driversOil
 ```
+
+
+
+需要交互的应该是获取登录状态、中途登录、中途登录后返回状态、导航、定位信息、打开新页面、显示当前页面、隐藏当前页面

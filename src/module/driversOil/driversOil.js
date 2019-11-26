@@ -65,8 +65,7 @@ new Vue({
 })
 
 const hasResponseErrorMsg = function (err) {
-  return err.request.status === 200 &&
-    err.data &&
+  return err.data &&
     err.data.code &&
     parseInt(err.data.code, 10) !== 0 &&
     err.data.msg
