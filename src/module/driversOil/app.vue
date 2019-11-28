@@ -32,8 +32,12 @@ import {
   // SET_TOKEN,
 } from './store/mutations-type'
 
+import utils from './utils'
+
 export default {
   name: 'VssApp',
+
+  mixins: [utils],
 
   components: {
     Loading,
@@ -50,11 +54,11 @@ export default {
   computed: {
     ...mapState({
       isLoading: state => state.loading,
-      title: state => state.title,
     }),
   },
 
   async created () {
+    await this.getUserInfo()
   },
 
   async mounted () {
@@ -64,6 +68,15 @@ export default {
     ...mapMutations([
       SET_LOADING,
     ]),
+    // async getUserInfo () {
+    //   const userMsg = await sdk.getLoginMsg()
+
+    //   alert(JSON.stringify(userMsg))
+
+    //   const positionMsg = sdk.position()
+
+    //   alert(JSON.stringify(positionMsg))
+    // },
   },
 }
 

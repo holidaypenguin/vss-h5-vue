@@ -1,0 +1,190 @@
+@n p{
+  @b index{
+    overflow: auto;
+    @e top{
+      margin-top: 89px;
+      padding: 14px 32px;
+      display: flex;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      background: #FFFFFF;
+      @e msg{
+        flex: 1;
+        text-align: right;
+        line-height: 70px;
+        font-family: PingFangSC-Regular;
+        font-size: 32px;
+        color: #00BE06;
+      }
+    }
+    @e distance{
+      width: 224px;
+      height: 72px;
+      margin-right: 32px;
+      background: #FFFFFF;
+      border: 1px solid #D9D9D9; /* no */
+      border-radius: 6px;
+      font-size: 32px;
+
+      .van-dropdown-menu__title{
+        font-size: 32px;
+        line-height: 32px;
+      }
+    }
+    @e split{
+      margin-top: 189px;
+      height: 16px;
+      background: #F2F2F7;
+    }
+    @e list{
+      padding-bottom: 40px;
+    }
+    @e item{
+      padding: 32px;
+      display: flex;
+
+      + .p-index-item{
+        border-top: 1px solid #D9D9D9; /* no */
+      }
+    }
+    @e left{
+      width: 100px;
+      margin-right: 16px;
+      display: flex;
+      align-items: center;
+    }
+    @e icon{
+      width: 100px;
+      height: 100px;
+      display: block;
+      border-radius: 12 px;
+    }
+    @e right{
+      flex: 1;
+      position: relative;
+    }
+    @e name{
+      font-family: PingFangSC-Medium;
+      font-size: 32px;
+      color: #1A1A1A;
+      line-height: 1.2;
+      margin-right: 182px;
+      margin-bottom: 16px;
+    }
+    @e addr{
+      font-family: PingFangSC-Regular;
+      font-size: 28px;
+      color: #999999;
+      line-height: 1.2;
+      margin-right: 182px;
+      margin-bottom: 32px;
+    }
+    @e money{
+      font-family: PingFangSC-Medium;
+      font-size: 32px;
+      color: #00BE06;
+      text-align: right;
+      line-height: 1.2;
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+    @e other{
+      font-family: PingFangSC-Regular;
+      font-size: 28px;
+      color: #999999;
+      line-height: 28px;
+      margin-bottom: 10px;
+      display: flex;
+    }
+    @e num{
+      display: inline-block;
+      margin-right: 48px;
+    }
+    @e status{
+      display: inline-block;
+      width: 16px;
+      height: 24px;
+      margin-top: 2px;
+      @m 1{
+        background: url(../images/down@2x.png);
+        background-size: 100% 100%;
+      }
+      @m 2{
+        background: url(../images/up@2x.png);
+        background-size: 100% 100%;
+      }
+    }
+    @e diff{
+      display: inline-block;
+      margin-left: 16px;
+    }
+    @e go{
+      background: #FFFFFF;
+      border: 2px solid #999999;
+      border-radius: 24px;
+      line-height: 48px;
+      display: flex;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      font-size: 24px;
+      color: #666666;
+      padding-right: 24px;
+
+      &::before{
+        width: 28px;
+        height: 28px;
+        content: ' ';
+        display: block;
+        margin: 10px 16px 10px 24px;
+        background: url(../images/go@2x.png);
+        background-size: 100% 100%;
+      }
+    }
+    @e loading{
+      position: relative;
+      height: 100px;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+    }
+    @e empty{
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      margin-top: 188px;
+      @e icon{
+        width: 280px;
+        height: 214px;
+        margin: 0 auto;
+        background: url(../images/oil-empty.png);
+        background-size: 100% 100%;
+      }
+      @e msg{
+        margin-top: 48px;
+        font-family: PingFangSC-Regular;
+        font-size: 32px;
+        color: #999999;
+        text-align: center;
+        line-height: 1;
+        margin-bottom: 80px;
+      }
+      @e button{
+        width: 260px;
+        line-height: 88px;
+        border-radius: 88px;
+        border: 1px solid #00BE06; /* no */
+        text-align: center;
+        margin: 0 auto;
+        font-family: PingFangSC-Regular;
+        font-size: 36px;
+        color: #00BE06;
+      }
+    }
+  }
+}

@@ -9,7 +9,7 @@
     <div class="p-order-list">
       <div class="p-order-item"
         v-for="(item) in list"
-        :key="item.id">
+        :key="item.orderId">
         <div class="p-order-line1">
           <div class="p-order-line1-left">{{item.gasName}}</div>
           <div class="p-order-line1-right">
@@ -24,7 +24,8 @@
         </div>
         <div class="p-order-line3">
           <div class="p-order-line3-left">{{item.payTime}}</div>
-          <div class="p-order-line3-right p-order-line3-right--2">
+          <!-- p-order-line3-right--2 -->
+          <div class="p-order-line3-right">
             {{orderStatusName}}
           </div>
         </div>

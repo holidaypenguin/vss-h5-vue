@@ -4,6 +4,7 @@ import {
   SET_TOKEN,
   SET_LOADING_NEXT,
   SET_TITLE,
+  SET_USERINFO,
 } from './mutations-type'
 export default {
   [SET_LOGIN] (state, isLogin) {
@@ -21,5 +22,8 @@ export default {
   },
   [SET_TITLE] (state, title) {
     state.title = title
+  },
+  [SET_USERINFO] (state, userInfo) {
+    state.userInfo = userInfo
   },
 }
