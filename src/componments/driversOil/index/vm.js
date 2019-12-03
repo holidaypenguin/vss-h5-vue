@@ -78,10 +78,10 @@ export default {
 
   async created () {
     await this.setPosotion()
+    await this.search()
   },
 
   async mounted () {
-    await this.search()
     this.$nextTick(() => {
       this.listWrapEl = this.$parent.$el
       this.listEl = this.$el
@@ -103,10 +103,17 @@ export default {
     async setPosotion () {
       const positionMsg = await Sdk.position()
 
-      alert(`位置信息：${JSON.stringify(positionMsg)}`)
+      if (!this.judgePosition(positionMsg)) {
+        this.$toast('定位失败')
+
+        return
+      }
 
       this.params.lng = positionMsg.lng || 0
       this.params.lat = positionMsg.lat || 0
+    },
+    judgePosition ({lng, lat} = {}) {
+      return lng && lat && lng !== '0' && lat !== '0'
     },
     nextPage () {
       Dom.on(this.listWrapEl, 'scroll', this.addData)
@@ -128,8 +135,15 @@ export default {
         })
       }
     },
+    async reloadHandler () {
+      if (!this.judgePosition(this.params)) {
+        await this.setPosotion()
+      }
+
+      await this.search()
+    },
     async search (pageNo = 1) {
-      if (this.getting) return
+      if (this.getting || !this.judgePosition(this.params)) return
 
       this.getting = true
 
@@ -139,10 +153,11 @@ export default {
 
       //   return
       // }
+
       this[pageNo === 1 ? SET_LOADING : SET_LOADING_NEXT](true)
       const {data: {gasList}} = await this.$axiosForm.post(
         GETLIST,
-        Object.assign(this.params, {
+        Object.assign({}, this.params, {
           count: this.page.count,
           page: pageNo,
         }),

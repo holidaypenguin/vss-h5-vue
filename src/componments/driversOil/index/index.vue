@@ -52,7 +52,7 @@
       <div class="p-index-empty-icon"></div>
       <div class="p-index-empty-msg">加油站列表加载失败了～</div>
       <div class="p-index-empty-button"
-        @click="search()">点击刷新</div>
+        @click="reloadHandler()">点击刷新</div>
     </div>
 
     <div class="p-index-loading" v-show="loadingNext">

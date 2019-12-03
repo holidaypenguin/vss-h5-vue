@@ -9,6 +9,8 @@ import interponents from '../../public/services/interponentsForm.js'
 import filters from '../../public/filters'
 import Toast from 'vue2-toast'
 
+import SDK from './sdk'
+
 import '../../public/styles/reset.css'
 import '../../public/styles/screen.less'
 import './styles/main.postcss'
@@ -84,5 +86,9 @@ router.beforeResolve((to, from, next) => {
 router.afterEach((to, from) => {
   console.log('-----------------afterEach------------------')
 
-  // setTitle((to.meta && to.meta.title) || '积多多福利社')
+  // setTitle((to.meta && to.meta.title) || '')
 })
+
+window.getLoginMsgResponse = SDK.getLoginMsgResponse
+window.toLoginResponse = SDK.toLoginResponse
+window.positionResponse = SDK.positionResponse

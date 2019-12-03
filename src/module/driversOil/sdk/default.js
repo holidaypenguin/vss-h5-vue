@@ -19,7 +19,14 @@ export const navigation = (data = {}) => {
 // 定位信息
 export const position = () => {
   return new Promise((resolve, reject) => {
-    resolve({})
+    resolve({
+      lng: 126.55,
+      lat: 43.85,
+    })
+    // resolve({
+    //   lng: '0',
+    //   lat: '0',
+    // })
   })
 }
 // 打开新页面

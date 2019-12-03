@@ -68,15 +68,6 @@ export default {
     ...mapMutations([
       SET_LOADING,
     ]),
-    // async getUserInfo () {
-    //   const userMsg = await sdk.getLoginMsg()
-
-    //   alert(JSON.stringify(userMsg))
-
-    //   const positionMsg = sdk.position()
-
-    //   alert(JSON.stringify(positionMsg))
-    // },
   },
 }
 

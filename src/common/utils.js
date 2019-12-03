@@ -13,7 +13,7 @@ import {
 export default {
   // beforeRouteEnter (to, from, next) {
   //   // console.log('-----------------beforeRouteEnter------------------')
-  //   setTitle((to.meta && to.meta.title) || '积多多福利社')
+  //   setTitle((to.meta && to.meta.title) || '')
   //   next()
   // },
   data () {
