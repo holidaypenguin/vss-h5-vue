@@ -1,4 +1,10 @@
 /**
+ * 校验用户
+ */
+// export const GETLOGIN = 'https://api.driversite.cn/czb/checkUser'
+export const GETLOGIN = '/czb/checkUser'
+
+/**
  * 获取油站列表
  */
 // export const GETLIST = 'https://api.driversite.cn/czb/getGas'

@@ -2,6 +2,8 @@
 /* eslint-disable quotes */
 import Q from './q'
 
+import Cookie from '../../../public/utils/cookie'
+
 let messageHandlers
 
 const getMessageHandlers = function getMessageHandlers () {
@@ -20,34 +22,26 @@ const getMessageHandlers = function getMessageHandlers () {
 
 // getMessageHandlers()
 
-let getLoginMsgDefer
 let toLoginDefer
 let positionDefer
 
-// 获取登录状态
-export const getLoginMsg = () => {
-  console.log('获取登录状态~~start')
+// 获取登录token
+export const getLoginToken = () => {
+  console.log('获取登录token~~start')
 
-  const defer = Q.defer()
+  return new Promise((resolve, reject) => {
+    try {
+      const token = Cookie.getItem('token')
 
-  getLoginMsgDefer = defer
-
-  try {
-    getMessageHandlers().getLoginMsg.postMessage({})
-  } catch (error) {
-    defer.reject(error)
-  }
-
-  return defer.promise
-}
-export const getLoginMsgResponse = (data) => {
-  console.log('获取登录状态~~return', data)
-
-  if (!getLoginMsgDefer) return
-
-  getLoginMsgDefer.resolve(data)
-
-  getLoginMsgDefer = undefined
+      if (token) {
+        resolve(token)
+      } else {
+        resolve('')
+      }
+    } catch (error) {
+      resolve('')
+    }
+  })
 }
 
 // 中途登录、中途登录后返回状态
@@ -111,21 +105,13 @@ export const positionResponse = (lat, lng) => {
   positionDefer = undefined
 }
 // 打开新页面
-export const openWindows = () => {
+export const openWindows = (path) => {
   console.log('打开新页面~~start')
 
   return new Promise((resolve, reject) => {
     try {
       getMessageHandlers()
-        .openWindows.postMessage({
-          result (data) {
-            if (data.code === 0) {
-              resolve(data)
-            } else {
-              reject(data)
-            }
-          },
-        })
+        .openWindows.postMessage(`${location.origin}/vss_h5/module/driversOil/${path}`)
     } catch (error) {
       reject(error)
     }

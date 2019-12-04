@@ -1,13 +1,20 @@
-// 获取登录状态
-export const getLoginMsg = () => {
+/* eslint-disable no-console */
+// 获取登录token
+export const getLoginToken = () => {
+  console.log('获取登录token~~start')
+
   return new Promise((resolve, reject) => {
-    resolve({})
+    resolve('f94414e338c8a4d13ee05bfa377f2eb0')
+    // resolve()
   })
 }
 // 中途登录、中途登录后返回状态
 export const toLogin = () => {
+  console.log('中途登录~~start')
+
   return new Promise((resolve, reject) => {
-    resolve({})
+    resolve('f94414e338c8a4d13ee05bfa377f2eb0')
+    // resolve()
   })
 }
 // 导航
@@ -30,8 +37,9 @@ export const position = () => {
   })
 }
 // 打开新页面
-export const openWindows = (url) => {
+export const openWindows = (path) => {
   return new Promise((resolve, reject) => {
+    window.location.href = `${location.origin}/vss_h5/module/driversOil/${path}`
     resolve({})
   })
 }

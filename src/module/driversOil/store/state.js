@@ -5,8 +5,8 @@ export default {
   login: false,
   loading: false,
   loadingNext: false,
-  tokenId: 'f94414e338c8a4d13ee05bfa377f2eb0',
+  tokenId: '',
   title: '加油优惠',
   platformType: '92654137', // 合作方代码（车主邦给出）
-  userInfo: {},
+  userInfo: undefined,
 }

@@ -107,7 +107,7 @@ export default {
     ...mapState({
       isLoading: state => state.loading,
       loadingNext: state => state.loadingNext,
-      tokenId: state => state.tokenId,
+      // tokenId: state => state.tokenId,
     }),
   },
 
@@ -115,6 +115,7 @@ export default {
   },
 
   async mounted () {
+    await this.getUserToken()
     await this.search()
     this.$nextTick(() => {
       this.listWrapEl = this.$parent.$el
@@ -159,33 +160,18 @@ export default {
 
       this.getting = true
 
-      // if (pageNo !== 1 && pageNo > this.page.totalPage) {
-      //   this.page.gonext = false
-      //   this.getting = false
-
-      //   return
-      // }
       this[pageNo === 1 ? SET_LOADING : SET_LOADING_NEXT](true)
 
-      const {data: {gasPriceList = []}} = await this.$axiosForm.post(
-        GETORDER,
-        Object.assign(this.params, {
-          count: this.page.count,
-          page: pageNo,
-        }),
-        {
-          headers: {
-            token: this.tokenId,
-          },
-        },
-      ).catch((e) => {
-        this.getting = false
-        this[pageNo === 1 ? SET_LOADING : SET_LOADING_NEXT](false)
+      const gasPriceList = await this.searchServer(pageNo)
+        .catch((e) => {
+          this.getting = false
+          this[pageNo === 1 ? SET_LOADING : SET_LOADING_NEXT](false)
 
-        // 返回code 1029的时候，提示登录页面
+          // 返回code 1029的时候，提示登录页面
+          this.toLoginServer(e)
 
-        return Promise.reject(e)
-      })
+          return Promise.reject(e)
+        })
 
       if (pageNo === 1) {
         this.list = []
@@ -198,6 +184,31 @@ export default {
 
       this.getting = false
       this[pageNo === 1 ? SET_LOADING : SET_LOADING_NEXT](false)
+    },
+    async searchServer (pageNo) {
+      const {data: {gasPriceList = []}} = await this.$axiosForm.post(
+        GETORDER,
+        Object.assign(this.params, {
+          count: this.page.count,
+          page: pageNo,
+        }),
+        {
+          headers: {
+            token: this.tokenId,
+          },
+        },
+      )
+
+      return gasPriceList
+    },
+    toLoginServer (e) {
+      if (e && e.data && parseInt(e.data.code, 10) === 10029) {
+        setTimeout(() => {
+          this.toLogin().then(() => {
+            this.search()
+          })
+        }, 2000)
+      }
     },
     backHandler () {
       this.$router.go(-1)

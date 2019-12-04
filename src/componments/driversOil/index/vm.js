@@ -3,6 +3,8 @@ import 'vant/lib/dropdown-menu/style'
 import VanDropdownItem from 'vant/lib/dropdown-item'
 import 'vant/lib/dropdown-item/style'
 import Loading from 'vue-loading-overlay'
+import {Dialog} from 'vant'
+import 'vant/lib/dialog/style'
 
 import {
   mapState,
@@ -111,6 +113,8 @@ export default {
 
       this.params.lng = positionMsg.lng || 0
       this.params.lat = positionMsg.lat || 0
+
+      alert(`定位信息：${JSON.stringify(positionMsg)}`)
     },
     judgePosition ({lng, lat} = {}) {
       return lng && lat && lng !== '0' && lat !== '0'
@@ -206,13 +210,26 @@ export default {
     goBack () {
       this.$router.go(-1)
     },
-    itemClickHandler (gasId) {
-      this.$router.push({
-        name: 'detail',
-        params: {
-          id: gasId,
-        },
-      })
+    async judgeUserInfo () {
+      if (!this.tokenId || !this.userInfo) {
+        await Dialog.confirm({
+          title: '绑定手机号',
+          message: '请您绑定手机号才能继续操作',
+        })
+        await this.toLogin()
+      }
+
+      return Promise.resolve()
+    },
+    async itemClickHandler (gasId) {
+      await this.judgeUserInfo()
+      // this.$router.push({
+      //   name: 'detail',
+      //   params: {
+      //     id: gasId,
+      //   },
+      // })
+      Sdk.openWindows(`detail/${gasId}`)
     },
     async sortChangeHandler () {
       await this.search()
@@ -220,15 +237,21 @@ export default {
     async oilNoChangeHandler () {
       await this.search()
     },
-    orderHandler () {
-      this.$router.push({
-        name: 'order',
-      })
+    async orderHandler () {
+      await this.judgeUserInfo()
+
+      // this.$router.push({
+      //   name: 'order',
+      // })
+
+      Sdk.openWindows('order')
     },
     helpHandler () {
-      this.$router.push({
-        name: 'help',
-      })
+      // this.$router.push({
+      //   name: 'help',
+      // })
+
+      Sdk.openWindows('help')
     },
   },
 }

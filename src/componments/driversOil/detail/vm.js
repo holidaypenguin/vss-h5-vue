@@ -1,5 +1,5 @@
 import Utils from '@/module/driversOil/utils'
-import Sdk from '@/module/driversOil/sdk'
+// import Sdk from '@/module/driversOil/sdk'
 import Nav from '../nav/nav.vue'
 
 import {
@@ -42,9 +42,7 @@ export default {
 
   computed: {
     ...mapState({
-      tokenId: state => state.tokenId,
       platformType: state => state.platformType,
-      userInfo: state => state.userInfo,
     }),
     diffPrice () {
       if (!this.oilMap) return 0
@@ -64,6 +62,7 @@ export default {
   },
 
   async created () {
+    await this.getUserToken()
     await this.search()
   },
 
@@ -92,7 +91,7 @@ export default {
         {
           headers: {
             token: this.tokenId,
-            // token: this.userInfo.tokenId,
+            // token: this.userInfo,
           },
         },
       ).catch((e) => {
@@ -113,10 +112,6 @@ export default {
 
       this.getting = false
       this[SET_LOADING](false)
-    },
-    async toLogin () {
-      await Sdk.toLogin()
-      await Sdk.getUserInfo()
     },
     tabHandler (index) {
       this.oilMap = this.gasInfo.oilPriceList[index]

@@ -3,39 +3,53 @@ import Q from './q'
 
 const injectedObject = window.injectedObject
 
-const map = new AMap.Map('container', {
-  resizeEnable: true,
-  zoom: 10,
-  center: [116.43, 39.9],
-})
 let geo
-AMap.plugin(
-  ['AMap.Geolocation'],
-  function () {
-    geo = new AMap.Geolocation({
-      useNative: true,
-    })
-    geo.on('complete', function (e) {
-      alert(`定位成功：${JSON.stringify(e)}`)
-      positionDefer.resolve(e)
-    })
-    geo.on('fail', function (e) {
-      alert(`定位失败：${JSON.stringify(e)}`)
-      positionDefer.reject(e)
-    })
-    map.addControl(geo)
-  },
-)
+const getGeo = function getGeo () {
+  if (geo) return geo
+
+  const map = new AMap.Map('container', {
+    resizeEnable: true,
+    zoom: 10,
+    center: [116.43, 39.9],
+  })
+
+  AMap.plugin(
+    ['AMap.Geolocation'],
+    function () {
+      geo = new AMap.Geolocation({
+        useNative: true,
+      })
+      geo.on('complete', function (e) {
+        alert(`定位成功：${JSON.stringify(e)}`)
+        positionDefer && positionDefer.resolve(e)
+      })
+      geo.on('fail', function (e) {
+        alert(`定位失败：${JSON.stringify(e)}`)
+        positionDefer && positionDefer.reject(e)
+      })
+      map.addControl(geo)
+    },
+  )
+
+  return geo
+}
+
 let toLoginDefer
 let positionDefer
 
-// 获取登录状态
-export const getLoginMsg = () => {
+// 获取登录token
+export const getLoginToken = () => {
   return new Promise((resolve, reject) => {
     try {
-      resolve(injectedObject.getLoginMsg())
+      const token = Cookie.getItem('token')
+
+      if (token) {
+        resolve(token)
+      } else {
+        resolve('')
+      }
     } catch (error) {
-      reject(error)
+      resolve('')
     }
   })
 }
@@ -76,7 +90,7 @@ export const position = () => {
   const defer = Q.defer()
   positionDefer = defer
 
-  geo.getCurrentPosition()
+  getGeo().getCurrentPosition()
 
   return defer.promise
 }
@@ -85,10 +99,12 @@ export const positionResponse = (data) => {
 }
 
 // 打开新页面
-export const openWindows = (url) => {
+export const openWindows = (path) => {
   return new Promise((resolve, reject) => {
     try {
-      resolve(injectedObject.openWindows(url))
+      resolve(injectedObject.openWindows(
+        `${location.origin}/vss_h5/module/driversOil/${path}`
+      ))
     } catch (error) {
       reject(error)
     }

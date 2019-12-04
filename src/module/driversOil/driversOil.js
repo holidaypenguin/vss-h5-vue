@@ -75,6 +75,8 @@ const hasResponseErrorMsg = function (err) {
 
 router.beforeEach((to, from, next) => {
   console.log('-----------------beforeEach------------------')
+  // console.log(to, from, App.$data.routerName)
+  // App.routerName = to.name
   next()
 })
 
@@ -89,6 +91,5 @@ router.afterEach((to, from) => {
   // setTitle((to.meta && to.meta.title) || '')
 })
 
-window.getLoginMsgResponse = SDK.getLoginMsgResponse
 window.toLoginResponse = SDK.toLoginResponse
 window.positionResponse = SDK.positionResponse
