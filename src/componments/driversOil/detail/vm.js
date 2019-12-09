@@ -1,5 +1,5 @@
 import Utils from '@/module/driversOil/utils'
-// import Sdk from '@/module/driversOil/sdk'
+import Sdk from '@/module/driversOil/sdk'
 import Nav from '../nav/nav.vue'
 
 import {
@@ -75,7 +75,8 @@ export default {
       SET_LOADING,
     ]),
     backHandler () {
-      this.$router.go(-1)
+      // this.$router.go(-1)
+      this.nativeBack()
     },
     async search () {
       if (this.getting) return
@@ -124,9 +125,15 @@ export default {
       if (!this.gunNo) return
 
       const url = `https://test-open.czb365.com/redirection/todo/?platformType=${
-        this.platformType}&platformCode=${this.platformCode}&gasId=${
+        this.platformType}&platformCode=${this.userInfo.platformCode}&gasId=${
         this.gasInfo.gasId}&gunNo=${this.gunNo}`
       window.location.href = url
+    },
+    goClick () {
+      Sdk.navigation(
+        this.gasInfo.gasAddressLatitude,
+        this.gasInfo.gasAddressLongitude,
+      )
     },
   },
 }

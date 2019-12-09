@@ -45,7 +45,7 @@
         :active.sync="loadingNext"
         :can-cancel="false"
         :is-full-page="false"
-        color="#F6504D"
+        color="#00BE06"
         loader="bars"
         :opacity="0.3"
         :z-index="1"
@@ -211,7 +211,8 @@ export default {
       }
     },
     backHandler () {
-      this.$router.go(-1)
+      // this.$router.go(-1)
+      this.nativeBack()
     },
     itemClickHandler (id) {
       this.$router.push({

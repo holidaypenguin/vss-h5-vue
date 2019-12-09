@@ -64,6 +64,7 @@ export default {
 
   async created () {
     await this.getUserToken()
+
     await this.getUserInfo()
   },
 

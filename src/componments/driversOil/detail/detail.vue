@@ -10,7 +10,7 @@
         <div class="p-detail-top-name">{{gasInfo.gasName}}</div>
         <div class="p-detail-top-pay">在线支付</div>
         <div class="p-detail-top-addr">{{gasInfo.gasAddress}}</div>
-        <div class="p-detail-top-go">导航</div>
+        <div class="p-detail-top-go" @click="goClick">导航</div>
       </div>
     </div>
 

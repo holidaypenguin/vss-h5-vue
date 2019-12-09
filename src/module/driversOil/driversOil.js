@@ -92,4 +92,5 @@ router.afterEach((to, from) => {
 })
 
 window.toLoginResponse = SDK.toLoginResponse
+window.toBindResponse = SDK.toBindResponse
 window.positionResponse = SDK.positionResponse

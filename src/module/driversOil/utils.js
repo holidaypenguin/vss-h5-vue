@@ -67,7 +67,15 @@ export default {
     },
 
     async getUserInfo () {
-      if (!this.tokenId) return
+      // eslint-disable-next-line no-console
+      console.log('--getUserInfo--', this.toKenId)
+      if (!this.tokenId) {
+        // eslint-disable-next-line no-console
+        console.log('--无有效token')
+
+        // eslint-disable-next-line prefer-promise-reject-errors
+        return Promise.reject()
+      }
 
       // eslint-disable-next-line no-console
       console.log('获取登录信息~~start')
@@ -81,17 +89,23 @@ export default {
         },
       ).catch((e) => {
         if (e.data.code === 10029) {
+          this.$store.commit(SET_USERINFO, false)
+
+          return Promise.resolve(false)
+        }
+        if (e.data.code === 10008) {
+          this.$store.commit(SET_TOKEN, '')
+
           return Promise.resolve(false)
         }
 
         return Promise.reject(e)
       })
 
-      this.$store.commit(SET_USERINFO, userInfoMsg && true)
-
       if (!userInfoMsg) {
         return Promise.reject(userInfoMsg)
       }
+      this.$store.commit(SET_USERINFO, userInfoMsg.data)
     },
     async toLogin () {
       const tokenMsg = await Sdk.toLogin()
@@ -99,7 +113,17 @@ export default {
       this.$store.commit(SET_TOKEN, tokenMsg)
 
       await this.getUserInfo()
-      alert(`中途登录信息：${JSON.stringify(tokenMsg)}`)
+      // alert(`中途登录信息：${JSON.stringify(tokenMsg)}`)
+    },
+
+    async toBind () {
+      await Sdk.toBind()
+
+      await this.getUserInfo()
+    },
+
+    async nativeBack () {
+      await Sdk.nativeBack(this.$router)
     },
   },
 }

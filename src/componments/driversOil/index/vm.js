@@ -114,7 +114,7 @@ export default {
       this.params.lng = positionMsg.lng || 0
       this.params.lat = positionMsg.lat || 0
 
-      alert(`定位信息：${JSON.stringify(positionMsg)}`)
+      // alert(`定位信息：${JSON.stringify(positionMsg)}`)
     },
     judgePosition ({lng, lat} = {}) {
       return lng && lat && lng !== '0' && lat !== '0'
@@ -167,7 +167,7 @@ export default {
         }),
         {
           headers: {
-            token: '',
+            token: this.tokenId,
           },
         },
       ).catch((e) => {
@@ -207,16 +207,15 @@ export default {
     getDis (dis) {
       return parseFloat(((dis || 0) / 1000).toFixed(1))
     },
-    goBack () {
-      this.$router.go(-1)
-    },
     async judgeUserInfo () {
+      // alert(`this.tokenId=${this.tokenId},this.userInfo=${JSON.stringify(this.userInfo)}`)
       if (!this.tokenId || !this.userInfo) {
         await Dialog.confirm({
           title: '绑定手机号',
           message: '请您绑定手机号才能继续操作',
         })
-        await this.toLogin()
+        !this.tokenId && await this.toLogin()
+        !this.userInfo && await this.toBind()
       }
 
       return Promise.resolve()

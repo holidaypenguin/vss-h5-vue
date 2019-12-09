@@ -129,3 +129,6 @@ branch_name => feature/20190403-douli
 
 module_name => douli
 
+
+# 使用的组件
+https://youzan.github.io/vant/#/zh-CN/intro
