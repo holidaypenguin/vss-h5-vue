@@ -3,7 +3,7 @@ const config = require('../config')
 const {task, src, watch} = require('gulp')
 const sftp = require('gulp-sftp-up4')
 
-const watchAndUpload = () => {
+const driversOilUpload = () => {
   watch([config.build.assetsRoot], {
     ignoreInitial: false,
   }, function () {
@@ -18,6 +18,6 @@ const watchAndUpload = () => {
 }
 
 // "qa:build": "cross-env RUN_ENV=qa npm run build && gulp --gulpfile ./build/gulp.js copy:qa:dist",
-task('watchAndUpload', () => {
-  return watchAndUpload()
+task('driversOilUpload', () => {
+  return driversOilUpload()
 })

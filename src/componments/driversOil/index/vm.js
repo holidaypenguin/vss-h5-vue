@@ -252,5 +252,9 @@ export default {
 
       Sdk.openWindows('help')
     },
+    backHandler () {
+      // this.$router.go(-1)
+      this.nativeBack()
+    },
   },
 }

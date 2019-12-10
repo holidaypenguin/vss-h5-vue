@@ -155,7 +155,7 @@ export const openWindows = (path) => {
 export const nativeBack = () => {
   return new Promise((resolve, reject) => {
     try {
-      getMessageHandlers().nativeBack.postMessage()
+      getMessageHandlers().nativeBack.postMessage({})
       resolve()
     } catch (error) {
       alert(`&&${window.webkit.messageHandlers}++${
