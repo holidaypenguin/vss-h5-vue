@@ -127,7 +127,8 @@ export default {
       const url = `https://test-open.czb365.com/redirection/todo/?platformType=${
         this.platformType}&platformCode=${this.userInfo.platformCode}&gasId=${
         this.gasInfo.gasId}&gunNo=${this.gunNo}`
-      window.location.href = url
+      // window.location.href = url
+      Sdk.openOtherWindows(url)
     },
     goClick () {
       Sdk.navigation(

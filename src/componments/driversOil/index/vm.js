@@ -1,10 +1,13 @@
-import VanDropdownMenu from 'vant/lib/dropdown-menu'
-import 'vant/lib/dropdown-menu/style'
-import VanDropdownItem from 'vant/lib/dropdown-item'
-import 'vant/lib/dropdown-item/style'
+/* eslint-disable no-console */
+// import VanDropdownMenu from 'vant/lib/dropdown-menu'
+// import 'vant/lib/dropdown-menu/style'
+// import VanDropdownItem from 'vant/lib/dropdown-item'
+// import 'vant/lib/dropdown-item/style'
 import Loading from 'vue-loading-overlay'
 import {Dialog} from 'vant'
 import 'vant/lib/dialog/style'
+import Vue from 'vue'
+import IndexTop from '../indexTop'
 
 import {
   mapState,
@@ -25,30 +28,32 @@ import {
 import Utils from '@/module/driversOil/utils'
 import Sdk from '@/module/driversOil/sdk'
 import Nav from '../nav/nav.vue'
+
 export default {
   name: 'Index',
 
   mixins: [Utils],
 
   components: {
-    Nav,
-    VanDropdownMenu,
-    VanDropdownItem,
+    // Nav,
+    // VanDropdownMenu,
+    // VanDropdownItem,
     Loading,
+    // IndexTop,
   },
 
   data () {
     return {
-      sortOpts: [
-        {text: '距离优先', value: 1},
-        {text: '价格优先', value: 2},
-      ],
-      oilNoOpts: [
-        {text: '92号汽油', value: 92},
-        {text: '95号汽油', value: 95},
-        {text: '98号汽油', value: 98},
-        {text: '0号柴油', value: 0},
-      ],
+      // sortOpts: [
+      //   {text: '距离优先', value: 1},
+      //   {text: '价格优先', value: 2},
+      // ],
+      // oilNoOpts: [
+      //   {text: '92号汽油', value: 92},
+      //   {text: '95号汽油', value: 95},
+      //   {text: '98号汽油', value: 98},
+      //   {text: '0号柴油', value: 0},
+      // ],
       params: {
         sort: 1,
         oilNo: 92,
@@ -85,6 +90,8 @@ export default {
 
   async mounted () {
     this.$nextTick(() => {
+      this.setNav()
+      this.setTop()
       this.listWrapEl = this.$parent.$el
       this.listEl = this.$el
       this.nextPage()
@@ -102,6 +109,30 @@ export default {
       SET_LOADING,
       SET_LOADING_NEXT,
     ]),
+    setNav () {
+      const NavConstructor = Vue.extend(Nav)
+      const instance = new NavConstructor({
+        propsData: {
+          title: this.title,
+          type: 'index',
+        },
+      })
+      instance.vm = instance.$mount()
+      document.body.appendChild(instance.vm.$el)
+      instance.$on('order', this.orderHandler)
+      instance.$on('help', this.helpHandler)
+    },
+    setTop () {
+      const IndexTopConstructor = Vue.extend(IndexTop)
+      const instance = new IndexTopConstructor({})
+      instance.vm = instance.$mount()
+      document.body.appendChild(instance.vm.$el)
+      instance.$on('sort-change', this.sortChangeHandler)
+      instance.$on('oilNo-change', this.oilNoChangeHandler)
+      // <index-top
+      // @sort-change="sortChangeHandler"
+      // @oilNo-change="oilNoChangeHandler"></index-top>
+    },
     async setPosotion () {
       const positionMsg = await Sdk.position()
 
@@ -132,7 +163,7 @@ export default {
       const mainHeight = parseFloat(this.listEl.clientHeight)
       const totalheight = clientHeight + scrollTop // 浏览器的高度加上滚上去的高度
 
-      if (totalheight >= mainHeight - 200) {
+      if (totalheight >= mainHeight - 100) {
         // 当文档的高度小于或者等于总的高度加100的时候，开始动态加载数据
         this.$nextTick(() => {
           this.search(this.page.page + 1)
@@ -208,17 +239,30 @@ export default {
       return parseFloat(((dis || 0) / 1000).toFixed(1))
     },
     async judgeUserInfo () {
-      // alert(`this.tokenId=${this.tokenId},this.userInfo=${JSON.stringify(this.userInfo)}`)
-      if (!this.tokenId || !this.userInfo) {
-        await Dialog.confirm({
-          title: '绑定手机号',
-          message: '请您绑定手机号才能继续操作',
-        })
-        !this.tokenId && await this.toLogin()
-        !this.userInfo && await this.toBind()
+      await this.getUserToken().catch(() => Promise.resolve())
+      console.log('判断登录状态~~token', this.tokenId)
+      if (!this.tokenId) {
+        console.log('判断登录状态~~token', '无token')
+        await this.confirm()
+        await this.toLogin()
       }
 
+      await this.getUserInfo().catch(() => Promise.resolve())
+      console.log('判断登录状态~~userinfo', this.userInfo)
+      if (!this.userInfo) {
+        console.log('判断登录状态~~userinfo', '无有效userinfo')
+        await this.confirm()
+        await this.toBind()
+      }
+      console.log('判断登录状态~~成功~~')
+
       return Promise.resolve()
+    },
+    async confirm () {
+      await Dialog.confirm({
+        title: '绑定手机号',
+        message: '请您绑定手机号才能继续操作',
+      })
     },
     async itemClickHandler (gasId) {
       await this.judgeUserInfo()
@@ -230,10 +274,12 @@ export default {
       // })
       Sdk.openWindows(`detail/${gasId}`)
     },
-    async sortChangeHandler () {
+    async sortChangeHandler (sort) {
+      this.params.sort = sort
       await this.search()
     },
-    async oilNoChangeHandler () {
+    async oilNoChangeHandler (oilNo) {
+      this.params.oilNo = oilNo
       await this.search()
     },
     async orderHandler () {

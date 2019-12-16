@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable no-undef */
 import Q from './q'
-import Cookie from '../../../public/utils/cookie'
+// import Cookie from '../../../public/utils/cookie'
 
 let android
 
@@ -21,7 +21,7 @@ const getAndroid = function getAndroid () {
 
 let geo
 const getGeo = function getGeo () {
-  if (geo) return geo
+  if (geo) return Promise.resolve(geo)
 
   const map = new AMap.Map('container', {
     resizeEnable: true,
@@ -29,50 +29,51 @@ const getGeo = function getGeo () {
     center: [116.43, 39.9],
   })
 
-  AMap.plugin(
-    ['AMap.Geolocation'],
-    function () {
-      geo = new AMap.Geolocation({
-        useNative: true,
-      })
-      geo.on('complete', function (e) {
-        console.log('定位信息~~success', JSON.stringify(e.position))
-        // alert(`定位成功：${JSON.stringify(e.position)}`)
-        positionDefer && positionDefer.resolve(e.position)
-      })
-      geo.on('fail', function (e) {
-        console.log('定位信息~~error', JSON.stringify(e))
-        // alert(`定位失败：${JSON.stringify(e)}`)
-        positionDefer && positionDefer.reject(e)
-      })
-      map.addControl(geo)
-    },
-  )
-
-  return geo
+  return new Promise((resolve, reject) => {
+    AMap.plugin(
+      ['AMap.Geolocation'],
+      function () {
+        geo = new AMap.Geolocation({
+          useNative: true,
+        })
+        geo.on('complete', function (e) {
+          console.log('定位信息~~success', JSON.stringify(e.position))
+          positionDefer && positionDefer.resolve(e.position)
+        })
+        geo.on('fail', function (e) {
+          console.log('定位信息~~error', JSON.stringify(e))
+          positionDefer && positionDefer.reject(e)
+        })
+        map.addControl(geo)
+        resolve(geo)
+      },
+    )
+  })
 }
 
 let toLoginDefer
 let toBindDefer
 let positionDefer
 
-// 获取登录token
-export const getLoginToken = () => {
-  console.log('获取登录token~~start')
+// 获取登录信息
+export const getLoginParam = () => {
+  console.log('获取登录信息~~start1')
 
   return new Promise((resolve, reject) => {
     try {
-      const token = Cookie.getItem('token')
+      const loginMsg = getAndroid().getLoginParam()
 
-      if (token) {
-        console.log('获取登录token~~success', token)
-        resolve(token)
+      console.log('获取登录信息~~return', typeof loginMsg, loginMsg)
+
+      if (loginMsg && parseInt(loginMsg.isLogin, 10) === 1 && loginMsg.token) {
+        console.log('获取登录信息~~成功', loginMsg.token)
+        resolve(loginMsg.token)
       } else {
-        console.log('获取登录token~~error')
+        console.log('获取登录信息~~未获取')
         resolve('')
       }
     } catch (error) {
-      console.log('获取登录token~~error', error)
+      console.error('获取登录token~~error', error)
       resolve('')
     }
   })
@@ -149,7 +150,9 @@ export const position = () => {
   const defer = Q.defer()
   positionDefer = defer
 
-  getGeo().getCurrentPosition()
+  getGeo().then((geo) => {
+    geo.getCurrentPosition()
+  })
 
   return defer.promise
 }
@@ -166,6 +169,18 @@ export const openWindows = (path) => {
       resolve(getAndroid().openWindows(
         `${location.origin}/vss_h5/module/driversOil/${path}`
       ))
+    } catch (error) {
+      reject(error)
+    }
+  })
+}
+// 打开第三方页面
+export const openOtherWindows = (path) => {
+  console.log('打开第三方页面~~start', path)
+
+  return new Promise((resolve, reject) => {
+    try {
+      resolve(getAndroid().openOtherWindows(path))
     } catch (error) {
       reject(error)
     }

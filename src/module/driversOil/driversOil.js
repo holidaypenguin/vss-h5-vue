@@ -8,6 +8,7 @@ import store from './store'
 import interponents from '../../public/services/interponentsForm.js'
 import filters from '../../public/filters'
 import Toast from 'vue2-toast'
+import VConsole from 'vconsole'
 
 import SDK from './sdk'
 
@@ -22,6 +23,12 @@ import {
   SET_LOADING,
   // SET_TOKEN,
 } from './store/mutations-type'
+
+console.log('当前运行环境', process.env.RUN_ENV)
+if (process.env.RUN_ENV !== 'online' && process.env.RUN_ENV !== 'local') {
+  // eslint-disable-next-line no-new
+  new VConsole()
+}
 
 Vue.use(interponents())
 Vue.use(filters)
@@ -57,7 +64,7 @@ new Vue({
       }
     }
     // eslint-disable-next-line no-console
-    console.warn(err)
+    console.warn('错误信息：', err)
     if (err) {
       this.$store.commit(SET_LOADING, false)
     }
@@ -91,6 +98,8 @@ router.afterEach((to, from) => {
   // setTitle((to.meta && to.meta.title) || '')
 })
 
+window.getLoginParam = SDK.getLoginParam
+window.getLoginParamResponse = SDK.getLoginParamResponse
 window.toLoginResponse = SDK.toLoginResponse
 window.toBindResponse = SDK.toBindResponse
 window.positionResponse = SDK.positionResponse

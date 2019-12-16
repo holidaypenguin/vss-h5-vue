@@ -1,31 +1,11 @@
 <template>
   <div class="p-index">
 
-    <Nav :title="title" type="index"
-      @order="orderHandler"
-      @help="helpHandler"></Nav>
-
-    <div class="p-index-top">
-      <van-dropdown-menu class="p-index-distance"
-        active-color="#00BE06">
-        <van-dropdown-item v-model="params.sort" :options="sortOpts"
-          get-container=".p-index-top"
-          @change="sortChangeHandler"/>
-      </van-dropdown-menu>
-      <van-dropdown-menu class="p-index-distance"
-        active-color="#00BE06">
-        <van-dropdown-item v-model="params.oilNo" :options="oilNoOpts"
-          @change="oilNoChangeHandler"/>
-      </van-dropdown-menu>
-      <div class="p-index-top-msg">在线支付</div>
-    </div>
-
-    <div class="p-index-split"></div>
-
     <div class="p-index-list">
       <div class="p-index-item"
         v-for="(item) in list"
-        :key="item.id">
+        :key="item.id"
+        @click="itemClickHandler(item.gasId)">
         <div class="p-index-left">
           <img class="p-index-icon" :src="item.gasLogoSmall"/>
         </div>
@@ -41,8 +21,7 @@
             ]"></div>
             <div class="p-index-diff">{{item.oilPriceMap.difPrice}}元</div>
           </div>
-          <div class="p-index-go"
-            @click="itemClickHandler(item.gasId)">{{getDis(item.dis)}}KM</div>
+          <div class="p-index-go">{{getDis(item.dis)}}KM</div>
         </div>
       </div>
     </div>

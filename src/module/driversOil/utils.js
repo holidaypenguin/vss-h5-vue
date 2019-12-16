@@ -59,7 +59,7 @@ export default {
       return (currentRoute.meta && currentRoute.meta.title) || this.defaultTitle || ''
     },
     async getUserToken () {
-      const tokenMsg = await Sdk.getLoginToken()
+      const tokenMsg = await Sdk.getLoginParam()
 
       this.$store.commit(SET_TOKEN, tokenMsg)
 
@@ -68,7 +68,7 @@ export default {
 
     async getUserInfo () {
       // eslint-disable-next-line no-console
-      console.log('--getUserInfo--', this.toKenId)
+      console.log('--getUserInfo--', this.tokenId)
       if (!this.tokenId) {
         // eslint-disable-next-line no-console
         console.log('--无有效token')
@@ -88,27 +88,31 @@ export default {
           },
         },
       ).catch((e) => {
+        // 请您绑定手机号
         if (e.data.code === 10029) {
           this.$store.commit(SET_USERINFO, false)
 
-          return Promise.resolve(false)
+          return Promise.resolve(e.data.msg)
         }
+        // 会话无效，请重新登录
         if (e.data.code === 10008) {
           this.$store.commit(SET_TOKEN, '')
+          this.$store.commit(SET_USERINFO, false)
 
-          return Promise.resolve(false)
+          return Promise.resolve(e.data.msg)
         }
 
         return Promise.reject(e)
       })
 
-      if (!userInfoMsg) {
+      if (typeof userInfoMsg === 'string') {
         return Promise.reject(userInfoMsg)
       }
       this.$store.commit(SET_USERINFO, userInfoMsg.data)
     },
     async toLogin () {
       const tokenMsg = await Sdk.toLogin()
+      // alert(`中途登录token：${JSON.stringify(tokenMsg)}`)
 
       this.$store.commit(SET_TOKEN, tokenMsg)
 

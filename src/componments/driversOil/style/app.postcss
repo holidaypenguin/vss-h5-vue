@@ -2,9 +2,13 @@
   @b app {
     height: 100%;
     width: 100%;
-    /* overflow-x: hidden; */
-    /* -webkit-overflow-scrolling: touch; */
-    overflow: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overflow-y: auto;
     position: relative;
+    &::-webkit-scrollbar{
+      width: 0;
+      height: 0;
+    }
   }
 }

@@ -17,7 +17,6 @@ const driversOilUpload = () => {
   })
 }
 
-// "qa:build": "cross-env RUN_ENV=qa npm run build && gulp --gulpfile ./build/gulp.js copy:qa:dist",
 task('driversOilUpload', () => {
   return driversOilUpload()
 })

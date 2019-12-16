@@ -2,7 +2,7 @@
 /* eslint-disable quotes */
 import Q from './q'
 
-import Cookie from '../../../public/utils/cookie'
+// import Cookie from '../../../public/utils/cookie'
 
 let messageHandlers
 
@@ -22,27 +22,42 @@ const getMessageHandlers = function getMessageHandlers () {
 
 // getMessageHandlers()
 
+let getLoginParamDefer
 let toLoginDefer
 let toBindDefer
 let positionDefer
 
-// 获取登录token
-export const getLoginToken = () => {
-  console.log('获取登录token~~start')
+// 获取登录信息
+export const getLoginParam = () => {
+  console.log('获取登录信息~~start')
 
-  return new Promise((resolve, reject) => {
-    try {
-      const token = Cookie.getItem('token')
+  const defer = Q.defer()
 
-      if (token) {
-        resolve(token)
-      } else {
-        resolve('')
-      }
-    } catch (error) {
-      resolve('')
-    }
-  })
+  getLoginParamDefer = defer
+  try {
+    getMessageHandlers().getLoginParam.postMessage({})
+  } catch (error) {
+    // alert(`调用中途登录失败~~${JSON.stringify(error)}`)
+    defer.reject(error)
+  }
+
+  return defer.promise
+}
+export const getLoginParamResponse = (loginMsg) => {
+  console.log('获取登录信息~~return', typeof loginMsg, loginMsg)
+  loginMsg = JSON.parse(loginMsg || '{}')
+
+  if (!getLoginParamDefer) return
+
+  if (loginMsg && parseInt(loginMsg.isLogin, 10) === 1 && loginMsg.token) {
+    console.log('获取登录信息~~成功', loginMsg.token)
+    getLoginParamDefer.resolve(loginMsg.token)
+  } else {
+    console.log('获取登录信息~~未获取')
+    getLoginParamDefer.resolve('')
+  }
+
+  getLoginParamDefer = undefined
 }
 
 // 中途登录、中途登录后返回状态
@@ -146,6 +161,19 @@ export const openWindows = (path) => {
     try {
       getMessageHandlers()
         .openWindows.postMessage(`${location.origin}/vss_h5/module/driversOil/${path}`)
+    } catch (error) {
+      reject(error)
+    }
+  })
+}
+// 打开第三方页面
+export const openOtherWindows = (path) => {
+  console.log('打开第三方页面~~start', path)
+
+  return new Promise((resolve, reject) => {
+    try {
+      getMessageHandlers()
+        .openOtherWindows.postMessage(path)
     } catch (error) {
       reject(error)
     }

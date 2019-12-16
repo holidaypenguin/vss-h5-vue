@@ -230,13 +230,23 @@ export default {
 @n p{
   @b order{
     overflow: auto;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     @e split{
-      margin-top: 89px;
+      margin-top: 88px;
       height: 16px;
       background: #F2F2F7;
     }
     @e list{
+      flex: 1;
       padding-bottom: 40px;
+      -webkit-overflow-scrolling: touch;
+      overflow: scroll;
+      &::-webkit-scrollbar{
+        width: 0;
+        height: 0;
+      };
     }
     @e item{
       padding: 32px;
