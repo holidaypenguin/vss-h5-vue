@@ -1,0 +1,108 @@
+@n p{
+  @b index{
+    overflow: hidden;
+    height: 100%;
+    position: relative;
+    background: #E5964B;
+
+    @e my {
+      position: absolute;
+      top: 88px;
+      right: 0;
+      height: 64px;
+      border-radius: 44px 0 0 44px;
+      background: rgba(255,255,255,0.80);
+      display: flex;
+      padding-right: 20px;
+      font-family: PingFangSC-Medium;
+      font-size: 32px;
+      color: #FF8D00;
+      line-height: 64px;
+      z-index: 4;
+
+      @e icon{
+        display: block;
+        width: 56px;
+        height:56px;
+        margin: 4px 20px 4px 4px;
+      }
+    }
+
+    @e sky{
+      width: 100%;
+      padding-bottom: 177.86667%; /* 1334 / 750 */
+      background: url(../images/sky.png) no-repeat;
+      background-size: 100% 100%;
+      position: relative;
+      z-index: 1;
+    }
+    @e floor{
+      width: 100%;
+      padding-bottom: 112%; /* 840 / 750 */
+      background: url(../images/floor.png) no-repeat;
+      background-size: 100% 100%;
+      position: absolute;
+      top: 37.0465%; /* 494.2 / 1334 */
+      left: 0;
+      right: 0;
+      z-index: 2;
+    }
+    @e machine{
+      width: 49.06667%; /* 368 / 750 */
+      padding-bottom: 42.66667%; /* 320 / 750 */
+      position: absolute;
+      top: 41.67916%; /* 556 / 1334 */
+      left: 50%;
+      transform: translateX(-50%);
+      background: url(../images/machine.png) no-repeat;
+      background-size: 100% 100%;
+      z-index: 3;
+    }
+
+    @e button{
+      width: 300px;
+      line-height: 88px;
+      background: #FFFFFF;
+      border: 1px solid rgba(0,190,6,0.50); /* no */
+      border-radius: 88px;
+      font-family: PingFangSC-Regular;
+      font-size: 36px;
+      color: #00BE06;
+      text-align: center;
+      position: absolute;
+      bottom: -150px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    @e bottom{
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -100px;
+      transition: bottom 0.3s;
+      z-index: 5;
+      @m all{
+        bottom: 0;
+      }
+      @e header{
+        background: #F9F9F9;
+        border-radius: 10px 10px 0 0;
+        line-height: 100px;
+        padding-left: 32px;
+        font-family: PingFangSC-Medium;
+        font-size: 32px;
+        color: #1A1A1A;
+      }
+      @e body{
+        background: #FFFFFF;
+        padding: 16px 32px;
+        font-family: PingFangSC-Regular;
+        font-size: 28px;
+        color: #1A1A1A;
+        text-align: justify;
+        line-height: 42px;
+      }
+    }
+  }
+}

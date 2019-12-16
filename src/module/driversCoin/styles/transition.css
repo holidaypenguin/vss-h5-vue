@@ -1,0 +1,62 @@
+/* fade */
+.fade-enter{
+  opacity: 0 !important;
+}
+
+.fade-enter-active{
+  transition: opacity .3s
+}
+
+.fade-leave-active{
+  transition: opacity .3s;
+}
+
+.fade-leave-to{
+  opacity: 0 !important;
+}
+
+/* fadeIn */
+.fade-in-enter{
+  opacity: 0 !important;
+}
+
+.fade-in-enter-active{
+  transition: opacity .3s
+}
+
+.animated {
+  -webkit-animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-duration: 1s;
+  animation-fill-mode: both
+}
+
+@-webkit-keyframes zoomIn {
+  0% {
+      -webkit-transform: scale3d(.3,.3,.3);
+      opacity: 0;
+      transform: scale3d(.3,.3,.3)
+  }
+
+  50% {
+      opacity: 1
+  }
+}
+
+@keyframes zoomIn {
+  0% {
+      -webkit-transform: scale3d(.3,.3,.3);
+      opacity: 0;
+      transform: scale3d(.3,.3,.3)
+  }
+
+  50% {
+      opacity: 1
+  }
+}
+
+.zoomIn {
+  -webkit-animation-name: zoomIn;
+  animation-name: zoomIn
+}
+
