@@ -30,6 +30,11 @@
         关注微信公众号：司机圈儿 driversite，快速接收油币相关最新消息。
       </div>
     </div>
+
+    <div class="p-index-oil">
+      <div class="p-index-oil-num">0.2</div>
+      <div class="p-index-oil-name">油币</div>
+    </div>
   </div>
 </template>
 

@@ -61,9 +61,10 @@ export const getLoginParam = () => {
 
   return new Promise((resolve, reject) => {
     try {
-      const loginMsg = getAndroid().getLoginParam()
+      let loginMsg = getAndroid().getLoginParam()
 
       console.log('获取登录信息~~return', typeof loginMsg, loginMsg)
+      loginMsg = JSON.parse(loginMsg || '{}')
 
       if (loginMsg && parseInt(loginMsg.isLogin, 10) === 1 && loginMsg.token) {
         console.log('获取登录信息~~成功', loginMsg.token)

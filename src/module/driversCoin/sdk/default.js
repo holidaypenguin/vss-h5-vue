@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 // 获取登录token
-export const getLoginToken = () => {
+export const getLoginParam = () => {
   console.log('获取登录token~~start')
 
   return new Promise((resolve, reject) => {
@@ -49,6 +49,13 @@ export const position = () => {
 export const openWindows = (path) => {
   return new Promise((resolve, reject) => {
     window.location.href = `${location.origin}/vss_h5/module/driversOil/${path}`
+    resolve({})
+  })
+}
+// 打开新页面
+export const openOtherWindows = (path) => {
+  return new Promise((resolve, reject) => {
+    window.location.href = path
     resolve({})
   })
 }
