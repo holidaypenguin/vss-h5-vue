@@ -16,7 +16,7 @@
 
     <div class="p-index-machine">
       <div class="p-index-button"
-      @click="buttonHandler">获取油币</div>
+        @click="buttonHandler">获取油币</div>
     </div>
 
     <div :class="['p-index-bottom', all ? 'p-index-bottom--all' : '']"
@@ -31,7 +31,14 @@
       </div>
     </div>
 
-    <div class="p-index-oil">
+    <div class="p-index-oil"
+      v-for="(item, index) in oilList"
+      :key="index"
+      :style="{
+        left: `${item.x}px`,
+        top: `${item.y}px`,
+      }"
+    >
       <div class="p-index-oil-num">0.2</div>
       <div class="p-index-oil-name">油币</div>
     </div>

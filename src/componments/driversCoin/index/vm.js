@@ -16,6 +16,8 @@ import {
 import Utils from '../../../module/driversCoin/utils'
 // import Sdk from '../../../module/driversCoin/sdk'
 import Nav from '../nav/nav.vue'
+
+import {getPosition} from './position'
 export default {
   name: 'Index',
 
@@ -30,6 +32,7 @@ export default {
       params: {
       },
       all: false,
+      oilList: [],
     }
   },
 
@@ -45,7 +48,7 @@ export default {
 
   async mounted () {
     this.$nextTick(() => {
-
+      this.oilList = this.setPosition([{}, {}, {}])
     })
   },
 
@@ -120,6 +123,17 @@ export default {
         const difPrice = gas.oilPriceMap.priceYfq - gas.oilPriceMap.priceOfficial
         gas.oilPriceMap.diffPriceType = difPrice > 0 ? 2 : difPrice < 0 ? 1 : 0
         gas.oilPriceMap.difPrice = Math.abs(parseFloat(difPrice.toFixed(2)))
+      })
+    },
+
+    setPosition (oilList) {
+      return oilList.map(oil => {
+        const p = getPosition()
+        console.log(p)
+        oil.x = p.x
+        oil.y = p.y
+
+        return oil
       })
     },
 
