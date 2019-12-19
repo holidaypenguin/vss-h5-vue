@@ -4,6 +4,8 @@ import {
   mapMutations,
 } from 'vuex'
 
+import Dom from 'utils/dom'
+
 import {
   SET_LOADING,
   SET_LOADING_NEXT,
@@ -14,12 +16,10 @@ import {
 } from '../../../module/driversCoin/interface'
 
 import Utils from '../../../module/driversCoin/utils'
-// import Sdk from '../../../module/driversCoin/sdk'
 import Nav from '../nav/nav.vue'
 
-import {getPosition} from './position'
 export default {
-  name: 'Index',
+  name: 'My',
 
   mixins: [Utils],
 
@@ -29,17 +29,27 @@ export default {
 
   data () {
     return {
-      params: {
+      page: {
+        page: 1,
+        count: this.$store.state.pageSize,
+        gonext: false,
+        // totalPage: 1,
       },
-      all: false,
-      oilList: [],
+      listWrapEl: undefined,
+      listEl: undefined,
+      scrollTop: 0,
+      list: [],
     }
   },
 
   computed: {
     ...mapState({
       isLoading: state => state.loading,
+      loadingNext: state => state.loadingNext,
     }),
+    loading () {
+      return this.isLoading || this.loadingNext
+    },
   },
 
   async created () {
@@ -48,43 +58,50 @@ export default {
 
   async mounted () {
     this.$nextTick(() => {
-      this.oilList = this.setPosition([
-        {}, {}, {}, {}, {},
-        // {}, {}, {}, {}, {},
-        // {}, {}, {}, {}, {},
-        // {}, {}, {}, {}, {}, {},
-      ])
+      this.listWrapEl = this.$parent.$el
+      this.listEl = this.$el
+      // this.nextPage()
     })
   },
 
   methods: {
     ...mapMutations([
       SET_LOADING,
+      SET_LOADING_NEXT,
     ]),
-    indexHandler () {
-      this.all = false
+    nextPage () {
+      Dom.on(this.listWrapEl, 'scroll', this.addData)
     },
-    bottomHandler () {
-      this.all = !this.all
-    },
-    myHandler () {
-      if (this.all) return
+    addData () {
+      const scrollTop = parseFloat(this.listWrapEl.scrollTop)
+      this.scrollTop = scrollTop
 
-      this.$router.push({
-        name: '',
-      })
-    },
-    buttonHandler () {
-      if (this.all) return
+      if (!this.page.gonext) return
 
-      this.$router.push({
-        name: '',
-      })
+      const clientHeight = parseFloat(this.listWrapEl.clientHeight)
+      const mainHeight = parseFloat(this.listEl.clientHeight)
+      const totalheight = clientHeight + scrollTop // 浏览器的高度加上滚上去的高度
+
+      if (totalheight >= mainHeight - 100) {
+        // 当文档的高度小于或者等于总的高度加100的时候，开始动态加载数据
+        this.$nextTick(() => {
+          this.search(this.page.page + 1)
+        })
+      }
     },
     async search (pageNo = 1) {
-      if (this.isLoading) return
+      if (this.getting || !this.judgePosition(this.params)) return
 
-      this[SET_LOADING](true)
+      this.getting = true
+
+      // if (pageNo !== 1 && pageNo > this.page.totalPage) {
+      //   this.page.gonext = false
+      //   this.getting = false
+
+      //   return
+      // }
+
+      this[pageNo === 1 ? SET_LOADING : SET_LOADING_NEXT](true)
       const {data: {gasList}} = await this.$axiosForm.post(
         GETLIST,
         Object.assign({}, this.params, {
@@ -106,7 +123,6 @@ export default {
       if (pageNo === 1) {
         this.list = []
       }
-      this.adjustList(gasList)
       this.list = this.list.concat(gasList)
 
       this.page.page = pageNo
@@ -116,33 +132,6 @@ export default {
       this.getting = false
       this[pageNo === 1 ? SET_LOADING : SET_LOADING_NEXT](false)
     },
-    adjustList (gasList) {
-      if (!gasList || gasList.length < 1) return
-
-      gasList.map(gas => {
-        const oilPriceList = JSON.parse(gas.oilPrice)
-        gas.oilPriceMap = oilPriceList.filter(oil => oil.oilNo === this.params.oilNo)[0]
-
-        if (!gas.oilPriceMap) return
-
-        const difPrice = gas.oilPriceMap.priceYfq - gas.oilPriceMap.priceOfficial
-        gas.oilPriceMap.diffPriceType = difPrice > 0 ? 2 : difPrice < 0 ? 1 : 0
-        gas.oilPriceMap.difPrice = Math.abs(parseFloat(difPrice.toFixed(2)))
-      })
-    },
-
-    setPosition (oilList) {
-      return oilList.map(oil => {
-        const p = getPosition()
-        // eslint-disable-next-line no-console
-        console.log(p)
-        oil.x = p.x
-        oil.y = p.y
-
-        return oil
-      })
-    },
-
     backHandler () {
       // this.$router.go(-1)
       this.nativeBack()

@@ -19,18 +19,18 @@
           </div>
         </div>
         <div class="p-order-line2">
-          <div class="p-order-line2-left">{{item.oilNo}}#</div>
+          <div class="p-order-line2-left">{{item.oilNo}}</div>
           <div class="p-order-line2-right">{{item.gunNo}}号枪 {{item.litre}}升</div>
         </div>
         <div class="p-order-line3">
           <div class="p-order-line3-left">{{item.payTime}}</div>
           <!-- p-order-line3-right--2 -->
           <div class="p-order-line3-right">
-            {{orderStatusName}}
+            {{item.orderStatusName || ''}}
           </div>
         </div>
         <div class="p-order-go"
-          @click="itemClickHandler(item.id)">去加油</div>
+          @click="itemClickHandler(item.gasId)">去加油</div>
       </div>
     </div>
 
@@ -246,14 +246,14 @@ export default {
       &::-webkit-scrollbar{
         width: 0;
         height: 0;
-      };
+      }
     }
     @e item{
       padding: 32px;
       position: relative;
+      border-bottom: 1px solid #D9D9D9; /* no */
 
       + .p-order-item{
-        border-top: 1px solid #D9D9D9; /* no */
       }
     }
 

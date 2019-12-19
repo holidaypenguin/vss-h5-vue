@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Index from 'componments/driversCoin/index/index.vue'
+import My from 'componments/driversCoin/my/index.vue'
 import config from '../../../../config'
 import setting from '../setting'
 
@@ -16,6 +17,12 @@ export default new Router({
       name: 'index',
       path: '/index',
       component: Index,
+      meta: {title: '我的油币'},
+    },
+    {
+      name: 'my',
+      path: '/my',
+      component: My,
       meta: {title: '我的油币'},
     },
     {

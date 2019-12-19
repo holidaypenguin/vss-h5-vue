@@ -43,9 +43,9 @@ const init = function () {
   y_center = machin_top + machin_height
   // console.log('x_center', x_center, 'y_center', y_center)
 
-  r_min = machin_height + 140 * ratio_width
+  r_min = machin_height + 100 * ratio_width
   r_max = Math.min(
-    machin_height + 240 * ratio_width,
+    machin_height + 400 * ratio_width,
     y_center - y_limit_top,
   )
   // console.log('y_limit_top', y_limit_top, 'r_min', r_min, 'r_max', r_max)

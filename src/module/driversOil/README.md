@@ -17,6 +17,14 @@ location ~ ^/vss_h5/module/ {
     rewrite ^/vss_h5/module/driversOil /vss_h5_static/module/driversOil.html break;
     error_page 405 =200 $uri;
 }
+location ~ ^\/czb\/ {
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header Host $http_host;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_http_version 1.1;
+    proxy_pass https://api.driversite.cn;
+    proxy_redirect off;
+}
 ```
 
 # 本地联调方法

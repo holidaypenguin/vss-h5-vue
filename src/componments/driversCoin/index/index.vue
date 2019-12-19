@@ -2,7 +2,8 @@
   <div class="p-index"
     @click="indexHandler">
 
-    <Nav :title="title" type="index"></Nav>
+    <Nav :title="title" type="index"
+      @back="backHandler"></Nav>
 
     <div class="p-index-my"
       @click="myHandler">
