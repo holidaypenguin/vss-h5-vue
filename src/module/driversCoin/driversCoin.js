@@ -97,3 +97,4 @@ window.getLoginParamResponse = SDK.getLoginParamResponse
 window.toLoginResponse = SDK.toLoginResponse
 window.toBindResponse = SDK.toBindResponse
 window.positionResponse = SDK.positionResponse
+window.lookAdResponse = SDK.lookAdResponse

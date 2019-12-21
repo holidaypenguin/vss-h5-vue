@@ -6,15 +6,17 @@ import {
 
 import {
   SET_LOADING,
-  SET_LOADING_NEXT,
+  SET_COINNUM,
 } from '../../../module/driversCoin/store/mutations-type'
 
 import {
-  GETLIST,
+  GETUN,
+  GETCOIN,
+  GETADCOUNT,
 } from '../../../module/driversCoin/interface'
 
 import Utils from '../../../module/driversCoin/utils'
-// import Sdk from '../../../module/driversCoin/sdk'
+import Sdk from '../../../module/driversCoin/sdk'
 import Nav from '../nav/nav.vue'
 
 import {getPosition} from './position'
@@ -33,33 +35,38 @@ export default {
       },
       all: false,
       oilList: [],
+      dayCount: 0,
+      dayLimitCount: 0,
     }
   },
 
   computed: {
     ...mapState({
       isLoading: state => state.loading,
+      coinNum: state => state.coinNum,
     }),
   },
 
   async created () {
-    // await this.search()
   },
 
   async mounted () {
+    await this.searchUn()
+    await this.searchNum()
     this.$nextTick(() => {
-      this.oilList = this.setPosition([
-        {}, {}, {}, {}, {},
-        // {}, {}, {}, {}, {},
-        // {}, {}, {}, {}, {},
-        // {}, {}, {}, {}, {}, {},
-      ])
+      // this.oilList = this.setPosition([
+      //   {}, {}, {}, {}, {},
+      //   // {}, {}, {}, {}, {},
+      //   // {}, {}, {}, {}, {},
+      //   // {}, {}, {}, {}, {}, {},
+      // ])
     })
   },
 
   methods: {
     ...mapMutations([
       SET_LOADING,
+      SET_COINNUM,
     ]),
     indexHandler () {
       this.all = false
@@ -71,67 +78,76 @@ export default {
       if (this.all) return
 
       this.$router.push({
-        name: '',
+        name: 'my',
       })
     },
-    buttonHandler () {
+    async buttonHandler () {
       if (this.all) return
 
-      this.$router.push({
-        name: '',
-      })
+      if (this.dayCount >= this.dayLimitCount) return
+
+      await Sdk.lookAd()
     },
-    async search (pageNo = 1) {
-      if (this.isLoading) return
+    async searchUn () {
+      if (this.coinNum) return
 
       this[SET_LOADING](true)
-      const {data: {gasList}} = await this.$axiosForm.post(
-        GETLIST,
-        Object.assign({}, this.params, {
-          count: this.page.count,
-          page: pageNo,
-        }),
+      const {data: {oilMoneyWorks}} = await this.$axiosForm.get(
+        GETUN,
         {
           headers: {
             token: this.tokenId,
           },
         },
       ).catch((e) => {
-        this.getting = false
-        this[pageNo === 1 ? SET_LOADING : SET_LOADING_NEXT](false)
+        this[SET_LOADING](false)
 
         return Promise.reject(e)
       })
 
-      if (pageNo === 1) {
-        this.list = []
-      }
-      this.adjustList(gasList)
-      this.list = this.list.concat(gasList)
+      this.oilList = this.setPosition(oilMoneyWorks || [])
 
-      this.page.page = pageNo
-      // this.page.totalPage = parseInt((count + this.page.count - 1) / page.count, 10) || 0
-      this.page.gonext = gasList.length >= this.page.count
-
-      this.getting = false
-      this[pageNo === 1 ? SET_LOADING : SET_LOADING_NEXT](false)
+      this[SET_LOADING](false)
     },
-    adjustList (gasList) {
-      if (!gasList || gasList.length < 1) return
+    async searchNum () {
+      const {data: {dayCount, dayLimitCount}} = await this.$axiosForm.get(
+        GETADCOUNT,
+        {
+          headers: {
+            token: this.tokenId,
+          },
+        },
+      )
 
-      gasList.map(gas => {
-        const oilPriceList = JSON.parse(gas.oilPrice)
-        gas.oilPriceMap = oilPriceList.filter(oil => oil.oilNo === this.params.oilNo)[0]
+      this.dayCount = dayCount
+      this.dayLimitCount = dayLimitCount
+    },
+    async getCoin (id, index) {
+      if (this.isLoading || !id) return
 
-        if (!gas.oilPriceMap) return
+      this[SET_LOADING](true)
+      const {data: {userOil}} = await this.$axiosForm.post(
+        GETCOIN,
+        {
+          oilWorkId: id,
+        },
+        {
+          headers: {
+            token: this.tokenId,
+          },
+        },
+      ).catch((e) => {
+        this[SET_LOADING](false)
 
-        const difPrice = gas.oilPriceMap.priceYfq - gas.oilPriceMap.priceOfficial
-        gas.oilPriceMap.diffPriceType = difPrice > 0 ? 2 : difPrice < 0 ? 1 : 0
-        gas.oilPriceMap.difPrice = Math.abs(parseFloat(difPrice.toFixed(2)))
+        return Promise.reject(e)
       })
+
+      this[SET_COINNUM](userOil)
+      this[SET_LOADING](false)
+      this.oilList.splice(index, 1)
     },
 
-    setPosition (oilList) {
+    setPosition (oilList = []) {
       return oilList.map(oil => {
         const p = getPosition()
         // eslint-disable-next-line no-console

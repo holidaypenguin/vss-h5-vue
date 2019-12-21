@@ -2,7 +2,7 @@
   <div class="vss-app">
 
     <transition name="fade">
-      <router-view></router-view>
+      <router-view v-if="userInfo"></router-view>
     </transition>
 
     <loading
@@ -59,7 +59,7 @@ export default {
   async created () {
     await this.getUserToken()
 
-    // await this.getUserInfo()
+    await this.getUserInfo()
   },
 
   async mounted () {

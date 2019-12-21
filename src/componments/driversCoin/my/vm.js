@@ -35,10 +35,16 @@ export default {
         gonext: false,
         // totalPage: 1,
       },
+      getting: false,
       listWrapEl: undefined,
       listEl: undefined,
       scrollTop: 0,
       list: [],
+      userOil: 0,
+      categaryOpts: [
+        {value: 1, label: '广告收入油币'},
+        {value: 2, label: '加油消耗油币'},
+      ],
     }
   },
 
@@ -53,14 +59,14 @@ export default {
   },
 
   async created () {
-    // await this.search()
+    await this.search()
   },
 
   async mounted () {
     this.$nextTick(() => {
-      this.listWrapEl = this.$parent.$el
-      this.listEl = this.$el
-      // this.nextPage()
+      this.listWrapEl = this.$refs.listWrap
+      this.listEl = this.$refs.list
+      this.nextPage()
     })
   },
 
@@ -90,7 +96,7 @@ export default {
       }
     },
     async search (pageNo = 1) {
-      if (this.getting || !this.judgePosition(this.params)) return
+      if (this.getting) return
 
       this.getting = true
 
@@ -102,13 +108,13 @@ export default {
       // }
 
       this[pageNo === 1 ? SET_LOADING : SET_LOADING_NEXT](true)
-      const {data: {gasList}} = await this.$axiosForm.post(
+      const {data: {userOil, oilMoneyDetails}} = await this.$axiosForm.get(
         GETLIST,
-        Object.assign({}, this.params, {
-          count: this.page.count,
-          page: pageNo,
-        }),
         {
+          params: Object.assign({}, this.params, {
+            count: this.page.count,
+            page: pageNo,
+          }),
           headers: {
             token: this.tokenId,
           },
@@ -120,14 +126,16 @@ export default {
         return Promise.reject(e)
       })
 
+      this.userOil = userOil
+
       if (pageNo === 1) {
         this.list = []
       }
-      this.list = this.list.concat(gasList)
+      this.list = this.list.concat(oilMoneyDetails)
 
       this.page.page = pageNo
       // this.page.totalPage = parseInt((count + this.page.count - 1) / page.count, 10) || 0
-      this.page.gonext = gasList.length >= this.page.count
+      this.page.gonext = oilMoneyDetails.length >= this.page.count
 
       this.getting = false
       this[pageNo === 1 ? SET_LOADING : SET_LOADING_NEXT](false)

@@ -12,6 +12,7 @@ import {
   SET_TITLE,
   SET_USERINFO,
   SET_TOKEN,
+  SET_COINNUM,
 } from './store/mutations-type'
 
 import {
@@ -108,7 +109,8 @@ export default {
       if (typeof userInfoMsg === 'string') {
         return Promise.reject(userInfoMsg)
       }
-      this.$store.commit(SET_USERINFO, userInfoMsg.data)
+      this.$store.commit(SET_COINNUM, userInfoMsg.data.oilCount)
+      this.$store.commit(SET_USERINFO, userInfoMsg.data.myInfo)
     },
     async toLogin () {
       const tokenMsg = await Sdk.toLogin()

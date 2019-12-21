@@ -9,7 +9,7 @@
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "build": "node build/build.js",
     "local": "cross-env RUN_ENV=local npm run dev:build",
-    "driversOil:upload": "gulp --gulpfile ./build/gulp.js driversOilUpload",
+    "drivers:upload": "gulp --gulpfile ./build/gulp.js driversUpload",
     "qa": "cross-env RUN_ENV=qa npm run build",
     "pre_online": "cross-env RUN_ENV=preview npm run build",
     "online": "cross-env RUN_ENV=online npm run build",

@@ -6,7 +6,7 @@
       @back="backHandler"></Nav>
 
     <div class="p-my-top">
-      <div class="p-my-top-num">93.5</div>
+      <div class="p-my-top-num">{{userOil}}</div>
       <div class="p-my-top-msg">油币总数</div>
     </div>
 
@@ -23,77 +23,21 @@
 
     <div class="p-my-title">油币明细</div>
 
-    <div class="p-my-list">
-      <div class="p-my-list-inner">
-        <div class="p-my-item">
+    <div class="p-my-list" ref="listWrap">
+      <div class="p-my-list-inner" ref="list">
+        <div class="p-my-item"
+          v-for="item in list"
+          :key="item.id">
           <div class="p-my-item-left">
-            <div class="p-my-item-name">获取油币领取</div>
-            <div class="p-my-item-time">2019.12.23 09:07:09</div>
+            <div class="p-my-item-name">{{item.categary | enum(categaryOpts)}}</div>
+            <div class="p-my-item-time">{{item.createTime}}</div>
           </div>
-          <div class="p-my-item-right">+3.5</div>
-        </div>
-        <div class="p-my-item">
-          <div class="p-my-item-left">
-            <div class="p-my-item-name">加油消耗油币</div>
-            <div class="p-my-item-time">2019.12.23 09:07:09</div>
+          <div :class="[
+              'p-my-item-right',
+              item.type === 2 ? 'p-my-item-right-mm' : '',
+            ]">
+            {{item.type === 1 ? '+' : '-'}}{{item.count}}
           </div>
-          <div class="p-my-item-right p-my-item-right--mm">-3.5</div>
-        </div>
-        <div class="p-my-item">
-          <div class="p-my-item-left">
-            <div class="p-my-item-name">加油消耗油币</div>
-            <div class="p-my-item-time">2019.12.23 09:07:09</div>
-          </div>
-          <div class="p-my-item-right">-3.5</div>
-        </div>
-        <div class="p-my-item">
-          <div class="p-my-item-left">
-            <div class="p-my-item-name">加油消耗油币</div>
-            <div class="p-my-item-time">2019.12.23 09:07:09</div>
-          </div>
-          <div class="p-my-item-right">-3.5</div>
-        </div>
-        <div class="p-my-item">
-          <div class="p-my-item-left">
-            <div class="p-my-item-name">加油消耗油币</div>
-            <div class="p-my-item-time">2019.12.23 09:07:09</div>
-          </div>
-          <div class="p-my-item-right">-3.5</div>
-        </div>
-        <div class="p-my-item">
-          <div class="p-my-item-left">
-            <div class="p-my-item-name">加油消耗油币</div>
-            <div class="p-my-item-time">2019.12.23 09:07:09</div>
-          </div>
-          <div class="p-my-item-right">-3.5</div>
-        </div>
-        <div class="p-my-item">
-          <div class="p-my-item-left">
-            <div class="p-my-item-name">加油消耗油币</div>
-            <div class="p-my-item-time">2019.12.23 09:07:09</div>
-          </div>
-          <div class="p-my-item-right">-3.5</div>
-        </div>
-        <div class="p-my-item">
-          <div class="p-my-item-left">
-            <div class="p-my-item-name">加油消耗油币</div>
-            <div class="p-my-item-time">2019.12.23 09:07:09</div>
-          </div>
-          <div class="p-my-item-right">-3.5</div>
-        </div>
-        <div class="p-my-item">
-          <div class="p-my-item-left">
-            <div class="p-my-item-name">加油消耗油币</div>
-            <div class="p-my-item-time">2019.12.23 09:07:09</div>
-          </div>
-          <div class="p-my-item-right">-3.5</div>
-        </div>
-        <div class="p-my-item">
-          <div class="p-my-item-left">
-            <div class="p-my-item-name">加油消耗油币</div>
-            <div class="p-my-item-time">2019.12.23 09:07:09</div>
-          </div>
-          <div class="p-my-item-right">-3.5</div>
         </div>
       </div>
     </div>

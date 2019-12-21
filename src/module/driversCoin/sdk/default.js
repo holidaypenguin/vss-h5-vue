@@ -4,8 +4,7 @@ export const getLoginParam = () => {
   console.log('获取登录token~~start')
 
   return new Promise((resolve, reject) => {
-    resolve('c9fbe6fa6de5d3f79817dbd982c1812c')
-    // resolve('6936ce970967691bbcde0ad484ad1160')
+    resolve('a91df379835e4117a7d759a3570707d3')
     // resolve()
   })
 }
@@ -14,7 +13,7 @@ export const toLogin = () => {
   console.log('中途登录~~start')
 
   return new Promise((resolve, reject) => {
-    resolve('f94414e338c8a4d13ee05bfa377f2eb0')
+    resolve('a91df379835e4117a7d759a3570707d3')
     // resolve()
   })
 }
@@ -72,3 +71,12 @@ export const nativeBack = ($router) => {
 }
 // 显示当前页面
 // 隐藏当前页面
+
+// 观看广告
+export const lookAd = () => {
+  console.log('观看广告~~start')
+
+  return new Promise((resolve, reject) => {
+    resolve()
+  })
+}

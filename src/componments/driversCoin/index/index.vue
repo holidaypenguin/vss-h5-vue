@@ -5,10 +5,12 @@
     <Nav :title="title" type="index"
       @back="backHandler"></Nav>
 
-    <div class="p-index-my"
+    <div
+      :class="['p-index-my', userInfo.photoUrl ? '' : 'p-index-my--noicon']"
       @click="myHandler">
-      <div class="p-index-my-icon"></div>
-      油币64.3个
+      <img class="p-index-my-icon" :src="userInfo.photoUrl"
+        v-if="userInfo.photoUrl"/>
+      油币{{coinNum}}个
     </div>
 
     <div class="p-index-sky"></div>
@@ -17,14 +19,14 @@
 
     <div class="p-index-machine">
       <div class="p-index-button"
-        @click="buttonHandler">获取油币</div>
+        @click="buttonHandler">获取油币({{dayCount}}/{{dayLimitCount}})</div>
     </div>
 
     <div :class="['p-index-bottom', all ? 'p-index-bottom--all' : '']"
       @click.stop.prevent="bottomHandler">
       <div class="p-index-bottom-header">油币兑换规则</div>
       <div class="p-index-bottom-body">
-        1油币兑换1人民币<br>
+        100油币兑换1人民币<br>
         会陆续开启油币兑换加油、兑换直播币，
         以及会陆续开启油币商场，在商城中可以使用油币支付购买商品；
         陆续还会上线油币提现功能。
@@ -38,9 +40,11 @@
       :style="{
         left: `${item.x}px`,
         top: `${item.y}px`,
+        animationDelay: `${(index + 1) * 2 / 10}s`,
       }"
+      @click="getCoin(item.id, index)"
     >
-      <div class="p-index-oil-num">0.2</div>
+      <div class="p-index-oil-num">{{item.aaaa || 0}}</div>
       <div class="p-index-oil-name">油币</div>
     </div>
   </div>

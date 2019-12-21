@@ -31,6 +31,18 @@ module.exports = {
         target: targetOil,
         changeOrigin: 'true',
       },
+      '/oil/': {
+        target: targetOil,
+        changeOrigin: 'true',
+      },
+      '/user/': {
+        target: targetOil,
+        changeOrigin: 'true',
+      },
+      '/ad/': {
+        target: targetOil,
+        changeOrigin: 'true',
+      },
     },
 
     // Various Dev Server settings

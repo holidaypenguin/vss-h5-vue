@@ -19,6 +19,9 @@
       color: #FF8D00;
       line-height: 64px;
       z-index: 40;
+      @m noicon{
+        padding-left: 20px;
+      }
 
       @e icon{
         display: block;
@@ -60,7 +63,7 @@
     }
 
     @e button{
-      width: 300px;
+      min-width: 300px;
       line-height: 88px;
       background: #FFFFFF;
       border: 1px solid rgba(0,190,6,0.50); /* no */
@@ -115,6 +118,7 @@
       color: #FF8D00;
       background: url(../images/oil.png) no-repeat;
       background-size: 100% 100%;
+      animation: oilUpDown 1s linear infinite alternate;
 
       @e num{
         font-family: PingFangSC-Medium;
@@ -130,4 +134,10 @@
       }
     }
   }
+}
+
+@keyframes oilUpDown
+{
+    0%   {transform: translateY(0);}
+    100% {transform: translateY(30px);}
 }

@@ -3,7 +3,7 @@ const config = require('../config')
 const {task, src, watch} = require('gulp')
 const sftp = require('gulp-sftp-up4')
 
-const driversOilUpload = () => {
+const driversUpload = () => {
   watch([config.build.assetsRoot], {
     ignoreInitial: false,
   }, function () {
@@ -17,6 +17,6 @@ const driversOilUpload = () => {
   })
 }
 
-task('driversOilUpload', () => {
-  return driversOilUpload()
+task('driversUpload', () => {
+  return driversUpload()
 })

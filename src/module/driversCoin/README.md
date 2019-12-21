@@ -16,6 +16,46 @@ npm run driversCoin:upload
 
 http://test-m.driversite.cn/vss_h5/module/driversCoin/index
 
+nginx
+``` 
+location ~ \.(html|css|js|jpg|png|gif|swf|woff|woff2|eot|svg|ttf|otf|mp3|m4a|aac|txt)$ {
+    root   /www/data;
+    expires 30d;
+}
+    
+location ~ ^/vss_h5/module/ {
+    root /www/data;
+    expires -1;
+    add_header Cache-control no-cache;
+    rewrite ^/vss_h5/module/driversOil /vss_h5_static/module/driversOil.html break;
+    error_page 405 =200 $uri;
+}
+location ~ ^\/oil\/ {
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header Host $http_host;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_http_version 1.1;
+    proxy_pass https://api.driversite.cn;
+    proxy_redirect off;
+}
+location ~ ^\/user\/ {
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header Host $http_host;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_http_version 1.1;
+    proxy_pass https://api.driversite.cn;
+    proxy_redirect off;
+}
+location ~ ^\/ad\/ {
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header Host $http_host;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_http_version 1.1;
+    proxy_pass https://api.driversite.cn;
+    proxy_redirect off;
+}
+```
+
 # 线上部署
 ```
 npm run test:build driversCoin

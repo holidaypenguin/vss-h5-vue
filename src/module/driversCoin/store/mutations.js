@@ -5,6 +5,7 @@ import {
   SET_LOADING_NEXT,
   SET_TITLE,
   SET_USERINFO,
+  SET_COINNUM,
 } from './mutations-type'
 export default {
   [SET_LOGIN] (state, isLogin) {
@@ -25,5 +26,8 @@ export default {
   },
   [SET_USERINFO] (state, userInfo) {
     state.userInfo = userInfo
+  },
+  [SET_COINNUM] (state, coinNum) {
+    state.coinNum = coinNum || 0
   },
 }

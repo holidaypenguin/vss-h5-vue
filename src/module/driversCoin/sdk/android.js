@@ -54,6 +54,7 @@ const getGeo = function getGeo () {
 let toLoginDefer
 let toBindDefer
 let positionDefer
+let lookAdDefer
 
 // 获取登录信息
 export const getLoginParam = () => {
@@ -200,3 +201,26 @@ export const nativeBack = () => {
 }
 // 显示当前页面
 // 隐藏当前页面
+
+// 观看广告
+export const lookAd = () => {
+  console.log('观看广告~~start')
+  const defer = Q.defer()
+
+  lookAdDefer = defer
+  try {
+    getAndroid().lookAd()
+  } catch (error) {
+    defer.reject(error)
+  }
+
+  return defer.promise
+}
+export const lookAdResponse = (data) => {
+  console.log('观看广告~~return', data)
+  if (!lookAdDefer) return
+
+  lookAdDefer.resolve(data)
+
+  lookAdDefer = undefined
+}
