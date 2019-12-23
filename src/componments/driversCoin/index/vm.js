@@ -19,7 +19,12 @@ import Utils from '../../../module/driversCoin/utils'
 import Sdk from '../../../module/driversCoin/sdk'
 import Nav from '../nav/nav.vue'
 
-import {getPosition} from './position'
+import {getPosition, getCenter} from './position'
+import Q from '../../../module/driversCoin/sdk/q'
+
+const skyDefer = Q.defer()
+const floorDefer = Q.defer()
+
 export default {
   name: 'Index',
 
@@ -37,6 +42,9 @@ export default {
       oilList: [],
       dayCount: 0,
       dayLimitCount: 0,
+      isIn: false,
+      end: false,
+      centerPosition: {},
     }
   },
 
@@ -48,18 +56,22 @@ export default {
   },
 
   async created () {
+    // console.log('---index--create-----')
+    this.isIn = true
+    this.end = false
   },
 
   async mounted () {
-    await this.searchUn()
-    await this.searchNum()
+    await this.alls()
     this.$nextTick(() => {
       // this.oilList = this.setPosition([
-      //   {}, {}, {}, {}, {},
+      //   {id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5},
       //   // {}, {}, {}, {}, {},
       //   // {}, {}, {}, {}, {},
       //   // {}, {}, {}, {}, {}, {},
       // ])
+      // this.isIn = true
+      // this.end = true
     })
   },
 
@@ -88,10 +100,37 @@ export default {
 
       await Sdk.lookAd()
     },
-    async searchUn () {
-      if (this.coinNum) return
-
+    skyLoadHandler () {
+      skyDefer.resolve()
+    },
+    skyErrorHandler () {
+      skyDefer.reject()
+    },
+    floorLoadHandler () {
+      floorDefer.resolve()
+    },
+    floorErrorHandler () {
+      floorDefer.reject()
+    },
+    async alls () {
       this[SET_LOADING](true)
+      await Promise.all([
+        this.searchUn(),
+        skyDefer.promise,
+        floorDefer.promise,
+      ])
+
+      await this.searchNum()
+
+      this.centerPosition = getCenter()
+      this[SET_LOADING](false)
+
+      this.end = true
+    },
+    async searchUn () {
+      // if (this.coinNum) return
+
+      // this[SET_LOADING](true)
       const {data: {oilMoneyWorks}} = await this.$axiosForm.get(
         GETUN,
         {
@@ -99,15 +138,16 @@ export default {
             token: this.tokenId,
           },
         },
-      ).catch((e) => {
-        this[SET_LOADING](false)
+      )
+      // .catch((e) => {
+      //   this[SET_LOADING](false)
 
-        return Promise.reject(e)
-      })
+      //   return Promise.reject(e)
+      // })
 
       this.oilList = this.setPosition(oilMoneyWorks || [])
 
-      this[SET_LOADING](false)
+      // this[SET_LOADING](false)
     },
     async searchNum () {
       const {data: {dayCount, dayLimitCount}} = await this.$axiosForm.get(
@@ -123,7 +163,7 @@ export default {
       this.dayLimitCount = dayLimitCount
     },
     async getCoin (id, index) {
-      if (this.isLoading || !id) return
+      if (this.all || this.isLoading || !id) return
 
       this[SET_LOADING](true)
       const {data: {userOil}} = await this.$axiosForm.post(
@@ -144,14 +184,29 @@ export default {
 
       this[SET_COINNUM](userOil)
       this[SET_LOADING](false)
+
+      this.setOilRemove(index)
+    },
+
+    setOilRemove (index) {
+      this.oilList[index].x = this.centerPosition.x
+      this.oilList[index].y = this.centerPosition.y
+      this.oilList[index].out = true
+      this.oilList = this.oilList
+    },
+
+    async transitionendHandler (event, index) {
+      if (event.propertyName !== 'top') return
+
       this.oilList.splice(index, 1)
+      // await this.searchUn()
     },
 
     setPosition (oilList = []) {
       return oilList.map(oil => {
         const p = getPosition()
         // eslint-disable-next-line no-console
-        console.log(p)
+        // console.log(p)
         oil.x = p.x
         oil.y = p.y
 

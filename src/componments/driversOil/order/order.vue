@@ -186,13 +186,15 @@ export default {
       this[pageNo === 1 ? SET_LOADING : SET_LOADING_NEXT](false)
     },
     async searchServer (pageNo) {
-      const {data: {gasPriceList = []}} = await this.$axiosForm.post(
+      const params = Object.assign(this.params, {
+        count: this.page.count,
+        page: pageNo,
+      })
+      const {data: {gasPriceList = []}} = await this.$axiosForm.get(
         GETORDER,
-        Object.assign(this.params, {
-          count: this.page.count,
-          page: pageNo,
-        }),
+        // params,
         {
+          params,
           headers: {
             token: this.tokenId,
           },

@@ -1,24 +1,39 @@
 <template>
   <div class="p-index"
-    @click="indexHandler">
+    @click="indexHandler"
+    >
+
+    <div class="p-index-loading-bg" v-if="!end"></div>
 
     <Nav :title="title" type="index"
       @back="backHandler"></Nav>
 
     <div
       :class="['p-index-my', userInfo.photoUrl ? '' : 'p-index-my--noicon']"
+      :style="{
+        marginTop: `${topHeight}px`,
+      }"
       @click="myHandler">
       <img class="p-index-my-icon" :src="userInfo.photoUrl"
         v-if="userInfo.photoUrl"/>
       油币{{coinNum}}个
     </div>
 
-    <div class="p-index-sky"></div>
+    <!-- <div class="p-index-sky"></div> -->
+    <img src="../images/sky.png" alt="" class="p-index-sky"
+      v-if="isIn"
+      @load="skyLoadHandler"
+      @error="skyErrorHandler">
 
-    <div class="p-index-floor"></div>
+    <!-- <div class="p-index-floor"></div> -->
+    <img src="../images/floor.png" alt="" class="p-index-floor"
+      v-if="isIn"
+      @load="floorLoadHandler"
+      @error="floorErrorHandler">
 
     <div class="p-index-machine">
       <div class="p-index-button"
+        v-if="dayLimitCount"
         @click="buttonHandler">获取油币({{dayCount}}/{{dayLimitCount}})</div>
     </div>
 
@@ -34,17 +49,22 @@
       </div>
     </div>
 
-    <div class="p-index-oil"
+    <div
+      :class="[
+        'p-index-oil',
+        item.out ? 'p-index-oil--remove' : 'p-index-oil--animation',
+      ]"
       v-for="(item, index) in oilList"
-      :key="index"
+      :key="item.id"
       :style="{
         left: `${item.x}px`,
         top: `${item.y}px`,
-        animationDelay: `${(index + 1) * 2 / 10}s`,
+        animationDelay: `-${(index + 1) * 2 / 10}s`,
       }"
       @click="getCoin(item.id, index)"
+      @transitionend="transitionendHandler($event, index)"
     >
-      <div class="p-index-oil-num">{{item.aaaa || 0}}</div>
+      <div class="p-index-oil-num">{{item.count || 0}}</div>
       <div class="p-index-oil-name">油币</div>
     </div>
   </div>

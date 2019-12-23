@@ -1,8 +1,13 @@
 <template>
-  <div :class="[
+  <div
+    :class="[
       'p-nav',
       type === 'index' ? 'p-nav--index' : '',
-    ]">
+    ]"
+    :style="{
+      marginTop: `${topHeight}px`,
+    }"
+  >
 
     <div class="p-nav-left">
       <div :class="[
@@ -23,10 +28,17 @@
 </template>
 
 <script>
+import Sdk from '../../../module/driversCoin/sdk'
 export default {
   name: 'Nav',
 
   mixins: [],
+
+  data () {
+    return {
+      topHeight: 0,
+    }
+  },
 
   props: {
     title: {
@@ -35,6 +47,10 @@ export default {
     type: {
       default: '',
     },
+  },
+
+  async created () {
+    this.topHeight = await Sdk.getBarHeight() || 0
   },
 
   mounted () {

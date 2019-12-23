@@ -14,6 +14,9 @@ let r_min
 // 扇形最大半径
 let r_max
 
+let oil_width = 60
+let oil_height = 80
+
 const init = function () {
   const base_width = 750
   const base_height = 1334
@@ -26,6 +29,9 @@ const init = function () {
   const ratio_width = client_width / base_width
   // 高度比例
   const ratio_height = client_height / base_height
+
+  oil_width = oil_width * ratio_width
+  oil_height = oil_height * ratio_width
 
   x_limit_left = 100 * ratio_width
   x_limit_right = 650 * ratio_width
@@ -94,5 +100,14 @@ export const getPosition = function () {
   return {
     x,
     y,
+  }
+}
+
+export const getCenter = function () {
+  if (!x_limit_left) init()
+
+  return {
+    x: x_center - oil_width * 1.3,
+    y: y_center - oil_height * 2,
   }
 }

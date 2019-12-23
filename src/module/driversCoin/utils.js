@@ -29,6 +29,7 @@ export default {
     return {
       ModalHelper,
       title: '',
+      topHeight: 0,
     }
   },
   computed: {
@@ -38,10 +39,11 @@ export default {
       userInfo: state => state.userInfo,
     }),
   },
-  created () {
+  async created () {
     this.$store.commit(SET_LOADING_NEXT, false)
     this.$store.commit(SET_LOADING, false)
     this.title = this.getTitle()
+    this.topHeight = await Sdk.getBarHeight() || 0
     this.setTitle()
   },
   mounted () {
@@ -78,6 +80,7 @@ export default {
         return Promise.reject()
       }
 
+      this.$store.commit(SET_LOADING, true)
       // eslint-disable-next-line no-console
       console.log('获取登录信息~~start')
       const userInfoMsg = await this.$axiosForm.post(

@@ -19,10 +19,12 @@ import Dom from 'utils/dom'
 import {
   SET_LOADING,
   SET_LOADING_NEXT,
+  SET_GASINFO,
 } from '../../../module/driversOil/store/mutations-type'
 
 import {
   GETLIST,
+  GETDETAIL,
 } from '../../../module/driversOil/interface'
 
 import Utils from '@/module/driversOil/utils'
@@ -108,6 +110,7 @@ export default {
     ...mapMutations([
       SET_LOADING,
       SET_LOADING_NEXT,
+      SET_GASINFO,
     ]),
     setNav () {
       const NavConstructor = Vue.extend(Nav)
@@ -171,6 +174,7 @@ export default {
       }
     },
     async reloadHandler () {
+      console.log('--reloadHandler--', !this.judgePosition(this.params))
       if (!this.judgePosition(this.params)) {
         await this.setPosotion()
       }
@@ -178,6 +182,7 @@ export default {
       await this.search()
     },
     async search (pageNo = 1) {
+      console.log('--search--', pageNo, this.getting, !this.judgePosition(this.params))
       if (this.getting || !this.judgePosition(this.params)) return
 
       this.getting = true
@@ -189,14 +194,17 @@ export default {
       //   return
       // }
 
+      const params = Object.assign({}, this.params, {
+        count: this.page.count,
+        page: pageNo,
+      })
+      console.log('列表请求数据', JSON.stringify(params))
       this[pageNo === 1 ? SET_LOADING : SET_LOADING_NEXT](true)
-      const {data: {gasList}} = await this.$axiosForm.post(
+      const {data: {gasList}} = await this.$axiosForm.get(
         GETLIST,
-        Object.assign({}, this.params, {
-          count: this.page.count,
-          page: pageNo,
-        }),
+        // params,
         {
+          params,
           headers: {
             token: this.tokenId,
           },
@@ -266,6 +274,7 @@ export default {
     },
     async itemClickHandler (gasId) {
       await this.judgeUserInfo()
+      await this.searchDetail(gasId)
       // this.$router.push({
       //   name: 'detail',
       //   params: {
@@ -273,6 +282,40 @@ export default {
       //   },
       // })
       Sdk.openWindows(`detail/${gasId}`)
+    },
+    async searchDetail (id) {
+      if (this.getting) return
+
+      this.getting = true
+
+      this[SET_LOADING](true)
+      const params = {
+        gasId: id,
+      }
+      const {data: {gasInfo}} = await this.$axiosForm.get(
+        GETDETAIL,
+        // params,
+        {
+          params,
+          headers: {
+            token: this.tokenId,
+            // token: this.userInfo,
+          },
+        },
+      ).catch((e) => {
+        this.getting = false
+        this[SET_LOADING](false)
+
+        return Promise.reject(e)
+      })
+
+      if (!gasInfo) {
+        this.$toast('该加油站已下架')
+
+        return Promise.reject(new Error('无有效加油站信息'))
+      }
+
+      localStorage.setItem('gasInfo', JSON.stringify(gasInfo))
     },
     async sortChangeHandler (sort) {
       this.params.sort = sort

@@ -5,6 +5,16 @@
     position: relative;
     background: #E5964B;
 
+    @e loading-bg{
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: #FFFFFF;
+      z-index: 150;
+    }
+
     @e my {
       position: absolute;
       top: 88px;
@@ -34,21 +44,23 @@
     @e sky{
       width: 100%;
       padding-bottom: 177.86667%; /* 1334 / 750 */
-      background: url(../images/sky.png) no-repeat;
-      background-size: 100% 100%;
+      /* background: url(../images/sky.png) no-repeat; */
+      /* background-size: 100% 100%; */
       position: relative;
       z-index: 10;
+      display: block;
     }
     @e floor{
       width: 100%;
       padding-bottom: 112%; /* 840 / 750 */
-      background: url(../images/floor.png) no-repeat;
-      background-size: 100% 100%;
+      /* background: url(../images/floor.png) no-repeat; */
+      /* background-size: 100% 100%; */
       position: absolute;
       top: 37.0465%; /* 494.2 / 1334 */
       left: 0;
       right: 0;
       z-index: 20;
+      display: block;
     }
     @e machine{
       width: 49.06667%; /* 368 / 750 */
@@ -118,7 +130,17 @@
       color: #FF8D00;
       background: url(../images/oil.png) no-repeat;
       background-size: 100% 100%;
-      animation: oilUpDown 1s linear infinite alternate;
+      opacity: 1;
+      transition: 
+        top 0.5s cubic-bezier(0, 0.99, 1, 1),
+        left 0.5s cubic-bezier(0, 0.99, 1, 1),
+        opacity 0.5s cubic-bezier(0, 0.99, 1, 1);
+      @m animation{
+        animation: oilUpDown 1.3s linear infinite alternate;
+      }
+      @m remove{
+        opacity: 0;
+      }
 
       @e num{
         font-family: PingFangSC-Medium;

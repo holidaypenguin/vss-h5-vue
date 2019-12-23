@@ -9,4 +9,5 @@ export default {
   title: '加油优惠',
   platformType: '92654137', // 合作方代码（车主邦给出）
   userInfo: undefined,
+  gasInfo: undefined,
 }

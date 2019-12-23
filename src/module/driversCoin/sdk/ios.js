@@ -2,7 +2,7 @@
 /* eslint-disable quotes */
 import Q from './q'
 
-// import Cookie from '../../../public/utils/cookie'
+import Cookie from '../../../public/utils/cookie'
 
 let messageHandlers
 
@@ -218,4 +218,17 @@ export const lookAdResponse = (data) => {
   lookAdDefer.resolve(data)
 
   lookAdDefer = undefined
+}
+
+// 获取顶部高度
+export const getBarHeight = (path) => {
+  console.log('获取顶部高度~~start')
+
+  return new Promise((resolve, reject) => {
+    try {
+      resolve(Cookie.getItem('statusBarHeight') || 0)
+    } catch (error) {
+      reject(error)
+    }
+  })
 }

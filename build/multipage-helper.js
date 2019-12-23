@@ -189,6 +189,10 @@ const readDirSync = (path, moduleName) => {
 const moduleListFilter = () => {
   const currentModule = `${getCurrentModule()}_${process.env.RUN_ENV === 'local' ? config.currentModule : ''}`
 
+  if (process.env.RUN_ENV !== 'local' && (!currentModule || currentModule.length < 2)) {
+    throw new Error('没有指定模块名称')
+  }
+
   if (!moduleList ||
     module.length < 2 ||
     !currentModule ||

@@ -1,10 +1,13 @@
 /* eslint-disable no-console */
+
+import Cookie from '../../../public/utils/cookie'
+
 // 获取登录token
 export const getLoginParam = () => {
   console.log('获取登录token~~start')
 
   return new Promise((resolve, reject) => {
-    resolve('a91df379835e4117a7d759a3570707d3')
+    resolve('3e13a04d5d835ef93f8be12eeb6a1387')
     // resolve()
   })
 }
@@ -13,7 +16,7 @@ export const toLogin = () => {
   console.log('中途登录~~start')
 
   return new Promise((resolve, reject) => {
-    resolve('a91df379835e4117a7d759a3570707d3')
+    resolve('3e13a04d5d835ef93f8be12eeb6a1387')
     // resolve()
   })
 }
@@ -78,5 +81,18 @@ export const lookAd = () => {
 
   return new Promise((resolve, reject) => {
     resolve()
+  })
+}
+
+// 获取顶部高度
+export const getBarHeight = (path) => {
+  console.log('获取顶部高度~~start')
+
+  return new Promise((resolve, reject) => {
+    try {
+      resolve(Cookie.getItem('statusBarHeight') || 0)
+    } catch (error) {
+      reject(error)
+    }
   })
 }

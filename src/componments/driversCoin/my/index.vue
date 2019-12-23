@@ -6,13 +6,13 @@
       @back="backHandler"></Nav>
 
     <div class="p-my-top">
-      <div class="p-my-top-num">{{userOil}}</div>
+      <div class="p-my-top-num">{{userOil || 0}}</div>
       <div class="p-my-top-msg">油币总数</div>
     </div>
 
-    <div class="p-my-tip">
-      <div class="p-my-tip-header p-my-tip-header--up">什么是油币？</div>
-      <div class="p-my-tip-content p-my-tip-content--show">
+    <div class="p-my-tip" @click="tipHandler">
+      <div :class="['p-my-tip-header', tipShow ? 'p-my-tip-header--up' : '']">什么是油币？</div>
+      <div :class="['p-my-tip-content', tipShow ? 'p-my-tip-content--show' : '']">
         油币是司机圈儿社交网络内的数字资产，
         是用户为司机圈儿贡献价值获取到的奖励，
         后续可用户兑换商品、加油、提现等福利，获取油币后要记得领取，

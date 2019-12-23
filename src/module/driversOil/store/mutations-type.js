@@ -10,3 +10,5 @@ export const SET_TOKEN = 'SET_TOKEN'
 export const SET_TITLE = 'SET_TITLE'
 
 export const SET_USERINFO = 'SET_USERINFO'
+
+export const SET_GASINFO = 'SET_GASINFO'

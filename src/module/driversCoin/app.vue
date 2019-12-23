@@ -3,6 +3,7 @@
 
     <transition name="fade">
       <router-view v-if="userInfo"></router-view>
+      <!-- <router-view></router-view> -->
     </transition>
 
     <loading

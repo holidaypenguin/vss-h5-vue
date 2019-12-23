@@ -79,9 +79,9 @@ export default {
 
       // eslint-disable-next-line no-console
       console.log('获取登录信息~~start')
-      const userInfoMsg = await this.$axiosForm.post(
+      const userInfoMsg = await this.$axiosForm.get(
         GETLOGIN,
-        {},
+        // {},
         {
           headers: {
             token: this.tokenId,

@@ -45,6 +45,7 @@ export default {
         {value: 1, label: '广告收入油币'},
         {value: 2, label: '加油消耗油币'},
       ],
+      tipShow: false,
     }
   },
 
@@ -139,6 +140,9 @@ export default {
 
       this.getting = false
       this[pageNo === 1 ? SET_LOADING : SET_LOADING_NEXT](false)
+    },
+    tipHandler () {
+      this.tipShow = !this.tipShow
     },
     backHandler () {
       // this.$router.go(-1)

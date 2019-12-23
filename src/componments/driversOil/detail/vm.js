@@ -11,9 +11,9 @@ import {
   SET_LOADING,
 } from '../../../module/driversOil/store/mutations-type'
 
-import {
-  GETDETAIL,
-} from '../../../module/driversOil/interface'
+// import {
+//   GETDETAIL,
+// } from '../../../module/driversOil/interface'
 
 export default {
   name: 'Detail',
@@ -79,33 +79,36 @@ export default {
       this.nativeBack()
     },
     async search () {
-      if (this.getting) return
+      // if (this.getting) return
 
-      this.getting = true
+      // this.getting = true
 
-      this[SET_LOADING](true)
-      const {data: {gasInfo}} = await this.$axiosForm.post(
-        GETDETAIL,
-        {
-          gasId: this.id,
-        },
-        {
-          headers: {
-            token: this.tokenId,
-            // token: this.userInfo,
-          },
-        },
-      ).catch((e) => {
-        this.getting = false
-        this[SET_LOADING](false)
+      // this[SET_LOADING](true)
+      // const params = {
+      //   gasId: this.id,
+      // }
+      // const {data: {gasInfo}} = await this.$axiosForm.get(
+      //   GETDETAIL,
+      //   // params,
+      //   {
+      //     params,
+      //     headers: {
+      //       token: this.tokenId,
+      //       // token: this.userInfo,
+      //     },
+      //   },
+      // ).catch((e) => {
+      //   this.getting = false
+      //   this[SET_LOADING](false)
 
-        // 返回code 1029的时候，提示登录页面
-        if (e.code === 1029) {
-          return this.toLogin()
-        }
+      //   // 返回code 1029的时候，提示登录页面
+      //   if (e.code === 1029) {
+      //     return this.toLogin()
+      //   }
 
-        return Promise.reject(e)
-      })
+      //   return Promise.reject(e)
+      // })
+      const gasInfo = JSON.parse(localStorage.getItem('gasInfo') || '{}')
 
       this.gasInfo = gasInfo
       gasInfo.oilPriceList = gasInfo.oilPriceList.filter(item => item.oilNo >= 0)
