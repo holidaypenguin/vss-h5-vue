@@ -4,7 +4,7 @@ export const getLoginParam = () => {
   console.log('获取登录token~~start')
 
   return new Promise((resolve, reject) => {
-    resolve('99dca8a5673e3038678c482afb7b9b79')
+    resolve('7410e9837f78b63b387560e7f261c5ba')
     // resolve('6936ce970967691bbcde0ad484ad1160')
     // resolve()
   })
@@ -14,7 +14,7 @@ export const toLogin = () => {
   console.log('中途登录~~start')
 
   return new Promise((resolve, reject) => {
-    resolve('99dca8a5673e3038678c482afb7b9b79')
+    resolve('7410e9837f78b63b387560e7f261c5ba')
     // resolve()
   })
 }

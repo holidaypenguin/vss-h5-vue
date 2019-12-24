@@ -1,8 +1,8 @@
 <template>
   <div class="p-detail">
 
-    <Nav :title="title" type="detail"
-      @back="backHandler"></Nav>
+    <!-- <Nav :title="title" type="detail"
+      @back="backHandler"></Nav> -->
 
     <div class="p-detail-top">
       <div class="p-detail-top-bg"></div>
@@ -60,17 +60,6 @@
           v-for="(item) in oilMap.gunNos"
           :key="oilMap.oilNo + '--' + item.gunNo"
           @click="gunNoHandler(item.gunNo)">{{item.gunNo}}号枪</div>
-      </div>
-    </div>
-
-    <div class="p-detail-button-wrap">
-      <div
-        :class="[
-          'p-detail-button',
-          gunNo ? 'p-detail-button--on' : '',
-        ]"
-        @click="goPay">
-        在线优惠支付
       </div>
     </div>
 

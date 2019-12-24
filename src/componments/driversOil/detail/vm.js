@@ -1,6 +1,8 @@
 import Utils from '@/module/driversOil/utils'
 import Sdk from '@/module/driversOil/sdk'
 import Nav from '../nav/nav.vue'
+import Button from '../detailButton'
+import Vue from 'vue'
 
 import {
   mapState,
@@ -14,14 +16,14 @@ import {
 // import {
 //   GETDETAIL,
 // } from '../../../module/driversOil/interface'
-
+let buttonInstance
 export default {
   name: 'Detail',
 
   mixins: [Utils],
 
   components: {
-    Nav,
+    // Nav,
   },
 
   props: {
@@ -67,13 +69,36 @@ export default {
   },
 
   async mounted () {
-
+    this.setNav()
+    this.setButton()
   },
 
   methods: {
     ...mapMutations([
       SET_LOADING,
     ]),
+    setNav () {
+      const NavConstructor = Vue.extend(Nav)
+      const instance = new NavConstructor({
+        propsData: {
+          title: this.title,
+          type: 'detail',
+        },
+      })
+      instance.vm = instance.$mount()
+      document.body.appendChild(instance.vm.$el)
+      instance.$on('back', this.backHandler)
+    },
+    setButton () {
+      const ButtonConstructor = Vue.extend(Button)
+      buttonInstance = new ButtonConstructor({
+        // propsData: {
+        //   gunNo: this.gunNo,
+        // },
+      })
+      document.body.appendChild(buttonInstance.$mount().$el)
+      buttonInstance.$on('goPay', this.goPay)
+    },
     backHandler () {
       // this.$router.go(-1)
       this.nativeBack()
@@ -123,6 +148,7 @@ export default {
     },
     gunNoHandler (gunNo) {
       this.gunNo = gunNo
+      buttonInstance.$emit('gunNo', this.gunNo)
     },
     goPay () {
       if (!this.gunNo) return

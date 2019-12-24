@@ -1,8 +1,8 @@
 <template>
   <div class="p-help">
 
-    <Nav :title="title" type="help"
-      @back="backHandler"></Nav>
+    <!-- <Nav :title="title" type="help"
+      @back="backHandler"></Nav> -->
 
     <div class="p-help-content">
       <div class="p-help-head">商务合作</div>
@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import Utils from '@/module/driversOil/utils'
 import Nav from '../nav/nav.vue'
 export default {
@@ -24,7 +25,7 @@ export default {
   mixins: [Utils],
 
   components: {
-    Nav,
+    // Nav,
   },
 
   data () {
@@ -40,10 +41,22 @@ export default {
   },
 
   async mounted () {
-
+    this.setNav()
   },
 
   methods: {
+    setNav () {
+      const NavConstructor = Vue.extend(Nav)
+      const instance = new NavConstructor({
+        propsData: {
+          title: this.title,
+          type: 'help',
+        },
+      })
+      instance.vm = instance.$mount()
+      document.body.appendChild(instance.vm.$el)
+      instance.$on('back', this.backHandler)
+    },
     backHandler () {
       // this.$router.go(-1)
       this.nativeBack()

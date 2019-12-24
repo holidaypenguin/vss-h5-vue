@@ -218,6 +218,7 @@ export default {
 
       if (pageNo === 1) {
         this.list = []
+        this.listWrapEl && this.listWrapEl.scrollTo(0, 0)
       }
       this.adjustList(gasList)
       this.list = this.list.concat(gasList)
@@ -270,6 +271,13 @@ export default {
       await Dialog.confirm({
         title: '绑定手机号',
         message: '请您绑定手机号才能继续操作',
+        confirmButtonColor: '#00BE06',
+      })
+
+      return new Promise((resolve) => {
+        this.$nextTick(() => {
+          resolve()
+        })
       })
     },
     async itemClickHandler (gasId) {
@@ -308,6 +316,8 @@ export default {
 
         return Promise.reject(e)
       })
+      this[SET_LOADING](false)
+      this.getting = false
 
       if (!gasInfo) {
         this.$toast('该加油站已下架')
