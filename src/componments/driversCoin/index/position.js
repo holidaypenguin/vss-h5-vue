@@ -90,17 +90,24 @@ export const getY = function (x) {
   return Math.ceil(y_center) - y
 }
 
-export const getPosition = function () {
+const cache = {}
+
+export const getPosition = function (id) {
   if (!x_limit_left) init()
 
-  // console.log('--getPosition--')
+  if (cache[id]) {
+    return cache[id]
+  }
+
   const x = getX()
   const y = getY(x)
 
-  return {
+  cache[id] = {
     x,
     y,
   }
+
+  return cache[id]
 }
 
 export const getCenter = function () {

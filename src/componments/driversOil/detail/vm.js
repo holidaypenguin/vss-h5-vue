@@ -167,7 +167,7 @@ export default {
     goPay () {
       if (!this.gunNo) return
 
-      const url = `https://test-open.czb365.com/redirection/todo/?platformType=${
+      const url = `${process.env.oilPay}/redirection/todo/?platformType=${
         this.platformType}&platformCode=${this.userInfo.platformCode}&gasId=${
         this.gasInfo.gasId}&gunNo=${this.gunNo}`
       // window.location.href = url

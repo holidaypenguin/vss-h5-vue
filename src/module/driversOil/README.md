@@ -1,6 +1,6 @@
 # 加油站
 
-https://www.driversite.cn/vss_h5/module/driversOil
+https://m.driversite.cn/vss_h5/module/driversOil
 
 # 线上 nginx 配置
 
@@ -36,13 +36,13 @@ http://127.0.0.1:8092/vss_h5/module/driversOil
 # 测试环境联调
 
 npm run qa
-npm run driversOil:upload
+npm run drivers:upload
 
 http://test-m.driversite.cn/vss_h5/module/driversOil/index
 
 # 线上部署
 ```
-npm run test:build driversOil
+npm run online driversOil
 ```
 
 

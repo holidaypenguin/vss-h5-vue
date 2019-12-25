@@ -62,7 +62,7 @@
         animationDelay: `-${(index + 1) * 2 / 10}s`,
       }"
       @click="getCoin(item.id, index)"
-      @transitionend="transitionendHandler($event, index)"
+      @transitionend="transitionendHandler($event, index, item.id)"
     >
       <div class="p-index-oil-num">{{item.count || 0}}</div>
       <div class="p-index-oil-name">油币</div>

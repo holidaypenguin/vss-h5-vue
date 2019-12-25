@@ -99,6 +99,8 @@ export default {
       if (this.dayCount >= this.dayLimitCount) return
 
       await Sdk.lookAd()
+      await this.searchUn()
+      await this.searchNum()
     },
     skyLoadHandler () {
       skyDefer.resolve()
@@ -185,26 +187,28 @@ export default {
       this[SET_COINNUM](userOil)
       this[SET_LOADING](false)
 
-      this.setOilRemove(index)
+      this.setOilRemove(index, id)
     },
 
-    setOilRemove (index) {
+    setOilRemove (index, id) {
       this.oilList[index].x = this.centerPosition.x
       this.oilList[index].y = this.centerPosition.y
       this.oilList[index].out = true
       this.oilList = this.oilList
+      this.removeId = id
     },
 
-    async transitionendHandler (event, index) {
-      if (event.propertyName !== 'top') return
+    async transitionendHandler (event, index, id) {
+      if (!this.removeId || event.propertyName !== 'top' || this.removeId !== id) return
 
       this.oilList.splice(index, 1)
+      this.removeId = undefined
       // await this.searchUn()
     },
 
     setPosition (oilList = []) {
       return oilList.map(oil => {
-        const p = getPosition()
+        const p = getPosition(oil.id)
         // eslint-disable-next-line no-console
         // console.log(p)
         oil.x = p.x
