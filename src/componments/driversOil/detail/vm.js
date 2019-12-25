@@ -2,6 +2,7 @@ import Utils from '@/module/driversOil/utils'
 import Sdk from '@/module/driversOil/sdk'
 import Nav from '../nav/nav.vue'
 import Button from '../detailButton'
+// import Top from '../detailTop'
 import Vue from 'vue'
 
 import {
@@ -17,6 +18,7 @@ import {
 //   GETDETAIL,
 // } from '../../../module/driversOil/interface'
 let buttonInstance
+// let topInstance
 export default {
   name: 'Detail',
 
@@ -99,6 +101,16 @@ export default {
       document.body.appendChild(buttonInstance.$mount().$el)
       buttonInstance.$on('goPay', this.goPay)
     },
+    // setTop () {
+    //   const TopConstructor = Vue.extend(Top)
+    //   topInstance = new TopConstructor({
+    //     propsData: {
+    //       gasInfo: this.gasInfo,
+    //     },
+    //   })
+    //   document.body.appendChild(topInstance.$mount().$el)
+    //   topInstance.$on('goClick', this.goClick)
+    // },
     backHandler () {
       // this.$router.go(-1)
       this.nativeBack()
@@ -141,10 +153,12 @@ export default {
 
       this.getting = false
       this[SET_LOADING](false)
+      // this.setTop()
     },
     tabHandler (index) {
       this.oilMap = this.gasInfo.oilPriceList[index]
       this.gunNo = undefined
+      buttonInstance.$emit('gunNo', this.gunNo)
     },
     gunNoHandler (gunNo) {
       this.gunNo = gunNo

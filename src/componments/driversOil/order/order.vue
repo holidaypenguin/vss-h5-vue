@@ -1,8 +1,8 @@
 <template>
   <div class="p-order">
 
-    <Nav :title="title" type="order"
-      @back="backHandler"></Nav>
+    <!-- <Nav :title="title" type="order"
+      @back="backHandler"></Nav> -->
 
     <div class="p-order-split"></div>
 
@@ -55,6 +55,7 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import Loading from 'vue-loading-overlay'
 
 import {
@@ -81,7 +82,7 @@ export default {
   mixins: [Utils],
 
   components: {
-    Nav,
+    // Nav,
     Loading,
   },
 
@@ -115,6 +116,7 @@ export default {
   },
 
   async mounted () {
+    this.setNav()
     await this.getUserToken()
     await this.search()
     this.$nextTick(() => {
@@ -135,6 +137,18 @@ export default {
       SET_LOADING,
       SET_LOADING_NEXT,
     ]),
+    setNav () {
+      const NavConstructor = Vue.extend(Nav)
+      const instance = new NavConstructor({
+        propsData: {
+          title: this.title,
+          type: 'order',
+        },
+      })
+      instance.vm = instance.$mount()
+      document.body.appendChild(instance.vm.$el)
+      instance.$on('back', this.backHandler)
+    },
     nextPage () {
       Dom.on(this.listWrapEl, 'scroll', this.addData)
     },
