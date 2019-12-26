@@ -222,5 +222,19 @@ export default {
       // this.$router.go(-1)
       this.nativeBack()
     },
+
+    indexTouchStart (e) {
+      this.yStart = e.touches[0].screenY
+      // console.log(e.touches[0].screenX, e.touches[0].screenY)
+    },
+    indexTouchMouve (e) {
+      // console.log(e.touches[0].screenX, e.touches[0].screenY)
+      const diff = this.yStart - e.touches[0].screenY
+      if (diff > 100) {
+        this.all = true
+      } else if (diff < -100) {
+        this.all = false
+      }
+    },
   },
 }

@@ -1,12 +1,15 @@
 'use strict'
 const merge = require('webpack-merge')
 const prodEnv = require('./prod.env')
+const multipageHelper = require('../build/multipage-helper')
+
+const moduleName = Object.keys(multipageHelper.getEntries())[0]
 
 const getPublicPath = () => {
-  switch (process.env.RUN_ENV) {
+  switch (moduleName) {
     case 'driversCoin':
     case 'driversOil':
-      return '"http://test-static.driversite.cn"'
+      return '"http://test-static.driversite.cn/"'
     default:
       return '"/"'
   }

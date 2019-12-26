@@ -1,6 +1,8 @@
 <template>
   <div class="p-index"
     @click="indexHandler"
+    @touchstart="indexTouchStart"
+    @touchmove="indexTouchMouve"
     >
 
     <div class="p-index-loading-bg" v-if="!end"></div>
