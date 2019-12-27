@@ -33,21 +33,25 @@
       @load="floorLoadHandler"
       @error="floorErrorHandler">
 
-    <div class="p-index-machine">
-      <div class="p-index-button"
-        v-if="dayLimitCount"
-        @click="buttonHandler">获取油币({{dayCount}}/{{dayLimitCount}})</div>
-    </div>
+    <div
+      :class="['p-index-el', all ? 'p-index-el--move' : '']"
+      >
+      <div class="p-index-machine">
+        <div class="p-index-button"
+          v-if="dayLimitCount"
+          @click="buttonHandler">获取油币({{dayCount}}/{{dayLimitCount}})</div>
+      </div>
 
-    <div :class="['p-index-bottom', all ? 'p-index-bottom--all' : '']"
-      @click.stop.prevent="bottomHandler">
-      <div class="p-index-bottom-header">油币兑换规则</div>
-      <div class="p-index-bottom-body">
-        100油币兑换1人民币<br>
-        会陆续开启油币兑换加油、兑换直播币，
-        以及会陆续开启油币商场，在商城中可以使用油币支付购买商品；
-        陆续还会上线油币提现功能。
-        关注微信公众号：司机圈儿 driversite，快速接收油币相关最新消息。
+      <div :class="['p-index-bottom']"
+        @click.stop.prevent="bottomHandler">
+        <div class="p-index-bottom-header">油币兑换规则</div>
+        <div class="p-index-bottom-body">
+          100油币兑换1人民币<br>
+          会陆续开启油币兑换加油、兑换直播币，
+          以及会陆续开启油币商场，在商城中可以使用油币支付购买商品；
+          陆续还会上线油币提现功能。
+          关注微信公众号：司机圈儿 driversite，快速接收油币相关最新消息。
+        </div>
       </div>
     </div>
 

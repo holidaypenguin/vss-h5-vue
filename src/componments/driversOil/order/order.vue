@@ -72,6 +72,7 @@ import {
 
 import {
   GETORDER,
+  GETDETAIL,
 } from '../../../module/driversOil/interface'
 
 import Utils from '@/module/driversOil/utils'
@@ -230,13 +231,50 @@ export default {
       // this.$router.go(-1)
       this.nativeBack()
     },
-    itemClickHandler (id) {
+    async itemClickHandler (id) {
+      await this.searchDetail(id)
       this.$router.push({
         name: 'detail',
         params: {
           id,
         },
       })
+    },
+    async searchDetail (id) {
+      if (this.getting) return
+
+      this.getting = true
+
+      this[SET_LOADING](true)
+      const params = {
+        gasId: id,
+      }
+      const {data: {gasInfo}} = await this.$axiosForm.get(
+        GETDETAIL,
+        // params,
+        {
+          params,
+          headers: {
+            token: this.tokenId,
+            // token: this.userInfo,
+          },
+        },
+      ).catch((e) => {
+        this.getting = false
+        this[SET_LOADING](false)
+
+        return Promise.reject(e)
+      })
+      this[SET_LOADING](false)
+      this.getting = false
+
+      if (!gasInfo) {
+        this.$toast('该加油站已下架')
+
+        return Promise.reject(new Error('无有效加油站信息'))
+      }
+
+      localStorage.setItem('gasInfo', JSON.stringify(gasInfo))
     },
   },
 }

@@ -81,22 +81,26 @@ export default {
       SET_COINNUM,
     ]),
     indexHandler () {
-      this.all = false
+      // this.all = false
     },
     bottomHandler () {
-      this.all = !this.all
+      // this.all = !this.all
     },
     myHandler () {
-      if (this.all) return
+      // if (this.all) return
 
       this.$router.push({
         name: 'my',
       })
     },
     async buttonHandler () {
-      if (this.all) return
+      // if (this.all) return
 
-      if (this.dayCount >= this.dayLimitCount) return
+      if (this.dayCount >= this.dayLimitCount) {
+        this.$toast('今天的任务已完成，请明天再来')
+
+        return
+      }
 
       await Sdk.lookAd()
       await this.searchUn()
@@ -165,7 +169,7 @@ export default {
       this.dayLimitCount = dayLimitCount
     },
     async getCoin (id, index) {
-      if (this.all || this.isLoading || !id) return
+      if (this.isLoading || !id) return
 
       this[SET_LOADING](true)
       const {data: {userOil}} = await this.$axiosForm.post(

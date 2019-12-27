@@ -204,6 +204,10 @@ const moduleListFilter = () => {
     module => currentModule.indexOf(module.moduleID) >= 0
   )
 
+  if (!temp || temp.length < 1) {
+    throw new Error('指定的模块名不存在')
+  }
+
   moduleList = !temp || temp.length < 1
     ? moduleList
     : temp

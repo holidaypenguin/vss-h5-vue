@@ -63,11 +63,24 @@
       z-index: 20;
       display: block;
     }
+    @e el{
+      position: absolute;
+      top: 41.67916%; /* 556 / 1334 */
+      left: 0;
+      right: 0;
+      bottom: 0;
+      transition: bottom 0.3s, top 0.3s;
+      @m move{
+        top: 34.182908%; /* 456 / 1334 */
+        bottom: 100px;
+      }
+    }
     @e machine{
       width: 49.06667%; /* 368 / 750 */
       padding-bottom: 42.66667%; /* 320 / 750 */
       position: absolute;
       top: 41.67916%; /* 556 / 1334 */
+      top: 0;
       left: 50%;
       transform: translateX(-50%);
       background: url(../images/machine.png) no-repeat;

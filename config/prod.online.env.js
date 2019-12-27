@@ -9,6 +9,7 @@ const getPublicPath = () => {
   switch (moduleName) {
     case 'driversCoin':
     case 'driversOil':
+    case 'driversRing':
       return '"https://static.driversite.cn/"'
     default:
       return '"/"'
