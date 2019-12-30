@@ -75,6 +75,7 @@ export default {
       listEl: undefined,
       scrollTop: 0,
       list: [],
+      firstLoaded: false,
     }
   },
 
@@ -211,6 +212,7 @@ export default {
         },
       ).catch((e) => {
         this.getting = false
+        this.firstLoaded = true
         this[pageNo === 1 ? SET_LOADING : SET_LOADING_NEXT](false)
 
         return Promise.reject(e)
@@ -228,6 +230,7 @@ export default {
       this.page.gonext = gasList.length >= this.page.count
 
       this.getting = false
+      this.firstLoaded = true
       this[pageNo === 1 ? SET_LOADING : SET_LOADING_NEXT](false)
     },
     adjustList (gasList) {

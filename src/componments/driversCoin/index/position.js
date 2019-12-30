@@ -4,6 +4,10 @@ let x_limit_left
 // 扇形左侧靠近屏幕右侧最大值
 let x_limit_right
 
+let machin_height
+// let machin_width
+// let machin_left
+
 // 机器底部x轴
 let x_center
 // 机器底部y轴
@@ -37,9 +41,9 @@ const init = function () {
   x_limit_right = 650 * ratio_width
   // console.log('x_limit_left', x_limit_left, 'x_limit_right', x_limit_right)
 
-  // const machin_width = 368 * ratio_width
+  // machin_width = 368 * ratio_width
   // 因为使用的padding-bottom设置的机器高度，所以机器高度比例使用宽度比例
-  const machin_height = 320 * ratio_width
+  machin_height = 320 * ratio_width
   const machin_top = 556 * ratio_height
 
   const y_limit_top = 240 * ratio_width
@@ -48,6 +52,8 @@ const init = function () {
   x_center = base_width / 2 * ratio_width
   y_center = machin_top + machin_height
   // console.log('x_center', x_center, 'y_center', y_center)
+
+  // machin_left = x_center - machin_width / 2
 
   r_min = machin_height + 100 * ratio_width
   r_max = Math.min(
@@ -88,6 +94,7 @@ export const getY = function (x) {
   // console.log('y_min', y_min, 'y_max', y_max, 'y', y)
 
   return Math.ceil(y_center) - y
+  // return machin_height - y
 }
 
 const cache = {}
@@ -116,5 +123,7 @@ export const getCenter = function () {
   return {
     x: x_center - oil_width * 1.3,
     y: y_center - oil_height * 2,
+    // x: machin_width - oil_width * 1.3,
+    // y: machin_height - oil_height * 2,
   }
 }

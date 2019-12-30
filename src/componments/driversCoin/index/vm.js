@@ -62,7 +62,6 @@ export default {
   },
 
   async mounted () {
-    await this.alls()
     this.$nextTick(() => {
       // this.oilList = this.setPosition([
       //   {id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5},
@@ -73,6 +72,7 @@ export default {
       // this.isIn = true
       // this.end = true
     })
+    await this.alls()
   },
 
   methods: {
@@ -103,8 +103,8 @@ export default {
       }
 
       await Sdk.lookAd()
+      await this.searchNum(Date.now())
       await this.searchUn()
-      await this.searchNum()
     },
     skyLoadHandler () {
       skyDefer.resolve()
@@ -126,7 +126,7 @@ export default {
         floorDefer.promise,
       ])
 
-      await this.searchNum()
+      await this.searchNum(0)
 
       this.centerPosition = getCenter()
       this[SET_LOADING](false)
@@ -155,20 +155,42 @@ export default {
 
       // this[SET_LOADING](false)
     },
-    async searchNum () {
+    async searchNum (time = 0) {
       const {data: {dayCount, dayLimitCount}} = await this.$axiosForm.get(
         GETADCOUNT,
         {
+          params: {
+            t: Date.now(),
+          },
           headers: {
             token: this.tokenId,
           },
         },
-      )
+      ).catch(() => {
+        return Promise.resolve({data: {
+          dayCount: this.dayCount,
+          dayLimitCount: this.dayLimitCount,
+        }})
+      })
 
-      this.dayCount = dayCount
-      this.dayLimitCount = dayLimitCount
+      if (dayCount !== this.dayCount || Date.now() - time >= 60000) {
+        this.dayCount = dayCount
+        this.dayLimitCount = dayLimitCount
+        this[SET_LOADING](false)
+      } else {
+        this[SET_LOADING](true)
+        await this.setTimeout()
+        await this.searchNum(time)
+      }
+    },
+    async setTimeout () {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => resolve(), 2000)
+      })
     },
     async getCoin (id, index) {
+      // this.centerPosition = getCenter()
+      // this.setOilRemove(index, id)
       if (this.isLoading || !id) return
 
       this[SET_LOADING](true)
@@ -228,17 +250,17 @@ export default {
     },
 
     indexTouchStart (e) {
-      this.yStart = e.touches[0].screenY
+      // this.yStart = e.touches[0].screenY
       // console.log(e.touches[0].screenX, e.touches[0].screenY)
     },
     indexTouchMouve (e) {
       // console.log(e.touches[0].screenX, e.touches[0].screenY)
-      const diff = this.yStart - e.touches[0].screenY
-      if (diff > 100) {
-        this.all = true
-      } else if (diff < -100) {
-        this.all = false
-      }
+      // const diff = this.yStart - e.touches[0].screenY
+      // if (diff > 100) {
+      //   this.all = true
+      // } else if (diff < -100) {
+      //   this.all = false
+      // }
     },
   },
 }

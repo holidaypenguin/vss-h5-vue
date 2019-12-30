@@ -27,7 +27,7 @@
     </div>
 
     <div class="p-index-empty"
-      v-if="!list || list.length < 1">
+      v-if="firstLoaded && (!list || list.length < 1)">
       <div class="p-index-empty-icon"></div>
       <div class="p-index-empty-msg">加油站列表加载失败了～</div>
       <div class="p-index-empty-button"

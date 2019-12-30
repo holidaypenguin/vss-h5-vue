@@ -76,6 +76,7 @@ import {
 } from '../../../module/driversOil/interface'
 
 import Utils from '@/module/driversOil/utils'
+import Sdk from '@/module/driversOil/sdk'
 import Nav from '../nav/nav.vue'
 export default {
   name: 'Order',
@@ -233,12 +234,13 @@ export default {
     },
     async itemClickHandler (id) {
       await this.searchDetail(id)
-      this.$router.push({
-        name: 'detail',
-        params: {
-          id,
-        },
-      })
+      // this.$router.push({
+      //   name: 'detail',
+      //   params: {
+      //     id,
+      //   },
+      // })
+      Sdk.openWindows(`detail/${id}`)
     },
     async searchDetail (id) {
       if (this.getting) return

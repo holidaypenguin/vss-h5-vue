@@ -28,7 +28,7 @@
       font-size: 32px;
       color: #FF8D00;
       line-height: 64px;
-      z-index: 40;
+      z-index: 100;
       @m noicon{
         padding-left: 20px;
       }
@@ -65,11 +65,18 @@
     }
     @e el{
       position: absolute;
-      top: 41.67916%; /* 556 / 1334 */
+      /* padding-top: 41.67916%; 556 / 1334 */
+      /* padding-top: 90%; */
+      height: 100%;
+      top: 0;
       left: 0;
       right: 0;
       bottom: 0;
       transition: bottom 0.3s, top 0.3s;
+      overflow-x: hidden;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      z-index: 50;
       @m move{
         top: 34.182908%; /* 456 / 1334 */
         bottom: 100px;
@@ -78,11 +85,13 @@
     @e machine{
       width: 49.06667%; /* 368 / 750 */
       padding-bottom: 42.66667%; /* 320 / 750 */
-      position: absolute;
+      position: relative;
       top: 41.67916%; /* 556 / 1334 */
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
+      /* top: 0; */
+      /* left: 50%; */
+      /* transform: translateX(-50%); */
+      margin: 0 auto;
+      /* margin-top: 74.133333%; 556 / 750 */
       background: url(../images/machine.png) no-repeat;
       background-size: 100% 100%;
       z-index: 30;
@@ -105,10 +114,13 @@
     }
 
     @e bottom{
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: -100px;
+      top: 41.67916%; /* 556 / 1334 */
+      position: relative;
+      margin-top: 210px;
+      /* margin-bottom: 64px; */
+      /* left: 0; */
+      /* right: 0; */
+      /* bottom: -100px; */
       transition: bottom 0.3s;
       z-index: 50;
       @m all{
@@ -131,6 +143,7 @@
         color: #1A1A1A;
         text-align: justify;
         line-height: 42px;
+        border-radius: 0 0 10px 10px;
       }
     }
 

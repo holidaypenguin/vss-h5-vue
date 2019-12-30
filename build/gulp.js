@@ -3,7 +3,7 @@ const config = require('../config')
 const {task, src, watch} = require('gulp')
 const sftp = require('gulp-sftp-up4')
 
-const driversUpload = () => {
+const driversUpload = (append = '') => {
   watch([config.build.assetsRoot], {
     ignoreInitial: false,
   }, function () {
@@ -12,11 +12,14 @@ const driversUpload = () => {
         host: '123.57.63.198',
         user: 'htmlftp',
         pass: 'a0125758fc9AA',
-        remotePath: '/home/htmlftp/html',
+        remotePath: `/home/htmlftp/html${append}`,
       }))
   })
 }
 
 task('driversUpload', () => {
-  return driversUpload()
+  return driversUpload('')
+})
+task('driversUpload:online', () => {
+  return driversUpload('_online')
 })
