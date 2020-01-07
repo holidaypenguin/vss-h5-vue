@@ -6,5 +6,5 @@ export default {
   loading: false,
   loadingNext: false,
   tokenId: '',
-  title: '积多多福利社',
+  title: '',
 }

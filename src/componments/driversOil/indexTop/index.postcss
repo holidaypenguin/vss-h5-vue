@@ -1,0 +1,50 @@
+@n p{
+  @b index{
+    overflow: auto;
+    /* display: flex;
+    flex-direction: column;
+    height: 100%; */
+    @e top{
+      margin-top: 88px;
+      padding: 14px 32px;
+      display: flex;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      background: #FFFFFF;
+      @e msg{
+        flex: 1;
+        text-align: right;
+        line-height: 70px;
+        font-family: PingFangSC-Regular;
+        font-size: 32px;
+        color: #00BE06;
+      }
+    }
+    @e distance{
+      width: 224px;
+      height: 72px;
+      margin-right: 32px;
+      background: #FFFFFF;
+      border: 1px solid #D9D9D9; /* no */
+      border-radius: 6px;
+      font-size: 32px;
+
+      .van-dropdown-menu__title{
+        font-size: 32px;
+        line-height: 32px;
+      }
+    }
+    @e split{
+      height: 16px;
+      background: #F2F2F7;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -16px;
+    }
+    
+  }
+}

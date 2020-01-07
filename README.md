@@ -51,27 +51,24 @@ location ~ \.(html|css|js|jpg|png|gif|swf|woff|woff2|eot|svg|ttf|otf|mp3|m4a|aac
   expires 30d;
 }
 
-#金融h5多页应用
-location ~ ^/h5_lightning/module/ {
+#h5多页应用
+location ~ ^/h5_vss/module/ {
   root $app_root/cmsfrontend/webroot;
   expires -1;
   add_header Cache-control no-cache;
-  try_files $uri $uri/ @h5_lightning_rewrites;
+  try_files $uri $uri/ @h5_vss_rewrites;
 }
 
-location @h5_lightning_rewrites {
-  rewrite ^/h5_lightning/module/wxParkingNon /h5_lightning_static/module/wxParkingNon.html;
-  rewrite ^/h5_lightning/module/douli /h5_lightning_static/module/douli.html;
-  rewrite ^/h5_lightning/module/icbc /h5_lightning_static/module/icbc.html;
+location @h5_vss_rewrites {
+  rewrite ^/h5_vss/module/wxParkingNon /h5_vss_static/module/wxParkingNon.html;
+  rewrite ^/h5_vss/module/douli /h5_vss_static/module/douli.html;
+  rewrite ^/h5_vss/module/icbc /h5_vss_static/module/icbc.html;
 }
 ```
 
 ## 该项目对应的域名地址
 因为需要使用https域名，所以在此使用单独的一个域名
 
-测试：https://dev-smallapp.rongyi.com
-v4：https://preview-smallapp.rongyi.com
-v8：https://rp.rongyiguang.com
 
 测试环境域名指向测试216环境
 
@@ -100,32 +97,7 @@ npm run local
 
 执行上面的命令后会打开字母表顺序排位第一的模块首页，如果有多余的参数需要手动指定
 
-### 测试环境
-jenkins工程名：qa_vue_webpack
 
-git_name => h5_lightning
 
-branch_name => feature/20190403-douli
-
-module_name => douli
-
-### V4环境
-
-jenkins工程名：preview_vue_webpack
-
-git_name => h5_lightning
-
-branch_name => feature/20190403-douli
-
-module_name => douli
-
-### V8环境
-
-jenkins工程名：newonline_vue_webpack
-
-git_name => h5_lightning
-
-branch_name => feature/20190403-douli
-
-module_name => douli
-
+# 使用的组件
+https://youzan.github.io/vant/#/zh-CN/intro

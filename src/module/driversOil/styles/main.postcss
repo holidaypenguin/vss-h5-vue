@@ -1,0 +1,70 @@
+
+@import './var.css';
+*{
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color:transparent;
+  box-sizing: border-box;
+}
+
+html{
+  font-family: sans-serif;
+  line-height: 1;
+  height: 100%;
+  background: var(--color-background);
+}
+
+body{
+  height: 100%;
+}
+body::-webkit-scrollbar{
+  width: 0;
+  height: 0;
+}
+
+.vc-switch{
+  bottom: 500px!important;
+}
+
+
+.scale15,.scaleYBefore15,.scale25,.scaleYBefore25{
+  position: relative;
+}
+.scale15::after,.scaleYBefore15::before,.scale25::after,.scaleYBefore25::before{
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  content: ' ';
+  background: rgba(0, 0, 0, 0);
+  transform: scale(1.5);
+}
+.scaleYBefore15::before{
+  transform: scaleY(1.5);
+}
+.scale25::after{
+  transform: scale(2.5);
+}
+.scaleYBefore25::before{
+  transform: scaleY(2.5);
+}
+.nowrap{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nowrap2 {
+  display: flex;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  box-orient: vertical;
+  -webkit-box-orient: vertical;
+}
+
+.modal-open {
+  position:fixed;
+  height: 100%;
+  width: 100%;
+}

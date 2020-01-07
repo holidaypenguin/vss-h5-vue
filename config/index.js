@@ -8,6 +8,7 @@ const produceNameSuffix = '_static'
 
 // const target = 'http://fe2.rongyi.com:8088';
 const targetShare = 'https://api.driversite.cn'
+const targetOil = 'http://test-api.driversite.cn'
 // const target = 'http://manage.preview.rongyi.com';
 
 module.exports = {
@@ -15,7 +16,7 @@ module.exports = {
   produceNameSuffix,
   moduleRootPath: './src/module', // 模块根目录(这个可以根据自己的需求命名)
   moduleRootName: 'module',
-  currentModule: 'driversShare', // 指定默认编译模块（仅本地开发环境使用，其他环境发布时需要指定模块，否则会编译全部模块，影响效率）
+  currentModule: 'driversCoin', // 指定默认编译模块（仅本地开发环境使用，其他环境发布时需要指定模块，否则会编译全部模块，影响效率）
   dev: {
 
     // Paths
@@ -23,7 +24,23 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '^/share': {
-        targetShare,
+        target: targetShare,
+        changeOrigin: 'true',
+      },
+      '/czb/': {
+        target: targetOil,
+        changeOrigin: 'true',
+      },
+      '/oil/': {
+        target: targetOil,
+        changeOrigin: 'true',
+      },
+      '/user/': {
+        target: targetOil,
+        changeOrigin: 'true',
+      },
+      '/ad/': {
+        target: targetOil,
         changeOrigin: 'true',
       },
     },
