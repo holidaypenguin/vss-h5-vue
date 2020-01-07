@@ -187,16 +187,12 @@ const readDirSync = (path, moduleName) => {
  * @date 2019-03-07
  */
 const moduleListFilter = () => {
-  const currentModule = `${getCurrentModule()}_${process.env.RUN_ENV === 'local' ? config.currentModule : ''}`
-
-  if (process.env.RUN_ENV !== 'local' && (!currentModule || currentModule.length < 2)) {
-    throw new Error('没有指定模块名称')
-  }
+  const currentModule = getCurrentModule()
 
   if (!moduleList ||
     module.length < 2 ||
     !currentModule ||
-    currentModule.length < 2) {
+    currentModule.length < 0) {
     return moduleList
   }
 
@@ -204,8 +200,8 @@ const moduleListFilter = () => {
     module => currentModule.indexOf(module.moduleID) >= 0
   )
 
-  if (!temp || temp.length < 1) {
-    throw new Error('指定的模块名不存在')
+  if (process.env.RUN_ENV !== 'local' && (!temp || temp.length < 1)) {
+    throw new Error(`模块名称${currentModule}不存在`)
   }
 
   moduleList = !temp || temp.length < 1
@@ -216,5 +212,15 @@ const moduleListFilter = () => {
 const getCurrentModule = () => {
   DEBUG && console.log(process.argv)
 
-  return process.argv.splice(2)
+  const outModule = process.argv.splice(2)
+
+  const allModule = `${outModule} ${process.env.RUN_ENV === 'local' ? config.currentModule : ''}`
+
+  if (process.env.RUN_ENV !== 'local' && (!allModule || allModule.length < 2)) {
+    throw new Error('没有指定模块名称')
+  }
+
+  const currentModule = allModule.replace(',', ' ').split(' ')
+
+  return currentModule
 }
