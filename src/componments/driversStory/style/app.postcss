@@ -2,10 +2,116 @@
   @b app{
     @e body{}
     @e top{
-      @e time{}
+      position: relative;
+      @e img{
+        width: 100%;
+      }
+      @e time{
+        width: 100%;
+        text-align: center;
+        line-height: 32px;
+        font-size: 32px;
+        bottom: 90px;
+        position: absolute;
+        left: 0;
+        color: #1c5f7a;
+      }
+      @e red{
+        /* width: 694px; */
+        /* height: 39px; */
+        margin: 0 28px;
+        bottom: 25px;
+        position: absolute;
+        left: 0;
+        right: 0;
+        display: block;
+        @e img{
+          width: 100%;
+        }
+      }
     }
-    @e content1{}
-    @e content2{}
+    @e content1{
+      background: #fff7f3;
+      margin: -30px 45px 30px 45px;
+      border-radius: 0 0 8px 8px;
+      font-size: 28px;
+      color: #4c1c15;
+      line-height: 42px;
+      padding: 15px 30px 65px 30px;
+      position: relative;
+    }
+    @e coin{
+      position: relative;
+      height: 0;
+      width: 100%;
+      top: -107px;
+      z-index: 100;
+      @e img{
+        width: 100%;
+      }
+    }
+    @e content2{
+      background: #fff7f3;
+      margin: 30px 45px 30px 45px;
+      border-radius: 8px;
+      padding: 40px 0 0 0;
+      position: relative;
+      overflow: hidden;
+      @e header{
+        display: inline-block;
+        font-size: 36px;
+        line-height: 36px;
+        left: 50%;
+        position: relative;
+        transform: translateX(-50%);
+        color: #ea2a15;
+        margin-bottom: 52px;
+        &::before, &::after{
+          width: 72px;
+          height: 1px;
+          background: #fb6451;
+          display: block;
+          content: ' ';
+          position: absolute;
+          top: 14px;
+          left: -87px;
+        }
+        &::after{
+          left: auto;
+          right: -87px;
+        }
+      }
+      @e img{
+        width: 100%;
+      }
+      @e first{
+        width: 400px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 10;
+      }
+      @e line{
+        display: flex;
+        justify-content: center;
+        margin-top: 70px;
+        margin-bottom: 70px;
+        position: relative;
+        z-index: 10;
+      }
+      @e next{
+        width: 250px;
+        &:first-child{
+          margin-right: 60px;
+        }
+      }
+      @e bg{
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+      }
+    }
     @e bottom{}
   }
 }

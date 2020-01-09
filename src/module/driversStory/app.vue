@@ -3,13 +3,48 @@
 
     <div class="vss-app-body">
       <div class="vss-app-top">
-        <div class="vss-app-top-time"></div>
+        <img src="../../componments/driversStory/images/top.png" alt=""
+          class="vss-app-top-img">
+        <div class="vss-app-top-time">活动时间：2020年1月13-1月17日</div>
+        <div class="vss-app-top-red">
+          <img src="../../componments/driversStory/images/red.png" alt=""
+            class="vss-app-top-red-img">
+        </div>
       </div>
-      <div class="vss-app-content1"></div>
+      <div class="vss-app-content1">
+        2019转瞬即逝，2020即将到来，忙碌了一年的网约车师傅们在工作中遇到了各种各样的乘客，
+        有些人让你心情愉悦，有些人让你无比气愤，你都遇到过哪些与乘客相关的故事呢？
+        现在你可以来讲述你与乘客之间不得不说的故事，更有机会获得千元现金大奖哦~
+      </div>
       <div class="vss-app-link vss-app-line--left"></div>
       <div class="vss-app-link vss-app-line--right"></div>
-      <div class="vss-app-coin"></div>
-      <div class="vss-app-content2"></div>
+      <div class="vss-app-coin">
+        <img src="../../componments/driversStory/images/coin.png" alt=""
+            class="vss-app-coin-img">
+      </div>
+      <div class="vss-app-content2">
+        <div class="vss-app-content2-header">
+          活动奖励
+        </div>
+        <div class="vss-app-content2-first">
+          <img src="../../componments/driversStory/images/first.png" alt=""
+            class="vss-app-content2-img">
+        </div>
+        <div class="vss-app-content2-line">
+          <div class="vss-app-content2-next">
+            <img src="../../componments/driversStory/images/second.png" alt=""
+              class="vss-app-content2-img">
+          </div>
+          <div class="vss-app-content2-next">
+            <img src="../../componments/driversStory/images/third.png" alt=""
+              class="vss-app-content2-img">
+          </div>
+        </div>
+        <div class="vss-app-content2-bg">
+          <img src="../../componments/driversStory/images/hua.png" alt=""
+            class="vss-app-content2-img">
+        </div>
+      </div>
       <div class="vss-app-link vss-app-line--left"></div>
       <div class="vss-app-link vss-app-line--right"></div>
       <div class="vss-app-content3"></div>
@@ -38,14 +73,8 @@ import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
 
 import {
-  // SET_LOGIN,
-  SET_LOADING,
-  // SET_TOKEN,
-} from './store/mutations-type'
-
-import {
   GETWXCONFIG,
-  // GETSHAREFEED,
+  GETRANK,
 } from './interface'
 
 export default {
@@ -63,29 +92,24 @@ export default {
       title: '',
       desc: '',
       imgUrl: '',
+      isLoading: false,
     }
   },
 
   computed: {
-    ...mapState({
-      isLoading: state => state.loading,
-    }),
   },
 
   async created () {
   },
 
   async mounted () {
-    // await this.search()
+    await this.search()
     await this.searchConfig()
   },
 
   methods: {
-    ...mapMutations([
-      SET_LOADING,
-    ]),
     async searchConfig () {
-      this[SET_LOADING](true)
+      this.isLoading = true
       const {data} = await this.$axios.get(GETWXCONFIG, {params: {
         url: location.href.split('#')[0],
       }})
@@ -93,7 +117,7 @@ export default {
       // eslint-disable-next-line max-len
       // const {data} = {'code': 0, 'data': {'signature': '060b9c7c9921020b37ce0a5ece79fa58bcaab7f2', 'noncestr': 'b8aa1665-0b57-4df8-a861-a9a7aec34101', 'timestamp': 1573049567}, 'msg': 'SUCCESS', 'success': true}
 
-      this[SET_LOADING](false)
+      this.isLoading = false
 
       wx.config({
         debug: this.debug,
@@ -156,6 +180,14 @@ export default {
           // 设置成功
         },
       })
+    },
+
+    async search () {
+      this.isLoading = true
+      const {data} = await this.$axios.get(GETRANK)
+
+      this.isLoading = false
+      this.rankList = data
     },
   },
 }

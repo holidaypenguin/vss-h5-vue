@@ -3,7 +3,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './app.vue'
-import store from './store'
+// import store from './store'
 import interponents from '../../public/services/interponents.js'
 // import filters from '../../public/filters'
 import Toast from 'vue2-toast'
@@ -11,14 +11,14 @@ import Toast from 'vue2-toast'
 import '../../public/styles/reset.css'
 import '../../public/styles/screen.less'
 import './styles/main.postcss'
-import '../../componments/driversShare/style/app.postcss'
+import '../../componments/driversStory/style/app.postcss'
 import 'vue2-toast/lib/toast.css'
 
-import {
-  // SET_LOGIN,
-  SET_LOADING,
-  // SET_TOKEN,
-} from './store/mutations-type'
+// import {
+//   // SET_LOGIN,
+//   SET_LOADING,
+//   // SET_TOKEN,
+// } from './store/mutations-type'
 
 Vue.use(interponents())
 // Vue.use(filters)
@@ -33,9 +33,9 @@ Vue.use(Toast, {
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
-new Vue({
+const root = new Vue({
   el: '#app',
-  store,
+  // store,
   template: '<App/>',
   components: {
     App,
@@ -55,7 +55,9 @@ new Vue({
     // eslint-disable-next-line no-console
     console.warn(err)
     if (err) {
-      this.$store.commit(SET_LOADING, false)
+      // this.$store.commit(SET_LOADING, false)
+      console.log(root.$children[0])
+      root.$children[0].isLoading = false
     }
 
     return false
