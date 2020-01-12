@@ -10,6 +10,7 @@ const getPublicPath = () => {
     case 'driversCoin':
     case 'driversOil':
     case 'driversRing':
+    case 'driversStory':
       return '"http://test-static.driversite.cn/"'
     default:
       return '"/"'

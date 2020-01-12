@@ -1,10 +1,20 @@
 <template>
   <div class="vss-app">
+    <div class="vss-app-loading-bg" v-if="!end"></div>
+
+    <Nav v-if="!isWx" :title="title" type=""
+      @share="shareHandler"
+      @back="backHandler"></Nav>
+
+    <img ref='logo' width="0"
+      src="../../componments/driversStory/images/logo-b.png" alt="">
 
     <div class="vss-app-body">
       <div class="vss-app-top">
         <img src="../../componments/driversStory/images/top.png" alt=""
-          class="vss-app-top-img">
+          class="vss-app-top-img"
+          @load="topLoadHandler"
+          @error="topErrorHandler">
         <div class="vss-app-top-time">活动时间：2020年1月13-1月17日</div>
         <div class="vss-app-top-red">
           <img src="../../componments/driversStory/images/red.png" alt=""
@@ -16,8 +26,7 @@
         有些人让你心情愉悦，有些人让你无比气愤，你都遇到过哪些与乘客相关的故事呢？
         现在你可以来讲述你与乘客之间不得不说的故事，更有机会获得千元现金大奖哦~
       </div>
-      <div class="vss-app-link vss-app-line--left"></div>
-      <div class="vss-app-link vss-app-line--right"></div>
+      <div class="vss-app-link"></div>
       <div class="vss-app-coin">
         <img src="../../componments/driversStory/images/coin.png" alt=""
             class="vss-app-coin-img">
@@ -28,7 +37,9 @@
         </div>
         <div class="vss-app-content2-first">
           <img src="../../componments/driversStory/images/first.png" alt=""
-            class="vss-app-content2-img">
+            class="vss-app-content2-img"
+            @load="firstLoadHandler"
+            @error="firstErrorHandler">
         </div>
         <div class="vss-app-content2-line">
           <div class="vss-app-content2-next">
@@ -45,14 +56,61 @@
             class="vss-app-content2-img">
         </div>
       </div>
-      <div class="vss-app-link vss-app-line--left"></div>
-      <div class="vss-app-link vss-app-line--right"></div>
-      <div class="vss-app-content3"></div>
-    </div>
+      <template v-if="dataList && dataList.length > 0">
+        <div class="vss-app-link"></div>
+        <div class="vss-app-content2 vss-app-content3">
+          <div class="vss-app-content2-header vss-app-content3-header">
+            点赞排行
+          </div>
+          <div class="vss-app-content3-line"
+            v-for="(item, index) in dataList"
+            :key="index">
+            <div :class="[
+              'vss-app-content3-num',
+              `vss-app-content3-num--${index}`,
+              ]">{{index+1}}</div>
+            <div class="vss-app-content3-a">
+              <div class="vss-app-content3-b">{{item.name}}</div>
+              <div class="vss-app-content3-c">{{item.favourCount}}个点赞</div>
+            </div>
+          </div>
+        </div>
+      </template>
+      <div class="vss-app-link"></div>
+      <div class="vss-app-content2 vss-app-content4">
+        <div class="vss-app-content2-header vss-app-content4-header">
+          活动说明
+        </div>
+        <div class="vss-app-content4-line">
+          <span class="vss-app-content4-line-left">活动规则：</span>
+          #网约车师傅和乘客的故事，讲述自己和乘客的故事，获点赞最多者依次排名。
+        </div>
+        <div class="vss-app-content4-line">
+          <span class="vss-app-content4-line-left">领奖方式：</span>
+          添加公众号，在公众号联系 官方工作人员领取。
+        </div>
+        <div class="vss-app-content4-line">
+          <span class="vss-app-content4-line-left">活动时间：</span>
+          1月13-1月17号。
+        </div>
+        <div class="vss-app-content4-line">
+          <span class="vss-app-content4-line-left">公布获奖时间：</span>
+          1月18号。
+        </div>
+        <div class="vss-app-content4-line">
+          <span class="vss-app-content4-line-left">领奖时间：</span>
+          1月18号-1月21日，过期不领奖作废。
+        </div>
+        <div class="vss-app-content4-line">
+          <span class="vss-app-content4-line-left">公布方式：</span>
+          司机圈儿 APP、司机圈儿公众号。
+        </div>
+      </div>
 
-    <div class="vss-app-bottom">
-      本活动解释权归司机圈儿所有，如有疑问<br>
-      请联系官方微信客服
+      <div class="vss-app-bottom">
+        本活动解释权归司机圈儿所有，如有任何疑问<br>
+        请联系官方微信客服
+      </div>
     </div>
 
     <loading
@@ -72,16 +130,25 @@
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
 
+import Nav from '../../componments/driversStory/nav/nav'
+import Sdk from './sdk'
+
+import Q from './sdk/q'
+
 import {
   GETWXCONFIG,
   GETRANK,
 } from './interface'
+
+const topDefer = Q.defer()
+const firstDefer = Q.defer()
 
 export default {
   name: 'VssApp',
 
   components: {
     Loading,
+    Nav,
   },
 
   data () {
@@ -89,10 +156,17 @@ export default {
       msgError: false,
       detail: {},
       debug: false,
-      title: '',
-      desc: '',
+      title: '讲故事赢现金',
+      desc:
+        `2019转瞬即逝，2020即将到来，${
+          '忙碌了一年的网约车师傅们在工作中遇到了各种各样的乘客，'
+        }${'有些人让你心情愉悦，有些人让你无比气愤，你都遇到过哪些与乘客相关的故事呢？'
+        }${'现在你可以来讲述你与乘客之间不得不说的故事，更有机会获得千元现金大奖哦~'}`,
       imgUrl: '',
       isLoading: false,
+      end: false,
+      dataList: [],
+      isWx: window.navigator.userAgent.indexOf('MicroMessenger') > 0,
     }
   },
 
@@ -100,14 +174,41 @@ export default {
   },
 
   async created () {
+    this.end = false
   },
 
   async mounted () {
     await this.search()
-    await this.searchConfig()
+
+    this.loadEnd()
+    this.imgUrl = this.$refs.logo.src
+
+    this.isWx && await this.searchConfig()
+    // await this.searchConfig()
   },
 
   methods: {
+    topLoadHandler () {
+      topDefer.resolve()
+    },
+    topErrorHandler () {
+      topDefer.reject()
+    },
+    firstLoadHandler () {
+      firstDefer.resolve()
+    },
+    firstErrorHandler () {
+      firstDefer.reject()
+    },
+    async loadEnd () {
+      this.isLoading = true
+      await Promise.all([
+        topDefer.promise,
+        firstDefer.promise,
+      ])
+      this.isLoading = false
+      this.end = true
+    },
     async searchConfig () {
       this.isLoading = true
       const {data} = await this.$axios.get(GETWXCONFIG, {params: {
@@ -186,8 +287,22 @@ export default {
       this.isLoading = true
       const {data} = await this.$axios.get(GETRANK)
 
+      this.dataList = data
+
       this.isLoading = false
       this.rankList = data
+    },
+
+    shareHandler () {
+      Sdk.share(
+        this.title,
+        this.desc,
+        this.imgUrl,
+        location.href.split('#')[0],
+      )
+    },
+    backHandler () {
+      Sdk.nativeBack()
     },
   },
 }

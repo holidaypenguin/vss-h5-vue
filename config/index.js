@@ -7,7 +7,7 @@ const produceName = 'vss_h5'
 const produceNameSuffix = '_static'
 
 // const target = 'http://fe2.rongyi.com:8088';
-const targetShare = 'https://api.driversite.cn'
+// const targetShare = 'https://api.driversite.cn'
 const targetOil = 'http://test-api.driversite.cn'
 // const target = 'http://manage.preview.rongyi.com';
 
@@ -24,7 +24,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '^/share': {
-        target: targetShare,
+        target: targetOil,
         changeOrigin: 'true',
       },
       '/czb/': {
