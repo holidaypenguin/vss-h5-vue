@@ -15,7 +15,7 @@
           class="vss-app-top-img"
           @load="topLoadHandler"
           @error="topErrorHandler">
-        <div class="vss-app-top-time">活动时间：2020年1月13-1月17日</div>
+        <div class="vss-app-top-time">活动时间：2020年1月15-1月31日</div>
         <div class="vss-app-top-red">
           <img src="../../componments/driversStory/images/red.png" alt=""
             class="vss-app-top-red-img">
@@ -87,29 +87,34 @@
         </div>
         <div class="vss-app-content4-line">
           <span class="vss-app-content4-line-left">领奖方式：</span>
-          添加公众号，在公众号联系 官方工作人员领取。
+          添加公众号司机圈儿 (driversite)，在公众号联系 官方工作人员领取。
         </div>
         <div class="vss-app-content4-line">
           <span class="vss-app-content4-line-left">活动时间：</span>
-          1月13-1月17号。
+          1月15-1月31号。
         </div>
         <div class="vss-app-content4-line">
           <span class="vss-app-content4-line-left">公布获奖时间：</span>
-          1月18号。
+          2月1号。
         </div>
         <div class="vss-app-content4-line">
           <span class="vss-app-content4-line-left">领奖时间：</span>
-          1月18号-1月21日，过期不领奖作废。
+          2月2号-2月7日，过期不领奖作废。
         </div>
         <div class="vss-app-content4-line">
           <span class="vss-app-content4-line-left">公布方式：</span>
-          司机圈儿 APP、司机圈儿公众号。
+          司机圈儿 APP、司机圈儿 (driversite)公众号。
+        </div>
+
+        <div class="vss-app-content4-button-wrap" v-if="isWx">
+          <div class="vss-app-content4-button" @click="downloadHandler">
+          </div>
         </div>
       </div>
 
       <div class="vss-app-bottom">
         本活动解释权归司机圈儿所有，如有任何疑问<br>
-        请联系官方微信客服
+        请联系官方微信客服司机圈儿 (driversite)
       </div>
     </div>
 
@@ -140,6 +145,8 @@ import {
   GETRANK,
 } from './interface'
 
+import Cookie from '../../public/utils/cookie'
+
 const topDefer = Q.defer()
 const firstDefer = Q.defer()
 
@@ -167,6 +174,7 @@ export default {
       end: false,
       dataList: [],
       isWx: window.navigator.userAgent.indexOf('MicroMessenger') > 0,
+      OS: Cookie.getItem('OS'),
     }
   },
 
@@ -303,6 +311,9 @@ export default {
     },
     backHandler () {
       Sdk.nativeBack()
+    },
+    downloadHandler () {
+      window.location.href = 'https://www.driversite.cn/index.html'
     },
   },
 }

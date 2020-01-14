@@ -295,6 +295,37 @@
           font-weight: 700;
         }
       }
+      @e button{
+        @e wrap{
+          text-align: center;
+        }
+        height: 70px;
+        padding: 0 50px;
+        position: relative;
+        border-radius: 70px;
+        background: #d03e2b;
+        margin-top: 25px;
+        display: inline-block;
+        &::before{
+          content: ' ';
+          display: block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 66px;
+          background: #fb6451;
+          border-radius: 66px;
+        }
+        &::after{
+          content: '下载司机圈儿';
+          display: inline;
+          line-height: 66px;
+          position: relative;
+          color: #fff7f3;
+          font-size: 32px;
+        }
+      }
     }
     @e bottom{
       text-align: center;
