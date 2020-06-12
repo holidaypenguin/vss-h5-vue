@@ -29,6 +29,7 @@ module.exports = {
       'services': resolve('src/public/services'),
       'common': resolve('src/common'),
       'componments': resolve('src/componments'),
+      'module': resolve('src/module'),
     },
   },
   module: {
