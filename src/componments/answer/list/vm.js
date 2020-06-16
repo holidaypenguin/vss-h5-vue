@@ -12,6 +12,8 @@ import {
   GETLIST,
 } from 'module/answer/interface'
 
+import mockData from './mock'
+
 export default {
   name: 'List',
 
@@ -24,6 +26,9 @@ export default {
   data () {
     return {
       result: ['a'],
+      // list: [],
+      list: mockData,
+      params: [],
     }
   },
 
@@ -34,7 +39,8 @@ export default {
   },
 
   async created () {
-    await this.search()
+    this.params = this.getParams(this.list)
+    // await this.search()
   },
 
   async mounted () {
@@ -67,6 +73,46 @@ export default {
       })
 
       this.list = this.list.concat(gasList)
+    },
+    getParams (list = []) {
+      return list.map(item => {
+        return {
+          checked: '',
+          checkList: [],
+          text: '',
+        }
+      })
+    },
+    // 单选-值
+    // singleValue ({id}, index) {
+    //   const param = this.params[index]
+
+    //   return id === param.checked
+    // },
+    // singleOptionClick ({id}, index) {
+    //   const param = this.params[index]
+
+    //   param.checked = id
+    // },
+    // 多选控制
+    disabledOption ({id}, index) {
+      // const item = this.list[index]
+      // const param = this.params[index]
+
+      // return item.max <= 0
+      //   ? false
+      //   : param.checked.length < item.max
+      //     ? false
+      //     : param.checked.indexOf(id) < 0
+    },
+    optionHandler ({id}, index) {
+      // const item = this.list[index]
+      // const param = this.params[index]
+
+      // if (!(item.max > 0 && param.checked.length >= item.max)) return
+
+      // param.checked = [id]
+      // // this.$set(param, 'checked', [id])
     },
   },
 }
