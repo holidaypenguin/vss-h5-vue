@@ -114,5 +114,11 @@ export default {
       // param.checked = [id]
       // // this.$set(param, 'checked', [id])
     },
+
+    getIndex ({id}, index) {
+      const checkList = this.params[index].checkList
+
+      return checkList.findIndex(item => item === id)
+    },
   },
 }
