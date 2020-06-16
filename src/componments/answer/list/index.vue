@@ -9,9 +9,36 @@
         </div>
         <!-- 排序题 -->
         <div class="p-list-choice" v-if="item.kind === 5">
+          <van-checkbox-group v-model="params[index].checkList"
+            :max="item.max || 0"
+            >
+            <van-checkbox
+              v-for="option in item.optoins"
+              :key="option.id"
+              :name="option.id"
+              shape="square"
+              :disabled="disabledOption(option, index)"
+              @click="optionHandler(option, index)"
+              :class="[
+                'p-list-choice-check',
+                `p-list-choice-check--${getIndex(option, index)}`,
+              ]"
+              >
+              <span v-if="option.regulars" style="display: flex">
+                {{option.text.replace('{}', '')}}
+                <div class="p-list-choice-input">
+                  <van-field v-model="params[index].text" label="" />
+                </div>
+              </span>
+              <span v-else>{{option.text}}</span>
+            </van-checkbox>
+          </van-checkbox-group>
         </div>
         <!-- 填空题 -->
         <div class="p-list-choice" v-else-if="item.kind === 4">
+          <div class="p-list-choice-input">
+            <van-field v-model="params[index].text" label="" />
+          </div>
         </div>
         <!-- 多选 -->
         <div class="p-list-choice" v-else-if="item.kind === 2">
