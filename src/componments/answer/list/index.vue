@@ -1,16 +1,60 @@
 <template>
   <div class="p-list">
     <div class="p-list-body">
-      <div class="p-list-wrap">
+      <div class="p-list-wrap"
+        v-for="(item, index) in list" :key="item.id">
         <div class="p-list-head">
-          【单选题】<br>
-          下列判断有误的是
+          <b>{{item.remark}}</b><br>
+          {{item.text}}
         </div>
-        <div class="p-list-choice">
-          <van-checkbox-group v-model="result">
-            <van-checkbox name="a">复选框 a复选框 a复选框 a复选框 a复选框 a复选框 a复选框 a复选框 a复选框 a</van-checkbox>
-            <van-checkbox name="b">复选框 b复选框 b复选框 b复选框 b复选框 b复选框 b复选框 b复选框 b复选框 b复选框 b</van-checkbox>
+        <!-- 排序题 -->
+        <div class="p-list-choice" v-if="item.kind === 5">
+        </div>
+        <!-- 填空题 -->
+        <div class="p-list-choice" v-else-if="item.kind === 4">
+        </div>
+        <!-- 多选 -->
+        <div class="p-list-choice" v-else-if="item.kind === 2">
+          <van-checkbox-group v-model="params[index].checkList"
+            :max="item.max || 0"
+            >
+            <van-checkbox
+              v-for="option in item.optoins"
+              :key="option.id"
+              :name="option.id"
+              shape="square"
+              :disabled="disabledOption(option, index)"
+              @click="optionHandler(option, index)"
+              >
+              <span v-if="option.regulars" style="display: flex">
+                {{option.text.replace('{}', '')}}
+                <div class="p-list-choice-input">
+                  <van-field v-model="params[index].text" label="" />
+                </div>
+              </span>
+              <span v-else>{{option.text}}</span>
+            </van-checkbox>
           </van-checkbox-group>
+
+        </div>
+        <!-- 单选 判断题 -->
+        <div class="p-list-choice" v-else-if="item.kind === 1 || item.kind === 3">
+          <van-radio-group v-model="params[index].checked">
+            <van-radio
+              v-for="option in item.optoins"
+              :key="option.id"
+              :name="option.id">
+
+              <span v-if="option.regulars" style="display: flex">
+                {{option.text.replace('{}', '')}}
+                <div class="p-list-choice-input">
+                  <van-field v-model="params[index].text" label="" />
+                </div>
+              </span>
+              <span v-else>{{option.text}}</span>
+            </van-radio>
+          </van-radio-group>
+
           <!-- <div class="p-list-item">
             <div class="p-list-item-left"></div>
             <div class="p-list-item-right"></div>
