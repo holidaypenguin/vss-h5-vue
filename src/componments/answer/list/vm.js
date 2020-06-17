@@ -26,9 +26,11 @@ export default {
   data () {
     return {
       result: ['a'],
-      // list: [],
-      list: mockData,
+      list: [],
+      // listLength: 0,
+      // list1: mockData,
       params: [],
+      currentIndex: 0,
     }
   },
 
@@ -36,15 +38,28 @@ export default {
     ...mapState({
       isLoading: state => state.loading,
     }),
+    listLength () {
+      return this.list.length
+    },
+    isFirst () {
+      return this.currentIndex === 0
+    },
+    isEnd () {
+      return this.listLength === (this.currentIndex + 1)
+    },
   },
 
   async created () {
-    this.params = this.getParams(this.list)
     // await this.search()
   },
 
   async mounted () {
     this.$nextTick(() => {
+      setTimeout(() => {
+        this.list = mockData
+        // this.listLength = mockData.length
+        this.params = this.getParams(this.list)
+      }, 2000)
     })
   },
 
@@ -75,13 +90,64 @@ export default {
       this.list = this.list.concat(gasList)
     },
     getParams (list = []) {
-      return list.map(item => {
+      return list.map((item, index) => {
         return {
           checked: '',
           checkList: [],
           text: '',
+          fromIndex: undefined, // 从哪个题跳转过来
+          isReply: index === 0, // 是否作答，第一天默认作答
         }
       })
+    },
+    // 上一题
+    prepareHandler () {
+      if (this.isFirst) return
+
+      const param = this.params[this.currentIndex]
+      if (param.fromIndex !== undefined) {
+        this.currentIndex = param.fromIndex
+      } else {
+        this.currentIndex--
+      }
+      param.isReply = false
+    },
+
+    // 下一题
+    nextHandler () {
+      if (this.isEnd) return
+
+      const item = this.list[this.currentIndex]
+      const param = this.params[this.currentIndex]
+
+      let option
+
+      switch (item.kind) {
+        case 1:
+        case 3:
+          option = item.optoins.find(i => i.id === param.checked)
+          break
+        case 2:
+          if (param.checkList.length === 1) {
+            option = item.optoins.find(i => i.id === param.checkList[0])
+          }
+          break
+        default:
+      }
+
+      if (option && option.jump) {
+        const index = this.list.findIndex(i => i.order === option.jump)
+
+        if (index > -1) {
+          this.params[index].fromIndex = this.currentIndex
+          this.params[index].isReply = true
+          this.currentIndex = index
+        }
+      } else {
+        this.currentIndex++
+        this.params[this.currentIndex].fromIndex = undefined
+        this.params[this.currentIndex].isReply = true
+      }
     },
     // 单选-值
     // singleValue ({id}, index) {
@@ -96,29 +162,49 @@ export default {
     // },
     // 多选控制
     disabledOption ({id}, index) {
-      // const item = this.list[index]
-      // const param = this.params[index]
+      const item = this.list[index]
+      const param = this.params[index]
 
-      // return item.max <= 0
-      //   ? false
-      //   : param.checked.length < item.max
-      //     ? false
-      //     : param.checked.indexOf(id) < 0
+      return item.max <= 0
+        ? false
+        : param.checkList.length < item.max
+          ? false
+          : param.checkList.indexOf(id) < 0
     },
+    // 选项操作ID
     optionHandler ({id}, index) {
+      this.optionId = id
       // const item = this.list[index]
       // const param = this.params[index]
 
-      // if (!(item.max > 0 && param.checked.length >= item.max)) return
+      // if (!(item.max > 0 && param.checkList.length >= item.max)) return
 
-      // param.checked = [id]
-      // // this.$set(param, 'checked', [id])
+      // param.checkList = [id]
+      // // this.$set(param, 'checkList', [id])
+    },
+
+    // 多选改变
+    changeHandler (index) {
+      const item = this.list[index]
+      const param = this.params[index]
+
+      if (param.checkList.findIndex(id => id === this.optionId) < 1) return
+
+      const firstOption = item.optoins.find(option => option.id === param.checkList[0])
+      const lastOption = item.optoins.find(option => option.id === this.optionId)
+      if (firstOption.mute !== lastOption.mute) {
+        param.checkList = [this.optionId]
+      }
     },
 
     getIndex ({id}, index) {
       const checkList = this.params[index].checkList
 
       return checkList.findIndex(item => item === id)
+    },
+
+    commitHandler () {
+
     },
   },
 }
