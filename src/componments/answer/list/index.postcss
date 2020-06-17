@@ -12,6 +12,7 @@
     @e bottom{
       display: flex;
       border-top: 1px solid #1989fa; /* no */
+      position: relative;
 
       @e button{
         flex: 1;
@@ -28,6 +29,21 @@
           border: 0;
           border-radius: 0;
         }
+      }
+
+      @e num{
+        height: 100px;
+        line-height: 100px;
+        min-width: 100px;
+        background: #ffffff;
+        border-radius: 100px;
+        position: absolute;
+        top: -120px;
+        right: 20px;
+        font-size: 28px;
+        text-align: center;
+        padding: 0 32px;
+        box-shadow: 0 0px 35px 0 rgba(0,0,0,.2);
       }
     }
 

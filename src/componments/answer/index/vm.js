@@ -72,5 +72,11 @@ export default {
 
       this.list = this.list.concat(gasList)
     },
+
+    startHanler () {
+      this.$router.push({
+        name: 'list',
+      })
+    },
   },
 }

@@ -2,10 +2,11 @@
   <div class="p-list">
     <div class="p-list-body">
       <div class="p-list-wrap"
-        v-for="(item, index) in list" :key="item.id">
+        v-for="(item, index) in list" :key="item.id"
+        v-show="index === currentIndex">
         <div class="p-list-head">
           <b>{{item.remark}}</b><br>
-          {{item.text}}
+          {{item.text.replace('{}', '')}}
         </div>
         <!-- 排序题 -->
         <div class="p-list-choice" v-if="item.kind === 5">
@@ -24,10 +25,10 @@
                 `p-list-choice-check--${getIndex(option, index)}`,
               ]"
               >
-              <span v-if="option.regulars" style="display: flex">
+              <span v-if="option.regulars" style="display: flex; width: 100%;">
                 {{option.text.replace('{}', '')}}
                 <div class="p-list-choice-input">
-                  <van-field v-model="params[index].text" label="" />
+                  <van-field v-model="params[index].text" label=""  @click.prevent.stop/>
                 </div>
               </span>
               <span v-else>{{option.text}}</span>
@@ -44,6 +45,7 @@
         <div class="p-list-choice" v-else-if="item.kind === 2">
           <van-checkbox-group v-model="params[index].checkList"
             :max="item.max || 0"
+            @change="changeHandler(index)"
             >
             <van-checkbox
               v-for="option in item.optoins"
@@ -53,10 +55,10 @@
               :disabled="disabledOption(option, index)"
               @click="optionHandler(option, index)"
               >
-              <span v-if="option.regulars" style="display: flex">
+              <span v-if="option.regulars" style="display: flex; width: 100%;">
                 {{option.text.replace('{}', '')}}
                 <div class="p-list-choice-input">
-                  <van-field v-model="params[index].text" label="" />
+                  <van-field v-model="params[index].text" label=""  @click.prevent.stop/>
                 </div>
               </span>
               <span v-else>{{option.text}}</span>
@@ -72,10 +74,10 @@
               :key="option.id"
               :name="option.id">
 
-              <span v-if="option.regulars" style="display: flex">
+              <span v-if="option.regulars" style="display: flex; width: 100%;">
                 {{option.text.replace('{}', '')}}
                 <div class="p-list-choice-input">
-                  <van-field v-model="params[index].text" label="" />
+                  <van-field v-model="params[index].text" label="" @click.prevent.stop/>
                 </div>
               </span>
               <span v-else>{{option.text}}</span>
@@ -95,12 +97,20 @@
         </div>
       </div>
     </div>
-    <div class="p-list-bottom">
+    <div class="p-list-bottom" v-if="listLength > 0">
       <div class="p-list-bottom-button">
-        <van-button type="info" plain>上一题</van-button>
+        <van-button type="info" plain :disabled="isFirst"
+          @click="prepareHandler">上一题</van-button>
       </div>
       <div class="p-list-bottom-button">
-        <van-button type="info" plain>下一题</van-button>
+        <van-button type="info" plain v-if="!isEnd"
+          @click="nextHandler">下一题</van-button>
+        <van-button type="info" plain v-else
+          @click="commitHandler">提交</van-button>
+      </div>
+
+      <div class="p-list-bottom-num">
+        {{currentIndex + 1}} / {{listLength}}
       </div>
     </div>
   </div>
