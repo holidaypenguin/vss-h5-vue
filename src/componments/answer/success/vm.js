@@ -9,7 +9,7 @@ import {
 } from 'module/answer/store/mutations-type'
 
 import {
-  GETLIST,
+// GETLIST,
 } from 'module/answer/interface'
 
 export default {
@@ -23,6 +23,7 @@ export default {
 
   data () {
     return {
+      isGet: false,
     }
   },
 
@@ -50,33 +51,34 @@ export default {
     ...mapMutations([
       SET_LOADING,
     ]),
-    async search () {
-      if (this.getting) return
-
-      this.getting = true
-
-      this[SET_LOADING](true)
-      const {data: {gasList}} = await this.$axios.get(
-        GETLIST,
-        // params,
-        {
-          params: this.params,
-          headers: {
-            token: this.tokenId,
-          },
-        },
-      ).finally((e) => {
-        this.getting = false
-        this[SET_LOADING](false)
-      })
-
-      this.list = this.list.concat(gasList)
+    getRed () {
+      this.isGet = true
     },
+    // async search () {
+    //   if (this.getting) return
+
+    //   this.getting = true
+
+    //   this[SET_LOADING](true)
+    //   const {data: {gasList}} = await this.$axios.get(
+    //     GETLIST,
+    //     // params,
+    //     {
+    //       params: this.params,
+    //       headers: {
+    //         token: this.tokenId,
+    //       },
+    //     },
+    //   ).finally((e) => {
+    //     this.getting = false
+    //     this[SET_LOADING](false)
+    //   })
+
+    //   this.list = this.list.concat(gasList)
+    // },
 
     startHanler () {
-      this.$router.push({
-        name: 'list',
-      })
+
     },
   },
 }

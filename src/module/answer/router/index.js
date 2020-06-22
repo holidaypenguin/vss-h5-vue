@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Index from 'componments/answer/index/index.vue'
 import List from 'componments/answer/list/index.vue'
+import Success from 'componments/answer/success/index.vue'
 import config from '../../../../config'
 import setting from '../setting'
 
@@ -23,6 +24,12 @@ export default new Router({
       name: 'list',
       path: '/list',
       component: List,
+      meta: {title: '答题'},
+    },
+    {
+      name: 'success',
+      path: '/success',
+      component: Success,
       meta: {title: '答题'},
     },
     {

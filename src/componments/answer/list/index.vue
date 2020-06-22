@@ -5,16 +5,16 @@
         v-for="(item, index) in list" :key="item.id"
         v-show="index === currentIndex">
         <div class="p-list-head">
-          <b>{{item.remark}}</b><br>
+          <!-- <b>{{item.remark}}</b><br> -->
           {{item.text.replace('{}', '')}}
         </div>
         <!-- 排序题 -->
-        <div class="p-list-choice" v-if="item.kind === 5">
+        <div class="p-list-choice" v-if="item.kind == 5">
           <van-checkbox-group v-model="params[index].checkList"
             :max="item.max || 0"
             >
             <van-checkbox
-              v-for="option in item.optoins"
+              v-for="option in item.options"
               :key="option.id"
               :name="option.id"
               shape="square"
@@ -36,19 +36,19 @@
           </van-checkbox-group>
         </div>
         <!-- 填空题 -->
-        <div class="p-list-choice" v-else-if="item.kind === 4">
+        <div class="p-list-choice" v-else-if="item.kind == 4">
           <div class="p-list-choice-input">
             <van-field v-model="params[index].text" label="" />
           </div>
         </div>
         <!-- 多选 -->
-        <div class="p-list-choice" v-else-if="item.kind === 2">
+        <div class="p-list-choice" v-else-if="item.kind == 2">
           <van-checkbox-group v-model="params[index].checkList"
             :max="item.max || 0"
             @change="changeHandler(index)"
             >
             <van-checkbox
-              v-for="option in item.optoins"
+              v-for="option in item.options"
               :key="option.id"
               :name="option.id"
               shape="square"
@@ -67,10 +67,10 @@
 
         </div>
         <!-- 单选 判断题 -->
-        <div class="p-list-choice" v-else-if="item.kind === 1 || item.kind === 3">
+        <div class="p-list-choice" v-else-if="item.kind == 1 || item.kind == 3">
           <van-radio-group v-model="params[index].checked">
             <van-radio
-              v-for="option in item.optoins"
+              v-for="option in item.options"
               :key="option.id"
               :name="option.id">
 
@@ -94,6 +94,10 @@
             <div class="p-list-item-right"></div>
           </div> -->
 
+        </div>
+
+        <div class="p-list-error" v-if="item.error">
+          {{item.error}}
         </div>
       </div>
     </div>

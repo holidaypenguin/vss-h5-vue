@@ -12,7 +12,7 @@ import {
   GETLIST,
 } from 'module/answer/interface'
 
-import mockData from './mock'
+// import mockData from './mock'
 
 export default {
   name: 'List',
@@ -50,16 +50,16 @@ export default {
   },
 
   async created () {
-    // await this.search()
+    await this.search()
   },
 
   async mounted () {
     this.$nextTick(() => {
-      setTimeout(() => {
-        this.list = mockData
-        // this.listLength = mockData.length
-        this.params = this.getParams(this.list)
-      }, 2000)
+      // setTimeout(() => {
+      //   this.list = mockData
+      //   // this.listLength = mockData.length
+      //   this.params = this.getParams(this.list)
+      // }, 2000)
     })
   },
 
@@ -67,19 +67,22 @@ export default {
     ...mapMutations([
       SET_LOADING,
     ]),
+    // 获取题目
     async search () {
       if (this.getting) return
 
       this.getting = true
 
       this[SET_LOADING](true)
-      const {data: {gasList}} = await this.$axios.get(
+      const {data = []} = await this.$axios.post(
         GETLIST,
-        // params,
+        {},
         {
-          params: this.params,
+          params: {
+            pid: '6b9e4538dbb14d54b54ed9aa392d5548',
+          },
           headers: {
-            token: this.tokenId,
+            // token: this.tokenId,
           },
         },
       ).finally((e) => {
@@ -87,8 +90,10 @@ export default {
         this[SET_LOADING](false)
       })
 
-      this.list = this.list.concat(gasList)
+      this.list = data
+      this.params = this.getParams(this.list)
     },
+    // 初始化答案
     getParams (list = []) {
       return list.map((item, index) => {
         return {
@@ -97,6 +102,8 @@ export default {
           text: '',
           fromIndex: undefined, // 从哪个题跳转过来
           isReply: index === 0, // 是否作答，第一天默认作答
+          error: '',
+          id: item.id,
         }
       })
     },
@@ -119,17 +126,18 @@ export default {
 
       const item = this.list[this.currentIndex]
       const param = this.params[this.currentIndex]
+      param.error = ''
 
       let option
 
       switch (item.kind) {
         case 1:
         case 3:
-          option = item.optoins.find(i => i.id === param.checked)
+          option = item.options.find(i => i.id === param.checked)
           break
         case 2:
           if (param.checkList.length === 1) {
-            option = item.optoins.find(i => i.id === param.checkList[0])
+            option = item.options.find(i => i.id === param.checkList[0])
           }
           break
         default:
@@ -190,13 +198,13 @@ export default {
 
       if (param.checkList.findIndex(id => id === this.optionId) < 1) return
 
-      const firstOption = item.optoins.find(option => option.id === param.checkList[0])
-      const lastOption = item.optoins.find(option => option.id === this.optionId)
+      const firstOption = item.options.find(option => option.id === param.checkList[0])
+      const lastOption = item.options.find(option => option.id === this.optionId)
       if (firstOption.mute !== lastOption.mute) {
         param.checkList = [this.optionId]
       }
     },
-
+    // 获得排序序号
     getIndex ({id}, index) {
       const checkList = this.params[index].checkList
 
@@ -204,7 +212,45 @@ export default {
     },
 
     commitHandler () {
+      // eslint-disable-next-line no-unused-vars
+      const params = this.params
+        .filter(param => param.isReply)
+        .map(param => {
+          const item = this.list.find(item => item.id === param.id)
+          const p = {}
+          let option
 
+          switch (param.kind) {
+            case '1':
+            case '3':
+              option = item.options.find(item => item.id === param.checked)
+
+              p.id = param.id
+              p.checked = param.checked
+              option.regulars && (p.text = param.text)
+              break
+            case '2':
+              option = item.options.find(item => item.id === param.checkList[0])
+
+              p.id = param.id
+              p.checkList = param.checkList
+              option.regulars && (p.text = param.text)
+              break
+            case '4':
+              p.text = param.text
+              break
+            case '5':
+              break
+            default:
+              return {}
+          }
+
+          return p
+        })
+
+      this.$router.push({
+        name: 'success',
+      })
     },
   },
 }
