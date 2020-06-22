@@ -10,6 +10,7 @@ const produceNameSuffix = '_static'
 // const targetShare = 'https://api.driversite.cn'
 const targetOil = 'http://test-api.driversite.cn'
 // const target = 'http://manage.preview.rongyi.com';
+const targetdiaocha = 'http://diaocha.frontlink.net'
 
 module.exports = {
   produceName,
@@ -41,6 +42,10 @@ module.exports = {
       },
       '/ad/': {
         target: targetOil,
+        changeOrigin: 'true',
+      },
+      '/wxexam/': {
+        target: targetdiaocha,
         changeOrigin: 'true',
       },
     },
