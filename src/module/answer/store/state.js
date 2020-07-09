@@ -10,4 +10,6 @@ export default {
   platformType: '92654137', // 合作方代码（车主邦给出）
   userInfo: undefined,
   coinNum: 0,
+  pid: '',
+  oid: '',
 }

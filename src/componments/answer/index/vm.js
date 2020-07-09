@@ -23,6 +23,7 @@ export default {
 
   data () {
     return {
+      next: false,
     }
   },
 
@@ -71,6 +72,10 @@ export default {
       })
 
       this.list = this.list.concat(gasList)
+    },
+
+    nextHanler () {
+      this.next = true
     },
 
     startHanler () {

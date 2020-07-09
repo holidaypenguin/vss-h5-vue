@@ -25,7 +25,7 @@
                 `p-list-choice-check--${getIndex(option, index)}`,
               ]"
               >
-              <span v-if="option.regulars" style="display: flex; width: 100%;">
+              <span class="p-list-choice-body" v-if="option.regulars">
                 {{option.text.replace('{}', '')}}
                 <div class="p-list-choice-input">
                   <van-field v-model="params[index].text" label=""  @click.prevent.stop/>
@@ -55,7 +55,7 @@
               :disabled="disabledOption(option, index)"
               @click="optionHandler(option, index)"
               >
-              <span v-if="option.regulars" style="display: flex; width: 100%;">
+              <span class="p-list-choice-body" v-if="option.regulars">
                 {{option.text.replace('{}', '')}}
                 <div class="p-list-choice-input">
                   <van-field v-model="params[index].text" label=""  @click.prevent.stop/>
@@ -74,7 +74,7 @@
               :key="option.id"
               :name="option.id">
 
-              <span v-if="option.regulars" style="display: flex; width: 100%;">
+              <span class="p-list-choice-body" v-if="option.regulars">
                 {{option.text.replace('{}', '')}}
                 <div class="p-list-choice-input">
                   <van-field v-model="params[index].text" label="" @click.prevent.stop/>

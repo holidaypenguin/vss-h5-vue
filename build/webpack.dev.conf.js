@@ -59,6 +59,20 @@ const devWebpackConfig = merge(baseWebpackConfig, {
           },
         },
         {
+          from: /^\/wxpaper/,
+          to: (content) => {
+            const from = content.match[0]
+            const to = `/${config.produceName}${config.produceNameSuffix}/${
+              config.moduleRootName}/answer.html`
+            // eslint-disable-next-line no-console
+            console.log('From:', from)
+            // eslint-disable-next-line no-console
+            console.log('  To:', to)
+
+            return to
+          },
+        },
+        {
           from: /.*/,
           to: path.posix.join(
             config.dev.assetsPublicPath,

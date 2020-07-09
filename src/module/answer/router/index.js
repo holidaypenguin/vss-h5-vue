@@ -3,8 +3,8 @@ import Router from 'vue-router'
 import Index from 'componments/answer/index/index.vue'
 import List from 'componments/answer/list/index.vue'
 import Success from 'componments/answer/success/index.vue'
-import config from '../../../../config'
-import setting from '../setting'
+// import config from '../../../../config'
+// import setting from '../setting'
 
 Vue.use(Router)
 
@@ -12,7 +12,8 @@ Vue.use(Router)
 
 export default new Router({
   mode: 'history',
-  base: `${config.produceName}/${config.moduleRootName}/${setting.moduleName}`,
+  // base: `${config.produceName}/${config.moduleRootName}/${setting.moduleName}`,
+  base: 'wxpaper',
   routes: [
     {
       name: 'index',
@@ -25,6 +26,7 @@ export default new Router({
       path: '/list',
       component: List,
       meta: {title: '答题'},
+      props: true,
     },
     {
       name: 'success',
