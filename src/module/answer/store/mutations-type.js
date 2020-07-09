@@ -12,3 +12,7 @@ export const SET_TITLE = 'SET_TITLE'
 export const SET_USERINFO = 'SET_USERINFO'
 
 export const SET_COINNUM = 'SET_COINNUM'
+
+export const SET_PID = 'SET_PID'
+
+export const SET_OID = 'SET_OID'

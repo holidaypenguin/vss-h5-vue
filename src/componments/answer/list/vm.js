@@ -10,6 +10,7 @@ import {
 
 import {
   GETLIST,
+  SUBMIT,
 } from 'module/answer/interface'
 
 // import mockData from './mock'
@@ -23,20 +24,28 @@ export default {
 
   },
 
+  props: {
+    // pid: {
+    //   default: '',
+    //   type: String,
+    // },
+  },
+
   data () {
     return {
-      result: ['a'],
       list: [],
       // listLength: 0,
       // list1: mockData,
       params: [],
-      currentIndex: 0,
+      currentIndex: 20,
     }
   },
 
   computed: {
     ...mapState({
       isLoading: state => state.loading,
+      pid: state => state.pid,
+      oid: state => state.oid,
     }),
     listLength () {
       return this.list.length
@@ -79,7 +88,7 @@ export default {
         {},
         {
           params: {
-            pid: '6b9e4538dbb14d54b54ed9aa392d5548',
+            pid: this.pid,
           },
           headers: {
             // token: this.tokenId,
@@ -101,7 +110,7 @@ export default {
           checkList: [],
           text: '',
           fromIndex: undefined, // 从哪个题跳转过来
-          isReply: index === 0, // 是否作答，第一天默认作答
+          isReply: index === 0, // 是否作答，第一题默认作答
           error: '',
           id: item.id,
         }
@@ -128,34 +137,63 @@ export default {
       const param = this.params[this.currentIndex]
       param.error = ''
 
+      const kind = Number(item.kind)
       let option
 
-      switch (item.kind) {
+      switch (kind) {
         case 1:
         case 3:
           option = item.options.find(i => i.id === param.checked)
           break
         case 2:
-          if (param.checkList.length === 1) {
+          if (param.checkList.length >= 1) {
             option = item.options.find(i => i.id === param.checkList[0])
           }
           break
         default:
       }
 
-      if (option && option.jump) {
-        const index = this.list.findIndex(i => i.order === option.jump)
+      switch (kind) {
+        case 1:
+        case 2:
+        case 3:
+        case 5:
+          if (!option || (option.regulars && !param.text)) {
+            this.$toast('请答题')
+          } else if (option.jump) {
+            const index = this.list.findIndex(i => i.order === option.jump)
 
-        if (index > -1) {
-          this.params[index].fromIndex = this.currentIndex
-          this.params[index].isReply = true
-          this.currentIndex = index
-        }
-      } else {
-        this.currentIndex++
-        this.params[this.currentIndex].fromIndex = undefined
-        this.params[this.currentIndex].isReply = true
+            if (index > -1) {
+              this.params[index].fromIndex = this.currentIndex
+              this.params[index].isReply = true
+              this.currentIndex = index
+            }
+          } else if (
+            option.mute === 2 &&
+            item.min > 0 &&
+            Number(item.kind) === 2 &&
+            item.min > param.checkList.length) {
+            // 非互斥、最小选项个数大于0,、多选，提示最少选择个数提示
+            this.$toast(`当前题目至少选择${item.min}个选项`)
+          } else {
+            this.toNext()
+          }
+          break
+        case 4:
+          if (!param.text) {
+            this.$toast('请答题')
+          } else {
+            this.toNext()
+          }
+          break
+        default:
       }
+    },
+
+    toNext () {
+      this.currentIndex++
+      this.params[this.currentIndex].fromIndex = undefined
+      this.params[this.currentIndex].isReply = true
     },
     // 单选-值
     // singleValue ({id}, index) {
@@ -211,42 +249,70 @@ export default {
       return checkList.findIndex(item => item === id)
     },
 
-    commitHandler () {
-      // eslint-disable-next-line no-unused-vars
+    async commitHandler () {
       const params = this.params
         .filter(param => param.isReply)
         .map(param => {
           const item = this.list.find(item => item.id === param.id)
           const p = {}
+          let options
           let option
+          // console.log('操作', param, '题目', item)
 
-          switch (param.kind) {
-            case '1':
-            case '3':
-              option = item.options.find(item => item.id === param.checked)
-
-              p.id = param.id
-              p.checked = param.checked
-              option.regulars && (p.text = param.text)
-              break
-            case '2':
-              option = item.options.find(item => item.id === param.checkList[0])
+          switch (item.kind) {
+            case '1': // 单选
+            case '3': // 判断
+              option = item.options.find(oitem => oitem.id === param.checked)
+              // console.log('单选选项', option)
 
               p.id = param.id
-              p.checkList = param.checkList
-              option.regulars && (p.text = param.text)
+              p.order = param.order
+              p.options = []
+              p.options[0] = {
+                order: option.order,
+                content: option.regulars ? param.text : '',
+              }
+
               break
-            case '4':
-              p.text = param.text
+            case '2': // 多选
+            case '5': // 排序
+              options = item.options.filter(oitem => param.checkList.indexOf(oitem.id) >= 0)
+              // console.log('多选选项', options)
+
+              p.id = param.id
+              p.order = param.order
+              p.options = options.map(option => {
+                return {
+                  order: option.order,
+                  content: option.regulars ? param.text : '',
+                }
+              })
               break
-            case '5':
+            case '4': // 填空
+              p.id = param.id
+              p.order = param.order
+              p.options = [{
+                content: param.text,
+              }]
               break
             default:
-              return {}
           }
 
           return p
         })
+
+      if (params.length < 1 || this.submiting) return
+
+      this.submiting = true
+
+      this[SET_LOADING](true)
+      await this.$axios.post(
+        SUBMIT,
+        params,
+      ).finally((e) => {
+        this.submiting = false
+        this[SET_LOADING](false)
+      })
 
       this.$router.push({
         name: 'success',

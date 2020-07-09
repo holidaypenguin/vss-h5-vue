@@ -6,6 +6,8 @@ import {
   SET_TITLE,
   SET_USERINFO,
   SET_COINNUM,
+  SET_PID,
+  SET_OID,
 } from './mutations-type'
 export default {
   [SET_LOGIN] (state, isLogin) {
@@ -29,5 +31,11 @@ export default {
   },
   [SET_COINNUM] (state, coinNum) {
     state.coinNum = coinNum || 0
+  },
+  [SET_PID] (state, pid) {
+    state.pid = pid
+  },
+  [SET_OID] (state, oid) {
+    state.oid = oid
   },
 }
