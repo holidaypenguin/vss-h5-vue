@@ -137,7 +137,7 @@
       <div class="p-list-bottom-button">
         <van-button type="info" plain v-if="!isEnd"
           @click="nextHandler">下一题</van-button>
-        <van-button type="info" plain
+        <van-button type="info" plain v-else
           @click="commitHandler">提交</van-button>
       </div>
 
