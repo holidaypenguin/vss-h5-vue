@@ -79,7 +79,7 @@ export default {
     },
 
     startHanler () {
-      this.$router.push({
+      this.$router.replace({
         name: 'list',
       })
     },

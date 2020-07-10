@@ -371,7 +371,7 @@ export default {
         this[SET_LOADING](false)
       })
 
-      this.$router.push({
+      this.$router.replace({
         name: 'success',
       })
     },
