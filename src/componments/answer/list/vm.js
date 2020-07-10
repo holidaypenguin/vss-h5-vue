@@ -13,6 +13,8 @@ import {
   SUBMIT,
 } from 'module/answer/interface'
 
+import CInput from './cInput'
+
 // import mockData from './mock'
 
 export default {
@@ -21,7 +23,7 @@ export default {
   mixins: [],
 
   components: {
-
+    CInput,
   },
 
   props: {
@@ -37,7 +39,7 @@ export default {
       // listLength: 0,
       // list1: mockData,
       params: [],
-      currentIndex: 20,
+      currentIndex: 0,
     }
   },
 
@@ -137,8 +139,14 @@ export default {
       const param = this.params[this.currentIndex]
       param.error = ''
 
+      // 题目类型
       const kind = Number(item.kind)
+      // 第一个选项
       let option
+      // 最小值
+      let min
+      // 选项填空类型
+      let optionKind
 
       switch (kind) {
         case 1:
@@ -158,8 +166,13 @@ export default {
         case 2:
         case 3:
         case 5:
+          min = option.regulars && option.regulars[0].minval
+          optionKind = Number(option.regulars && option.regulars[0].kind)
+
           if (!option || (option.regulars && !param.text)) {
             this.$toast('请答题')
+          } else if (option.regulars && min > 0) {
+            this.validateText(optionKind, min, param, '选项')
           } else if (option.jump) {
             const index = this.list.findIndex(i => i.order === option.jump)
 
@@ -180,8 +193,13 @@ export default {
           }
           break
         case 4:
+          min = item.regulars && item.regulars[0].minval
+          optionKind = Number(item.regulars && item.regulars[0].kind)
+
           if (!param.text) {
             this.$toast('请答题')
+          } else if (item.regulars && min > 0) {
+            this.validateText(optionKind, min, param, '题目')
           } else {
             this.toNext()
           }
@@ -190,10 +208,44 @@ export default {
       }
     },
 
+    validateText (optionKind, min, param, msg = '') {
+      // 1字符串2整数3浮点数4日期
+      switch (optionKind) {
+        case 1:
+          if (min > param.text.length) {
+            this.$toast(`当前${msg}请至少输入${min}个文字`)
+
+            return
+          }
+          this.toNext()
+          break
+        case 2:
+        case 3:
+          if (min > param.text) {
+            this.$toast(`当前${msg}请输入大于${min}的数`)
+
+            return
+          }
+          this.toNext()
+          break
+        case 4:
+        default:
+          this.toNext()
+      }
+    },
+
     toNext () {
       this.currentIndex++
       this.params[this.currentIndex].fromIndex = undefined
       this.params[this.currentIndex].isReply = true
+    },
+    // 单选改变
+    singleChangeHandler (index) {
+      this.params[index].text = ''
+    },
+    // 排序改变
+    orderchangeHandler (index) {
+      this.params[index].text = ''
     },
     // 单选-值
     // singleValue ({id}, index) {
@@ -233,6 +285,7 @@ export default {
     changeHandler (index) {
       const item = this.list[index]
       const param = this.params[index]
+      this.params[index].text = ''
 
       if (param.checkList.findIndex(id => id === this.optionId) < 1) return
 
@@ -308,7 +361,11 @@ export default {
       this[SET_LOADING](true)
       await this.$axios.post(
         SUBMIT,
-        params,
+        {
+          paperid: this.pid,
+          openid: this.oid,
+          data: params,
+        },
       ).finally((e) => {
         this.submiting = false
         this[SET_LOADING](false)

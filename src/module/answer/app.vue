@@ -99,7 +99,6 @@ export default {
     },
 
     loadParams () {
-      console.log(getUrlParams('pid'), getUrlParams('oid'))
       this[SET_PID](getUrlParams('pid'))
       this[SET_OID](getUrlParams('oid'))
 
