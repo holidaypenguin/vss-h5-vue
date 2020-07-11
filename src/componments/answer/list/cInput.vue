@@ -1,16 +1,16 @@
 <template>
   <div class="c-input">
-  <van-field
-    v-if="!disabled && realType"
-    label=""
-    v-model="testValue"
-    :type="realType"
-    :maxlength="realMax"
-    :show-word-limit="realMax !== 99999"
-    autosize
-    @click.prevent.stop
-    @input="inputHandler"
-    />
+    <van-field
+      v-if="!disabled && realType"
+      label=""
+      v-model="testValue"
+      :type="realType"
+      :maxlength="realMax"
+      :show-word-limit="realMax !== 99999"
+      autosize
+      @click.prevent.stop
+      @input="inputHandler"
+      />
     <van-field
       class="c-input-disabled"
       value=""
@@ -102,7 +102,10 @@ export default {
           break
         case 2:
         case 3:
-          value = this.max > 0 && value ? Math.min(value, this.max || 0) : value
+          // value = this.max > 0 && value ? Math.min(value, this.max || 0) : value
+          if (this.max > 0 && value && Number(this.max) < Number(value)) {
+            this.$toast(`请输入小于${this.max}的数`)
+          }
           break
         case 4:
         default:
