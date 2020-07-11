@@ -143,6 +143,8 @@ export default {
       const kind = Number(item.kind)
       // 第一个选项
       let option
+      // 最大值
+      let max
       // 最小值
       let min
       // 选项填空类型
@@ -166,13 +168,17 @@ export default {
         case 2:
         case 3:
         case 5:
-          min = option.regulars && option.regulars[0].minval
-          optionKind = Number(option.regulars && option.regulars[0].kind)
-
           if (!option || (option.regulars && !param.text)) {
             this.$toast('请答题')
-          } else if (option.regulars && min > 0) {
-            this.validateText(optionKind, min, param, '选项')
+
+            return
+          }
+          min = option.regulars && option.regulars[0].minval
+          max = option.regulars && option.regulars[0].maxval
+          optionKind = Number(option.regulars && option.regulars[0].kind)
+
+          if (option.regulars && min > 0) {
+            this.validateText(optionKind, max, min, param, '选项')
           } else if (option.jump) {
             const index = this.list.findIndex(i => i.order === option.jump)
 
@@ -193,13 +199,14 @@ export default {
           }
           break
         case 4:
+          max = item.regulars && item.regulars[0].maxval
           min = item.regulars && item.regulars[0].minval
           optionKind = Number(item.regulars && item.regulars[0].kind)
 
           if (!param.text) {
             this.$toast('请答题')
           } else if (item.regulars && min > 0) {
-            this.validateText(optionKind, min, param, '题目')
+            this.validateText(optionKind, max, min, param, '题目')
           } else {
             this.toNext()
           }
@@ -208,7 +215,7 @@ export default {
       }
     },
 
-    validateText (optionKind, min, param, msg = '') {
+    validateText (optionKind, max, min, param, msg = '') {
       // 1字符串2整数3浮点数4日期
       switch (optionKind) {
         case 1:
@@ -221,8 +228,13 @@ export default {
           break
         case 2:
         case 3:
-          if (min > param.text) {
+          if (Number(min) > Number(param.text)) {
             this.$toast(`当前${msg}请输入大于${min}的数`)
+
+            return
+          }
+          if (Number(max) < Number(param.text)) {
+            this.$toast(`当前${msg}请输入小于${max}的数`)
 
             return
           }
@@ -269,7 +281,7 @@ export default {
           ? false
           : param.checkList.indexOf(id) < 0
     },
-    // 选项操作ID
+    // 选项操作ID 选项点击事件比change事件晚
     optionHandler ({id}, index) {
       this.optionId = id
       // const item = this.list[index]
@@ -287,12 +299,14 @@ export default {
       const param = this.params[index]
       this.params[index].text = ''
 
-      if (param.checkList.findIndex(id => id === this.optionId) < 1) return
+      // if (param.checkList.findIndex(id => id === this.optionId) < 1) return
 
       const firstOption = item.options.find(option => option.id === param.checkList[0])
-      const lastOption = item.options.find(option => option.id === this.optionId)
+      const lastOption = item.options
+        .find(option => option.id === param.checkList[param.checkList.length - 1])
+
       if (firstOption.mute !== lastOption.mute) {
-        param.checkList = [this.optionId]
+        param.checkList = [lastOption.id]
       }
     },
     // 获得排序序号

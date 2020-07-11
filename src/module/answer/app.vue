@@ -3,7 +3,7 @@
 
     <transition name="fade">
       <router-view v-if="type === 1"></router-view>
-      <div class="vss-app-error" v-if="type === 2">答题链接有误，请重试</div>
+      <div class="vss-app-error" v-if="type === 2">答题链接有误，请重试~~~</div>
     </transition>
 
     <loading
