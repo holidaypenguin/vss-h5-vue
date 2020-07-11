@@ -11,27 +11,12 @@ npm install
 # 本地启动并打开第一个模块
 npm run local
 
-# 本地启动并打开第一个模块，可指定模块进行开发
-npm run local index about
-
-# 测试环境编译
-npm run qa
-
-# 测试环境编译，可指定模块进行开发
-npm run qa index about
-
-# 预发布环境编译
-npm run preview
-
-# 预发布环境编译，可指定模块进行开发
-npm run preview index about
-
 # 线上环境编译
-npm run online
-
-# 线上环境编译，可指定模块进行开发
-npm run online index about
+npm run online answer
 ```
+
+本地启动成功以后使用下面链接访问，如果服务启动接口有变化自行更改
+http://127.0.0.1:8092/wxpaper/index?pid=9ea5530d58214467ac05a410021b18ba&oid=oLuM76WgdeE44KCnLqYSuKSdNDs8
 
 ## 说明
 
@@ -66,24 +51,6 @@ location @h5_vss_rewrites {
 }
 ```
 
-## 该项目对应的域名地址
-因为需要使用https域名，所以在此使用单独的一个域名
-
-
-测试环境域名指向测试216环境
-
-## px2rem
-具体文档查看[px2rem](https://github.com/ZiQiangWang/px2rem)
-```
-{
-  baseDpr: 2,             // base device pixel ratio (default: 2)
-  remUnit: 75,            // rem unit value (default: 75)
-  remPrecision: 6,        // rem value precision (default: 6)
-  keepFontSize: true,     // no transform value of font-size
-  forcePxComment: 'px',   // force px comment (default: `px`)
-  keepComment: 'no'       // no transform value comment (default: `no`)
-}
-```
 
 ## 项目开发与部署
 
@@ -96,8 +63,3 @@ npm run local
 可指定`/config/index.js`下的`currentModule`值为模块名称（可指定多个中间用空格间隔），方便开发本次内容不用记录繁琐的名字，同时该参数仅在本地开发环境有用，其他环境不可用
 
 执行上面的命令后会打开字母表顺序排位第一的模块首页，如果有多余的参数需要手动指定
-
-
-
-# 使用的组件
-https://youzan.github.io/vant/#/zh-CN/intro
