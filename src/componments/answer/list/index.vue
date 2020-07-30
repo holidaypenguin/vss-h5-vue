@@ -1,12 +1,28 @@
 <template>
   <div class="p-list">
     <div class="p-list-body">
+      <panel>
       <div class="p-list-wrap"
         v-for="(item, index) in list" :key="item.id"
         v-show="index === currentIndex">
+        <div class="p-list-title">
+          第{{currentIndex + 1}}题：（{{item.kind | enum(kindOpts)}}）
+          <span class="p-list-title-num">{{currentIndex + 1}}</span>/{{listLength}}
+        </div>
         <div class="p-list-head">
           <!-- <b>{{item.remark}}</b><br> -->
           {{item.text.replace('{}', '')}}
+        </div>
+        <div class="p-list-msg" v-if="item.kind === '2'">
+          <span v-if="item.min">请至少选择{{item.min}}项，</span>
+          <span v-if="item.max">请最多选择{{item.max}}项，</span>
+          <span v-if="!item.min && !item.max">请选择多项，</span>
+          请您认真选择
+        </div>
+        <div v-else-if="item.kind === '5'">
+        </div>
+        <div class="p-list-msg" v-else>
+          {{item.kind | enum(msgOpts)}}
         </div>
         <!-- 排序题 -->
         <div class="p-list-choice" v-if="item.kind == 5">
@@ -128,6 +144,7 @@
           {{item.error}}
         </div>
       </div>
+      </panel>
     </div>
     <div class="p-list-bottom" v-if="listLength > 0">
       <div class="p-list-bottom-button">
@@ -138,12 +155,12 @@
         <van-button type="info" plain v-if="!isEnd"
           @click="nextHandler">下一题</van-button>
         <van-button type="info" plain v-else
-          @click="commitHandler">提交</van-button>
+          @click="nextHandler">提交</van-button>
       </div>
 
-      <div class="p-list-bottom-num">
+      <!-- <div class="p-list-bottom-num">
         {{currentIndex + 1}} / {{listLength}}
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

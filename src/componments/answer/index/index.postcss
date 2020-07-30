@@ -6,7 +6,9 @@
     align-items: center;
     
     @e inner{
-      width: 600px;
+      /* width: 600px; */
+      width: 100%;
+      height: 100%;
     }
 
     @e code{
@@ -18,6 +20,109 @@
       width: 400px;
       margin: 32px 100px;
       display: block;
+    }
+
+    @e home{
+      background: url(../images/home_bg.png) no-repeat;
+      background-size: 100% 100%;
+      position: relative;
+
+      @e head{
+        width: 616px;
+        height: 419px;
+        background: url(../images/home_head.png) no-repeat;
+        background-size: 100% 100%;
+        margin: 90px auto 43px auto;
+        position: relative;
+        z-index: 10;
+      }
+
+      @e bottom{
+        width: 673px;
+        height: 684px;
+        background: url(../images/home_bottom.png) no-repeat;
+        background-size: 100% 100%;
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1;
+      }
+
+      @e button{
+        height: 75px;
+        width: 514px;
+        line-height: 75px;
+        background: #1f6bc8;
+        color: #FFFFFF;
+        font-size: 32px;
+        margin: 0 auto;
+        border-radius: 75px;
+        display: block;
+        z-index: 10;
+      }
+    }
+
+    @e rule{
+      background: url(../images/rule_bg.png) no-repeat;
+      background-size: 100% 100%;
+      position: relative;
+
+      @e head{
+        width: 627px;
+        height: 380px;
+        background: url(../images/rule_head.png) no-repeat;
+        background-size: 100% 100%;
+        margin: 85px auto 0px auto;
+        position: relative;
+        z-index: 10;
+      }
+
+      @e name{
+        padding-top: 5px;
+        padding-left: 28px;
+        color: #1f6bc8;
+        font-size: 36px;
+        position: relative;
+        margin-bottom: 20px;
+        line-height: 36px;
+
+        &::after{
+          content: ' ';
+          display: block;
+          width: 8px;
+          height: 36px;
+          border-radius: 8px;
+          position: absolute;
+          top: 5px;
+          left: 0;
+          background: #1f6bc8;
+        }
+      }
+
+      @e line{
+        font-size: 28px;
+        color: #333333;
+        line-height: 66px;
+        border-bottom: 1px solid #edeef0; /* no */
+        &:last-child{
+          border-bottom: 0;
+          height: 100px;
+        }
+      }
+
+      @e button{
+        width: 608px;
+        height: 95px;
+        line-height: 95px;
+        background: #FFFFFF;
+        color: #1f6bc8;
+        font-size: 38px;
+        margin: 0 auto;
+        border-radius: 95px;
+        display: block;
+        margin-top: 60px;
+      }
     }
   }
 }

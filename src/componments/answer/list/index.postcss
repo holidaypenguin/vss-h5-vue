@@ -3,12 +3,16 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    background: #F7F7F7;
 
     @e body{
       flex: 1;
-      background: #F7F7F7;
       position: relative;
+      background: url(../images/rule_bg.png) no-repeat;
+      background-size: 100% 100%;
+      padding-bottom: 90px;
     }
+
     @e bottom{
       display: flex;
       border-top: 1px solid #1989fa; /* no */
@@ -49,30 +53,49 @@
     }
 
     @e wrap{
-      position: absolute;
+      /* position: absolute;
       top: 0;
       bottom: 0;
       left: 0;
-      right: 0;
+      right: 0; */
       overflow-x: hidden;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
     }
 
+    
+
+    @e title{
+      font-size: 34px;
+      line-height: 1;
+      padding-top: 35px;
+      text-align: center;
+      font-weight: 700;
+      color: #333333;
+      margin-bottom: 50px;
+      @e num{
+        color: #3776d3；
+      }
+    }
+
     @e head{
-      margin-bottom: 16px;
-      background: #ffffff;
-      padding: 32px;
-      line-height: 48px;
-      font-size: 32px;
-      box-shadow: 0 0px 5px 0 rgba(0,0,0,.1);
+      line-height: 38px;
+      font-size: 28px;
       word-break: break-all;
+      margin-bottom: 28px;
+      color: #333333;
+    }
+
+    @e msg{
+      color: #a7a7a7;
+      font-size: 24px;
+      line-height: 1;
+      height: 42px;
+      border-bottom: 1px solid #d7d7d7; /* no */
     }
 
     @e choice{
-      margin: 16px 0;
-      background: #ffffff;
-      padding: 36px;
+      padding: 24px 0 70px 0;
       line-height: 32px;
       font-size: 28px;
       /* box-shadow: 0 15px 35px 0 rgba(0,0,0,.2); */
@@ -93,7 +116,7 @@
       }
 
       .van-checkbox, .van-radio{
-        margin-top: 32px;
+        margin-top: 20px;
         line-height: 60px;
 
         &:first-child{
@@ -184,5 +207,7 @@
         flex: 1;
       }
     }
+
+    @e error{}
   }
 }
