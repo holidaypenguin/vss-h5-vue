@@ -281,6 +281,8 @@ export default {
       this.currentIndex++
       this.params[this.currentIndex].fromIndex = undefined
       this.params[this.currentIndex].isReply = true
+
+      this.$refs.wrap.scrollTo(0, 0)
     },
     // 单选改变
     singleChangeHandler (index) {
