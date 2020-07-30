@@ -12,13 +12,15 @@ import {
   GETLIST,
 } from 'module/answer/interface'
 
+import panel from '../panel'
+
 export default {
   name: 'Index',
 
   mixins: [],
 
   components: {
-
+    panel,
   },
 
   data () {

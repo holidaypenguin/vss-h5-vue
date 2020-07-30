@@ -16,6 +16,9 @@ import {
 import CInput from './cInput'
 
 // import mockData from './mock'
+import {realData1} from './mock'
+
+import panel from '../panel'
 
 export default {
   name: 'List',
@@ -24,6 +27,7 @@ export default {
 
   components: {
     CInput,
+    panel,
   },
 
   props: {
@@ -40,6 +44,21 @@ export default {
       // list1: mockData,
       params: [],
       currentIndex: 0,
+      kindOpts: [
+        {value: '1', label: '单选题'},
+        {value: '2', label: '多选题'},
+        {value: '3', label: '判断题'},
+        {value: '4', label: '填空题'},
+        {value: '5', label: '排序题'},
+      ],
+      msgOpts: [
+        {value: '1', label: '仅限选择一项，请您认真请选择'},
+        {value: '2', label: ''},
+        {value: '3', label: '仅限选择一项，请您认真请选择'},
+        {value: '4', label: '点击蓝色空白部分即可填写，请您认真填写'},
+        {value: '5', label: ''},
+      ],
+      submiting: false,
     }
   },
 
@@ -62,6 +81,7 @@ export default {
 
   async created () {
     await this.search()
+    // this.searchMock()
   },
 
   async mounted () {
@@ -104,6 +124,11 @@ export default {
       this.list = data
       this.params = this.getParams(this.list)
     },
+    searchMock () {
+      const {data = []} = realData1
+      this.list = data
+      this.params = this.getParams(this.list)
+    },
     // 初始化答案
     getParams (list = []) {
       return list.map((item, index) => {
@@ -133,7 +158,7 @@ export default {
 
     // 下一题
     nextHandler () {
-      if (this.isEnd) return
+      // if (this.isEnd) return
 
       const item = this.list[this.currentIndex]
       const param = this.params[this.currentIndex]
@@ -156,6 +181,7 @@ export default {
           option = item.options.find(i => i.id === param.checked)
           break
         case 2:
+        case 5:
           if (param.checkList.length >= 1) {
             option = item.options.find(i => i.id === param.checkList[0])
           }
@@ -190,7 +216,7 @@ export default {
           } else if (
             option.mute === 2 &&
             item.min > 0 &&
-            Number(item.kind) === 2 &&
+            (Number(item.kind) === 2 || Number(item.kind) === 5) &&
             item.min > param.checkList.length) {
             // 非互斥、最小选项个数大于0,、多选，提示最少选择个数提示
             this.$toast(`当前题目至少选择${item.min}个选项`)
@@ -246,7 +272,12 @@ export default {
       }
     },
 
-    toNext () {
+    async toNext () {
+      if (this.isEnd) {
+        await this.commitHandler()
+
+        return
+      }
       this.currentIndex++
       this.params[this.currentIndex].fromIndex = undefined
       this.params[this.currentIndex].isReply = true
@@ -343,7 +374,9 @@ export default {
               break
             case '2': // 多选
             case '5': // 排序
-              options = item.options.filter(oitem => param.checkList.indexOf(oitem.id) >= 0)
+              // options = item.options.filter(oitem => param.checkList.indexOf(oitem.id) >= 0)
+              options = param.checkList
+                .map(citem => item.options.filter(oitem => oitem.id === citem)[0])
               // console.log('多选选项', options)
 
               p.id = param.id
