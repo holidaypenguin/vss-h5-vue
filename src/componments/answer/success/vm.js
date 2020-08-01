@@ -54,6 +54,10 @@ export default {
     getRed () {
       this.isGet = true
     },
+    closeHanler () {
+      // eslint-disable-next-line no-undef
+      WeixinJSBridge.call('closeWindow')
+    },
     // async search () {
     //   if (this.getting) return
 
