@@ -4,10 +4,12 @@
       <div class="p-success-top">
         <div class="p-success-top-icon"></div>
         <div class="p-success-top-text">
-          {{isGet ? '答题成功，已领取红包' : '答题成功，请领取红包'}}
+          {{isGet ? '答题成功，已领取红包' : '恭喜您，已提交成功！'}}
         </div>
       </div>
-      <div class="p-success-red" @click="getRed" v-if="!isGet"></div>
+      <van-button type="info" class="p-success-button-close"
+        @click="closeHanler">关闭</van-button>
+      <!-- <div class="p-success-red" @click="getRed" v-if="!isGet"></div> -->
     </div>
   </div>
 </template>

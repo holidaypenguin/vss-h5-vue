@@ -49,7 +49,7 @@
                     <div class="p-list-choice-input">
                       <c-input
                         v-model="params[index].text"
-                        :disabled="params[index].checked !== option.id"
+                        :disabled="params[index].checkList.indexOf(option.id) < 0"
                         :type="option.regulars[0].kind"
                         :max="option.regulars[0].maxval"
                         :min="option.regulars[0].minval"
@@ -91,7 +91,7 @@
                     <div class="p-list-choice-input">
                       <c-input
                         v-model="params[index].text"
-                        :disabled="params[index].checked !== option.id"
+                        :disabled="params[index].checkList.indexOf(option.id) < 0"
                         :type="option.regulars[0].kind"
                         :max="option.regulars[0].maxval"
                         :min="option.regulars[0].minval"
