@@ -19,10 +19,6 @@ const multipageHelper = require('./multipage-helper')
 
 // const env = require('../config/prod.env')
 const env = require(`../config/prod.${process.env.RUN_ENV}.env`)
-// console.log(env123.publicPath)
-// console.log(env123)
-
-console.log(env)
 
 const webpackConfig = merge(baseWebpackConfig, {
   mode: 'production',

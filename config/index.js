@@ -6,10 +6,6 @@ const path = require('path')
 const produceName = 'vss_h5'
 const produceNameSuffix = '_static'
 
-// const target = 'http://fe2.rongyi.com:8088';
-// const targetShare = 'https://api.driversite.cn'
-const targetOil = 'http://test-api.driversite.cn'
-// const target = 'http://manage.preview.rongyi.com';
 // const targetdiaocha = 'http://diaocha.frontlink.net'
 const targetdiaocha = 'http://114.116.10.155/'
 
@@ -25,26 +21,6 @@ module.exports = {
     assetsSubDirectory: `${produceName}${produceNameSuffix}`,
     assetsPublicPath: '/',
     proxyTable: {
-      '^/share': {
-        target: targetOil,
-        changeOrigin: 'true',
-      },
-      '/czb/': {
-        target: targetOil,
-        changeOrigin: 'true',
-      },
-      '/oil/': {
-        target: targetOil,
-        changeOrigin: 'true',
-      },
-      '/user/': {
-        target: targetOil,
-        changeOrigin: 'true',
-      },
-      '/ad/': {
-        target: targetOil,
-        changeOrigin: 'true',
-      },
       '/wxexam/': {
         target: targetdiaocha,
         changeOrigin: 'true',

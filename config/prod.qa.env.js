@@ -7,11 +7,6 @@ const moduleName = Object.keys(multipageHelper.getEntries())[0]
 
 const getPublicPath = () => {
   switch (moduleName) {
-    case 'driversCoin':
-    case 'driversOil':
-    case 'driversRing':
-    case 'driversStory':
-      return '"http://test-static.driversite.cn/"'
     case 'answer':
       return '"http://diaocha.frontlink.net/"'
     default:

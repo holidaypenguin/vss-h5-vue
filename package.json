@@ -9,9 +9,6 @@
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "build": "node build/build.js",
     "local": "cross-env RUN_ENV=local npm run dev:build",
-    "drivers:upload": "gulp --gulpfile ./build/gulp.js driversUpload",
-    "drivers:upload:online": "gulp --gulpfile ./build/gulp.js driversUpload:online",
-    "qa": "cross-env RUN_ENV=qa npm run build",
     "online": "cross-env RUN_ENV=online npm run build"
   },
   "dependencies": {
