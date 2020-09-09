@@ -12,6 +12,8 @@ const getPublicPath = () => {
     case 'driversRing':
     case 'driversStory':
       return '"https://static.driversite.cn/"'
+    case 'answer':
+      return '"http://diaocha.frontlink.net/"'
     default:
       return '"/"'
   }
