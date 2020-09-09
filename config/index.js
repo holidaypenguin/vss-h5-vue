@@ -10,7 +10,8 @@ const produceNameSuffix = '_static'
 // const targetShare = 'https://api.driversite.cn'
 const targetOil = 'http://test-api.driversite.cn'
 // const target = 'http://manage.preview.rongyi.com';
-const targetdiaocha = 'http://diaocha.frontlink.net'
+// const targetdiaocha = 'http://diaocha.frontlink.net'
+const targetdiaocha = 'http://114.116.10.155/'
 
 module.exports = {
   produceName,
@@ -51,10 +52,12 @@ module.exports = {
     },
 
     // Various Dev Server settings
-    host: '127.0.0.1', // can be overwritten by process.env.HOST
+    // host: '127.0.0.1', // can be overwritten by process.env.HOST
+    host: 'diaocha.frontlink.net', // can be overwritten by process.env.HOST
     // host: '192.168.31.35',
     // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
-    port: 8092,
+    // port: 8092,
+    port: 80,
     autoOpenBrowser: true,
     errorOverlay: true,
     notifyOnErrors: true,

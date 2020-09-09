@@ -38,7 +38,8 @@ export default {
   },
 
   async mounted () {
-    this.$nextTick(() => {
+    this.$nextTick(async () => {
+      await this.$parent.loadConfig()
     })
   },
 

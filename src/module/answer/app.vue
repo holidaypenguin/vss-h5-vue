@@ -1,6 +1,5 @@
 <template>
   <div class="vss-app">
-
     <transition name="fade">
       <router-view v-if="type === 1"></router-view>
       <div class="vss-app-error" v-if="type === 2">答题链接有误，请重试~~~</div>
@@ -35,6 +34,10 @@ import {
   SET_PID,
   SET_OID,
 } from './store/mutations-type'
+
+import {
+  GETSIGN,
+} from 'module/answer/interface'
 
 import {getUrlParams} from 'utils/url'
 
@@ -103,6 +106,77 @@ export default {
       this[SET_OID](getUrlParams('oid'))
 
       this.type = this.pid && this.oid ? 1 : 2
+    },
+
+    async loadConfig () {
+      if (this.getting) return
+
+      this.getting = true
+
+      this[SET_LOADING](true)
+      const {data = []} = await this.$axios.post(
+        GETSIGN,
+        {},
+        {
+          params: {
+            url: location.href,
+          },
+        },
+      ).finally((e) => {
+        this.getting = false
+        this[SET_LOADING](false)
+      })
+
+      // eslint-disable-next-line no-undef
+      wx.config({
+        debug: false, // 开启调试模式,
+        appId: data.appId, // 必填，公众号的唯一标识
+        timestamp: data.timestamp, // 必填，生成签名的时间戳
+        nonceStr: data.nonceStr, // 必填，生成签名的随机串
+        signature: data.signature, // 必填，签名
+        jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData'],
+      })
+
+      const title = '健康科普周周练'
+      const desc = '普及健康知识，提高居民健康素养'
+      // eslint-disable-next-line
+      const link = `http://diaocha.frontlink.net/wxexam/wx/web/wx02d7084d96b12d5b/oauth1?pid=${this.pid}`
+      const imgUrl = require('./images/share-icon.jpg')
+      console.log(imgUrl)
+
+      // eslint-disable-next-line no-undef
+      wx.error((res) => {
+        // eslint-disable-next-line no-undef
+        console.log('--wx.error--', res)
+      })
+
+      // eslint-disable-next-line no-undef
+      wx.ready((e) => { // 需在用户可能点击分享按钮前就先调用
+      // eslint-disable-next-line no-console
+        console.log('--wx.ready--', e)
+        // 自定义“分享给朋友”及“分享到QQ”按钮的分享内容
+        // eslint-disable-next-line no-undef
+        wx.updateAppMessageShareData({
+          title, // 分享标题
+          desc, // 分享描述
+          link,
+          imgUrl, // 分享图标
+          success () {
+          // 设置成功
+          },
+        })
+
+        // 自定义“分享到朋友圈”及“分享到QQ空间”按钮的分享内容
+        // eslint-disable-next-line no-undef
+        wx.updateTimelineShareData({
+          title, // 分享标题
+          link,
+          imgUrl, // 分享图标
+          success () {
+          // 设置成功
+          },
+        })
+      })
     },
 
     // async toOAuth () {

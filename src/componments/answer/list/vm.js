@@ -81,6 +81,8 @@ export default {
 
   async created () {
     await this.search()
+
+    await this.$parent.loadConfig()
     // this.searchMock()
   },
 
