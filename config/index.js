@@ -12,13 +12,14 @@ const targetOil = 'http://test-api.driversite.cn'
 // const target = 'http://manage.preview.rongyi.com';
 // const targetdiaocha = 'http://diaocha.frontlink.net'
 const targetdiaocha = 'http://114.116.10.155/'
+const target216 = 'http://fe1.rongyi.com:8216'
 
 module.exports = {
   produceName,
   produceNameSuffix,
   moduleRootPath: './src/module', // 模块根目录(这个可以根据自己的需求命名)
   moduleRootName: 'module',
-  currentModule: 'answer', // 指定默认编译模块（仅本地开发环境使用，其他环境发布时需要指定模块，否则会编译全部模块，影响效率）
+  currentModule: 'qjxby', // 指定默认编译模块（仅本地开发环境使用，其他环境发布时需要指定模块，否则会编译全部模块，影响效率）
   dev: {
 
     // Paths
@@ -49,15 +50,20 @@ module.exports = {
         target: targetdiaocha,
         changeOrigin: 'true',
       },
+      '/easypark-mock/': {
+        target: target216,
+        changeOrigin: 'true',
+      },
     },
 
     // Various Dev Server settings
+    host: '0.0.0.0', // can be overwritten by process.env.HOST
     // host: '127.0.0.1', // can be overwritten by process.env.HOST
-    host: 'diaocha.frontlink.net', // can be overwritten by process.env.HOST
+    // host: 'diaocha.frontlink.net', // can be overwritten by process.env.HOST
     // host: '192.168.31.35',
     // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
-    // port: 8092,
-    port: 80,
+    port: 8092,
+    // port: 80,
     autoOpenBrowser: true,
     errorOverlay: true,
     notifyOnErrors: true,
