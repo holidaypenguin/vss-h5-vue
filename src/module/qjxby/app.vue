@@ -139,7 +139,7 @@ export default {
         phone: '',
         plateno: '',
         startDay: DateFormat(Date.now(), 'yyyy-MM-dd'),
-        month: '',
+        month: '1',
         source: getSource(),
       },
     }
