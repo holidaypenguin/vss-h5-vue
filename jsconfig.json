@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./src/*"],
+      "utils/*": ["./src/public/utils/*"],
+      "services": ["./src/public/services/index.js"],
+      "services/*": ["./src/public/services/*"],
+      "filters": ["./src/public/filters/index.js"],
+      "filters/*": ["./src/public/filters/*"],
+      "common/*": ["./src/common/*"],
+      "componments/*": ["./src/componments/*"],
+      "module/*": ["./src/module/*"],
+    }
+  }
+}

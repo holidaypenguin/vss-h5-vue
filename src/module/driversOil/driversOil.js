@@ -7,8 +7,9 @@ import App from './app.vue'
 import router from './router'
 import store from './store'
 import interponents from '../../public/services/interponentsForm.js'
-import filters from '../../public/filters'
+import filters from 'filters'
 import Toast from 'vue2-toast'
+import * as Dom from 'utils/dom'
 
 import SDK from './sdk'
 
